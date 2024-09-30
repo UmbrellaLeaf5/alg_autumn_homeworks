@@ -33,7 +33,7 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyMatrix) {
       Graph<size_t, long>::GraphFromAdjMatrix(adj_matrix);
 
   // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 
   graph.MakeUndirected();
 
@@ -43,7 +43,7 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyMatrix) {
   ASSERT_FALSE(graph.IsWeighted());
 
   // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, CreateGraphFromAdjacencyMatrix2) {
@@ -57,7 +57,7 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyMatrix2) {
   ASSERT_FALSE(graph.IsWeighted());
 
   // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, CreateWeightedGraphFromAdjacencyMatrix) {
@@ -92,7 +92,7 @@ TEST(GraphTest_size_t, CreateWeightedGraphFromAdjacencyMatrix2) {
   ASSERT_TRUE(graph.IsWeighted());
 
   // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, CreateGraphFromAdjacencyList) {
@@ -100,7 +100,7 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyList) {
   Graph<size_t, long> graph = Graph<size_t, long>::GraphFromAdjList(adj_list);
 
   // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 
   graph.MakeUndirected();
 
@@ -113,7 +113,7 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyList) {
   ASSERT_TRUE(graph.IsDirected());
 
   // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, MakeUndirected) {
@@ -182,7 +182,7 @@ TEST(GraphTest_size_t, GraphFromMapTest) {
   Graph<size_t, long> graph = Graph<size_t, long>::GraphFromMap(edges_dict);
 
   // graph.PrintAdjList();
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 
   ASSERT_EQ(graph.VertsAmount(), 4);
   ASSERT_EQ(graph.EdgesAmount(), 4);
@@ -211,7 +211,7 @@ TEST(GraphTest_size_t, GraphFromMapTest) {
   graph = Graph<size_t, long>::GraphFromMap(edges_dict);
 
   // graph.PrintAdjList();
-  // std::cout << graph.GetAdjList() << std::endl;
+  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
   // std::cout << graph << std::endl;
 
   ASSERT_EQ(graph.VertsAmount(), 26);

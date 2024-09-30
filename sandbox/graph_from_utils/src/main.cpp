@@ -6,6 +6,7 @@ template <typename V, typename W>
 void PrintGraph(Graph<V, W> graph) {
   std::cout << std::endl << graph << std::endl << std::endl;
   graph.PrintAdjList();
+  std::cout << std::endl << graph.GetAdjList() << std::endl;
 }
 
 int main() {
@@ -138,6 +139,35 @@ int main() {
   std::cout << "AdjList: " << adj_list << std::endl;
 
   PrintGraph(graph);
+
+  // ------------------- Graph from AdjList with keys -------------------
+
+  std::cout << std::endl
+            << "------------------------------"
+               " Graph from AdjList with keys "
+               "------------------------------"
+            << std::endl
+            << std::endl;
+
+  std::unordered_map<size_t, std::vector<size_t>> adj_list_dict = {
+      {0, {1}}, {1, {0, 2}}, {2, {1}}};
+
+  graph = Graph<size_t, long>::GraphFromAdjList(adj_list_dict);
+
+  std::cout << "AdjList: " << adj_list_dict << std::endl;
+
+  PrintGraph(graph);
+
+  std::cout << std::endl << "STRING VERSION:" << std::endl << std::endl;
+
+  std::unordered_map<std::string, std::vector<std::string>> adj_list_dict_2 = {
+      {"A", {"B"}}, {"B", {"A", "C"}}, {"C", {"B"}}};
+
+  auto graph_2 = Graph<std::string, long>::GraphFromAdjList(adj_list_dict_2);
+
+  std::cout << "AdjList: " << adj_list_dict_2 << std::endl;
+
+  PrintGraph(graph_2);
 
   return 0;
 }

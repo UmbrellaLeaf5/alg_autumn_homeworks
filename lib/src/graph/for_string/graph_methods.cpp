@@ -37,8 +37,10 @@ std::pair<vert_t, vert_t> Graph<vert_t, weight_t>::ParseEdgeString(
 // DELETED methods
 
 template <typename vert_t, typename weight_t>
-std::vector<std::vector<vert_t>> Graph<vert_t, weight_t>::GetAdjList() const {
-  throw std::logic_error("GetAdjList: this method is deleted for std::string.");
+std::vector<std::vector<vert_t>>
+Graph<vert_t, weight_t>::GetAdjListWithoutKeys() const {
+  throw std::logic_error(
+      "GetAdjListWithoutKeys: this method is deleted for std::string.");
 }
 
 template <typename vert_t, typename weight_t>

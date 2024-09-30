@@ -94,3 +94,19 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromStrs(
 
   return Graph(edges);
 }
+
+template <typename vert_t, typename weight_t>
+Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromAdjList(
+    const std::unordered_map<vert_t, std::vector<vert_t>>& adj_list_dict) {
+  if (adj_list_dict.empty()) return Graph();
+
+  std::vector<Edge> edges{};
+
+  for (const auto& vert_str_pair : adj_list_dict) {
+    auto vert = vert_str_pair.first;
+    for (const auto& vert_2 : vert_str_pair.second)
+      edges.push_back(Edge(vert, vert_2));
+  }
+
+  return Graph(edges);
+}

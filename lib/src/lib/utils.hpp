@@ -39,14 +39,12 @@ inline std::ostream& operator<<(std::ostream& os,
 template <std::size_t I = 0, typename... Ts>
 static std::ostream& PrintTuple(std::ostream& os, const std::tuple<Ts...>& t) {
   if constexpr (I < sizeof...(Ts)) {
-    if (I != 0) {
-      os << "; ";
-    }
+    if (I != 0) os << "; ";
+
     os << std::get<I>(t);
     return PrintTuple<I + 1, Ts...>(os, t);
-  } else {
+  } else
     return os;
-  }
 }
 
 /**
@@ -60,6 +58,26 @@ template <typename... Ts>
 std::ostream& operator<<(std::ostream& os, const std::tuple<Ts...>& t) {
   os << "{";
   PrintTuple(os, t);
+  return os << "}";
+}
+
+/**
+ * @brief Выводит все элементы вектора в поток
+ * @tparam Type: тип, возможный к выводу в консоль
+ * @param os: ссылка на поток, в который надо вывести (мод.)
+ * @param vec: вектор элементов произвольного типа
+ * @return std::ostream&: ссылка на поток, в который вывели
+ */
+template <typename Type>
+inline std::ostream& operator<<(std::ostream& os,
+                                const std::vector<Type>& vec) {
+  os << "{";
+
+  for (std::size_t i = 0; i < vec.size(); i++) {
+    os << vec[i];
+    if (i != vec.size() - 1) os << "; ";
+  }
+
   return os << "}";
 }
 
@@ -82,26 +100,6 @@ std::ostream& operator<<(std::ostream& os,
 
     os << key << ": " << value;
     first = false;
-  }
-
-  return os << "}";
-}
-
-/**
- * @brief Выводит все элементы вектора в поток
- * @tparam Type: тип, возможный к выводу в консоль
- * @param os: ссылка на поток, в который надо вывести (мод.)
- * @param vec: вектор элементов произвольного типа
- * @return std::ostream&: ссылка на поток, в который вывели
- */
-template <typename Type>
-inline std::ostream& operator<<(std::ostream& os,
-                                const std::vector<Type>& vec) {
-  os << "{";
-
-  for (std::size_t i = 0; i < vec.size(); i++) {
-    os << vec[i];
-    if (i != vec.size() - 1) os << "; ";
   }
 
   return os << "}";

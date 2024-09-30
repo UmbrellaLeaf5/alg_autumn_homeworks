@@ -102,6 +102,20 @@ void Graph<vert_t, weight_t>::RemoveDuplicates() {
 }
 
 template <typename vert_t, typename weight_t>
+std::unordered_map<vert_t, std::vector<vert_t>>
+Graph<vert_t, weight_t>::GetAdjList() const {
+  auto adj_list_dict = std::unordered_map<vert_t, std::vector<vert_t>>();
+
+  for (const auto& edge : edges_) {
+    adj_list_dict[edge.StartVert()].push_back(edge.EndVert());
+    if (!IsDirected())
+      adj_list_dict[edge.EndVert()].push_back(edge.StartVert());
+  }
+
+  return adj_list_dict;
+}
+
+template <typename vert_t, typename weight_t>
 bool Graph<vert_t, weight_t>::ContainsEdge(
     const std::tuple<vert_t, vert_t, weight_t>& edge) const {
   if (!IsWeighted())

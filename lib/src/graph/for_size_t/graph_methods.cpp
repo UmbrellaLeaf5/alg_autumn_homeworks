@@ -9,7 +9,8 @@ template class Graph<int, double>;
 template class Graph<size_t, double>;
 
 template <typename vert_t, typename weight_t>
-std::vector<std::vector<vert_t>> Graph<vert_t, weight_t>::GetAdjList() const {
+std::vector<std::vector<vert_t>>
+Graph<vert_t, weight_t>::GetAdjListWithoutKeys() const {
   std::vector<std::vector<vert_t>> adj_list(
       *std::max_element(Verts().begin(), Verts().end()) + 1);
 
