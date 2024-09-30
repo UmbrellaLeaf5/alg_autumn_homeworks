@@ -33,6 +33,7 @@
       },
       // Add the IDs of extensions you want installed when the container is created.
       "extensions": [
+        "llvm-vs-code-extensions.vscode-clangd",
         "ms-vscode.cpptools",
         "xaver.clang-format"
       ]
