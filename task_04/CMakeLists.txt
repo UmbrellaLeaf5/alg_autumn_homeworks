@@ -22,7 +22,6 @@ add_executable(${PROJECT_NAME} ${source_list})
 # Locate GTest
 enable_testing()
 find_package(GTest REQUIRED)
-
 include_directories(${GTEST_INCLUDE_DIRS})
 
 find_library(Utils ../)
