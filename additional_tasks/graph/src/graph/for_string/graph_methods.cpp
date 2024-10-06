@@ -22,7 +22,7 @@ void Graph<vert_t, weight_t>::RemoveVert(vert_t vert) {
 template <typename vert_t, typename weight_t>
 std::pair<vert_t, vert_t> Graph<vert_t, weight_t>::ParseEdgeString(
     const std::string& edge_str) {
-  size_t pos = edge_str.find("->");
+  const size_t pos = edge_str.find("->");
 
   if (pos == std::string::npos)
     throw std::invalid_argument("EdgeString: invalid edge string format: " +

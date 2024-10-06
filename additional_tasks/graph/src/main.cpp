@@ -3,7 +3,7 @@
 #include "graph/graph.hpp"
 
 template <typename V, typename W>
-void PrintGraph(Graph<V, W> graph) {
+void PrintGraph(const Graph<V, W>& graph) {
   std::cout << std::endl << graph << std::endl << std::endl;
   graph.PrintAdjList();
   std::cout << std::endl << graph.GetAdjList() << std::endl;
@@ -19,7 +19,8 @@ int main() {
             << std::endl
             << std::endl;
 
-  std::vector<std::pair<size_t, size_t>> edges_pairs = {{0, 1}, {1, 2}, {2, 0}};
+  const std::vector<std::pair<size_t, size_t>> edges_pairs = {
+      {0, 1}, {1, 2}, {2, 0}};
 
   auto graph = Graph<size_t, long>::GraphNonWeighted(edges_pairs);
 
@@ -36,7 +37,7 @@ int main() {
             << std::endl
             << std::endl;
 
-  std::vector<long> weights = {1, 2, 3};
+  const std::vector<long> weights = {1, 2, 3};
 
   graph = Graph<size_t, long>::GraphWeighted(edges_pairs, weights);
 
@@ -54,7 +55,7 @@ int main() {
             << std::endl
             << std::endl;
 
-  std::vector<std::tuple<size_t, size_t, long>> edges_tuples = {
+  const std::vector<std::tuple<size_t, size_t, long>> edges_tuples = {
       {0, 1, 5}, {1, 2, 10}, {2, 0, 3}};
 
   graph = Graph<size_t, long>::GraphWeighted(edges_tuples);
@@ -72,7 +73,7 @@ int main() {
             << std::endl
             << std::endl;
 
-  std::vector<std::string> edges_strs = {"0->1", "2->1", "3->2", "1->3"};
+  const std::vector<std::string> edges_strs = {"0->1", "2->1", "3->2", "1->3"};
 
   graph = Graph<size_t, long>::GraphFromStrs(edges_strs);
 
@@ -89,7 +90,7 @@ int main() {
             << std::endl
             << std::endl;
 
-  std::unordered_map<std::string, long> edges_dict = {
+  const std::unordered_map<std::string, long> edges_dict = {
       {"0->1", 5}, {"2->1", 1}, {"3->2", 2}, {"1->3", 3}};
 
   graph = Graph<size_t, long>::GraphFromMap(edges_dict);
@@ -108,6 +109,7 @@ int main() {
             << std::endl;
 
   std::vector<std::vector<long>> adj_matrix = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
+
   graph = Graph<size_t, long>::GraphFromAdjMatrix(adj_matrix);
 
   std::cout << "AdjMatrix: " << adj_matrix << std::endl;
@@ -132,7 +134,7 @@ int main() {
             << std::endl
             << std::endl;
 
-  std::vector<std::vector<size_t>> adj_list = {{1}, {0, 2}, {1}};
+  const std::vector<std::vector<size_t>> adj_list = {{1}, {0, 2}, {1}};
 
   graph = Graph<size_t, long>::GraphFromAdjList(adj_list);
 
@@ -149,7 +151,7 @@ int main() {
             << std::endl
             << std::endl;
 
-  std::unordered_map<size_t, std::vector<size_t>> adj_list_dict = {
+  const std::unordered_map<size_t, std::vector<size_t>> adj_list_dict = {
       {0, {1}}, {1, {0, 2}}, {2, {1}}};
 
   graph = Graph<size_t, long>::GraphFromAdjList(adj_list_dict);
