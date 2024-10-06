@@ -4,6 +4,7 @@
 
 TEST(TSTest, TopologicalSort) {
   Graph<std::string, long> graph;
+
   graph.AddVert("A");
   graph.AddVert("B");
   graph.AddVert("C");
@@ -20,7 +21,7 @@ TEST(TSTest, TopologicalSort) {
 
   std::vector<std::string> expected_order = {"A", "C", "E", "B", "D", "F"};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
 }
@@ -30,7 +31,7 @@ TEST(TSTest, TopologicalSort_Empty) {
 
   std::vector<std::string> expected_order = {};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
 }
@@ -41,7 +42,7 @@ TEST(TSTest, TopologicalSort_SingleVertex) {
 
   std::vector<std::string> expected_order = {"A"};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
 }
@@ -61,7 +62,7 @@ TEST(TSTest, TopologicalSort_MultipleSources) {
 
   std::vector<std::string> expected_order = {"B", "A", "C", "E", "D"};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
 }
@@ -79,7 +80,7 @@ TEST(TSTest, TopologicalSort_Disconnected) {
 
   std::vector<std::string> expected_order = {"E", "C", "D", "A", "B"};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
 }
@@ -99,7 +100,7 @@ TEST(TSTest, TopologicalSort_LinearChain) {
 
   std::vector<std::string> expected_order = {"A", "B", "C", "D", "E"};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
 }
@@ -123,7 +124,7 @@ TEST(TSTest, TopologicalSort_Tree) {
 
   std::vector<std::string> expected_order = {"A", "C", "G", "F", "B", "E", "D"};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
 }
@@ -148,7 +149,27 @@ TEST(TSTest, TopologicalSort_Branching) {
 
   std::vector<std::string> expected_order = {"A", "C", "G", "B", "E", "D", "F"};
 
-  std::vector<std::string> actual_order = TopologicalSort(graph);
+  auto actual_order = TopologicalSort(graph);
 
   ASSERT_EQ(expected_order, actual_order);
+}
+
+TEST(TSTest, TopologicalSort_Main) {
+  auto graph = Graph<size_t, long>::GraphWeighted({{0, 1, 1},
+                                                   {0, 2, 2},
+                                                   {1, 3, 3},
+                                                   {1, 4, 4},
+                                                   {2, 5, 5},
+                                                   {3, 5, 6},
+                                                   {4, 5, 7}});
+
+  std::vector<size_t> expected_order = {0, 2, 1, 4, 3, 5};
+
+  auto actual_order = TopologicalSort(graph);
+
+  ASSERT_EQ(expected_order, actual_order);
+
+  graph.MakeUndirected();
+
+  EXPECT_THROW(TopologicalSort(graph), std::invalid_argument);
 }

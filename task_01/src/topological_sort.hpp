@@ -1,6 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <stdexcept>
 #include <unordered_map>
 
 #include "graph/graph.hpp"
@@ -26,10 +29,14 @@ static void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph,
  * @tparam vert_t: тип вершины в графе
  * @tparam weight_t: тип веса в графе
  * @param graph: сортируемый граф
+ * @throw std::invalid_argument("TopologicalSort: graph is not directed.");
  * @return std::vector<vert_t>: список отсортированных вершин
  */
 template <typename vert_t, typename weight_t>
 std::vector<vert_t> TopologicalSort(const Graph<vert_t, weight_t>& graph) {
+  if (!graph.IsDirected())
+    throw std::invalid_argument("TopologicalSort: graph is not directed.");
+
   std::unordered_map<vert_t, bool> visited;
 
   for (const auto& vert : graph.Verts()) visited[vert] = false;
