@@ -156,7 +156,7 @@ weight_t Graph<vert_t, weight_t>::GetWeightOfEdge(
     throw std::logic_error("GetWeightOfEdge: graph is not weighted.");
 
   if (!ContainsEdge(edge))
-    throw std::invalid_argument("GetWeightOfEdge: there is no edge: " +
+    throw std::invalid_argument("GetWeightOfEdge: there is no such edge: " +
                                 Edge(edge).Name());
 
   auto [start_vert, end_vert] = edge;
