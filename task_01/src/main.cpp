@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "topological_sort.hpp"
 
 int main() {
