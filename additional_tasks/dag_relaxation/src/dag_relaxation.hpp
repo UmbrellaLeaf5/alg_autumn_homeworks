@@ -22,8 +22,7 @@
 template <typename vert_t, typename weight_t>
 std::unordered_map<vert_t, weight_t> DAGRelaxation(
     const Graph<vert_t, weight_t>& graph, vert_t start_vert) {
-  if (std::find(graph.Verts().begin(), graph.Verts().end(), start_vert) ==
-      graph.Verts().end())
+  if (!graph.ContainsVert(start_vert))
     throw std::invalid_argument(
         "DAGRelaxation: there is no such start vertice in graph.");
 

@@ -24,13 +24,12 @@ int main() {
   auto distances = DAGRelaxation(graph, start);
 
   std::cout << "кратчайшие пути от вершины '" << start << "':" << std::endl;
-  for (const auto& vert : distances) {
+  for (const auto& vert : distances)
     std::cout << "до вершины '" << vert.first << "': "
               << (vert.second == std::numeric_limits<long>::max()
                       ? "inf"
                       : std::to_string(vert.second))
               << std::endl;
-  }
 
   return 0;
 }
