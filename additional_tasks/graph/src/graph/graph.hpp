@@ -184,6 +184,16 @@ class Graph {
   std::vector<std::vector<weight_t>> GetAdjMatrix() const;
 
   /**
+   * @brief Проверяет, содержится ли вершина в графе
+   * @param vert: вершина
+   * @return true: содержится
+   * @return false: не содержится
+   */
+  bool ContainsVert(const vert_t& vert) const {
+    return std::find(Verts().begin(), Verts().end(), vert) != Verts().end();
+  }
+
+  /**
    * @brief Проверяет, содержится ли ребро в графе (ВЗВЕШЕННЫЙ)
    * @param edge: ребро
    * @return true: содержится
@@ -206,7 +216,7 @@ class Graph {
    * @param edge: ребро
    * @return weight_t: вес
    * @throw std::logic_error("GetWeightOfEdge: graph is not weighted.");
-   * @throw std::invalid_argument("GetWeightOfEdge: there is no edge: ");
+   * @throw std::invalid_argument("GetWeightOfEdge: there is no such edge:");
    */
   weight_t GetWeightOfEdge(const std::pair<vert_t, vert_t>& edge) const;
 
