@@ -8,7 +8,7 @@ template class Graph<short, double>;
 template class Graph<int, double>;
 template class Graph<size_t, double>;
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<std::vector<vert_t>>
 Graph<vert_t, weight_t>::GetAdjListWithoutKeys() const {
   std::vector<std::vector<vert_t>> adj_list(
@@ -22,7 +22,7 @@ Graph<vert_t, weight_t>::GetAdjListWithoutKeys() const {
   return adj_list;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<std::vector<weight_t>> Graph<vert_t, weight_t>::GetAdjMatrix()
     const {
   std::vector<std::vector<weight_t>> adj_matrix(
@@ -41,7 +41,7 @@ std::vector<std::vector<weight_t>> Graph<vert_t, weight_t>::GetAdjMatrix()
   return adj_matrix;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::pair<vert_t, vert_t> Graph<vert_t, weight_t>::ParseEdgeString(
     const std::string& edge_str) {
   vert_t pos = edge_str.find("->");
@@ -65,7 +65,7 @@ std::pair<vert_t, vert_t> Graph<vert_t, weight_t>::ParseEdgeString(
   }
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::RemoveVert(vert_t vert) {
   if (!Contains(Verts(), vert))
     throw std::invalid_argument("RemoveVert: there is no such vert in graph: " +

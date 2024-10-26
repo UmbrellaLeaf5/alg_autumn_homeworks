@@ -8,7 +8,7 @@ template class Graph<short, double>;
 template class Graph<int, double>;
 template class Graph<size_t, double>;
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 const std::string& Graph<vert_t, weight_t>::Edge::Name() const {
   static std::string name;
 
