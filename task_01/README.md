@@ -8,10 +8,10 @@
 
 ## Объяснение кода:
 
-```template <typename vert_t, typename weight_t>```: определяет шаблон функции, позволяющий ей работать с различными (целочисленные и строковые) типами данных для вершин (`vert_t`) и весов (`weight_t`) в графе.
+```template <AllowedVertType vert_t, AllowedWeightType weight_t>```: определяет шаблон функции, позволяющий ей работать с различными (целочисленные и строковые) типами данных для вершин (`vert_t`) и весов (`weight_t`) в графе.
 
 ```C++
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 static void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph,
                                    vert_t u_vert,
                                    std::unordered_map<vert_t, bool>& visited,
@@ -33,7 +33,7 @@ static void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph,
  * @throw std::invalid_argument("TopologicalSort: graph is not directed.");
  * @return std::vector<vert_t>: список отсортированных вершин
  */
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<vert_t> TopologicalSort(const Graph<vert_t, weight_t>& graph);
 ```
 
