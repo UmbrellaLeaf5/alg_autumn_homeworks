@@ -41,7 +41,7 @@
  * (если до вершины нет пути, то значение будет равно
  * std::numeric_limits<weight_t>::max())
  */
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::unordered_map<vert_t, weight_t> DAGRelaxation(
     const Graph<vert_t, weight_t>& graph, vert_t start_vert)
 ```
