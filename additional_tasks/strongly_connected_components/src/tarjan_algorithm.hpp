@@ -71,7 +71,7 @@ static void StronglyConnectedComponentsStep(
  * directed.");
  * @return std::vector<std::vector<vert_t>>: компоненты сильной связности
  */
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<std::vector<vert_t>> StronglyConnectedComponents(
     Graph<vert_t, weight_t> graph) {
   if (!graph.IsDirected())
