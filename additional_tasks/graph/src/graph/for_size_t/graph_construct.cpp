@@ -8,7 +8,7 @@ template class Graph<short, double>;
 template class Graph<int, double>;
 template class Graph<size_t, double>;
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromAdjMatrix(
     const std::vector<std::vector<weight_t>>& adj_matrix, bool is_weighted) {
   if (adj_matrix.empty()) return Graph();
@@ -39,7 +39,7 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromAdjMatrix(
   return Graph(edges);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromAdjList(
     const std::vector<std::vector<vert_t>>& adj_list) {
   if (adj_list.empty()) return Graph();
@@ -53,7 +53,7 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromAdjList(
   return Graph(edges);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t>::Graph(const std::vector<Edge>& edges)
     : edges_{edges}, verts_() {
   if (edges.empty()) return;

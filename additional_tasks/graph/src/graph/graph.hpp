@@ -19,16 +19,11 @@ concept AllowedWeightType =
  * @tparam vert_t: тип вершин
  * @tparam weight_t: тип весов
  */
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 class Graph {
  public:
   /// @brief Инициализирует новый экземпляр Graph
-  Graph() : edges_(), verts_() {
-    static_assert(AllowedVertType<vert_t>,
-                  "This vertice type parameter is not allowed");
-    static_assert(AllowedWeightType<weight_t>,
-                  "This weight type parameter is not allowed");
-  }
+  Graph() : edges_(), verts_() {}
 
   /**
    * @brief Создает новый экземпляр Graph по ребрам,
@@ -301,7 +296,7 @@ class Graph {
   static std::pair<vert_t, vert_t> ParseEdgeString(const std::string& edge_str);
 };
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 inline std::ostream& operator<<(std::ostream& os,
                                 const Graph<vert_t, weight_t>& graph) {
   os << "Edges:\n     ";
@@ -314,19 +309,19 @@ inline std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 inline vert_t StartVertFromTuple(
     const std::tuple<vert_t, vert_t, weight_t>& edge) {
   return std::get<0>(edge);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 inline vert_t EndVertFromTuple(
     const std::tuple<vert_t, vert_t, weight_t>& edge) {
   return std::get<1>(edge);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 inline weight_t WeightFromTuple(
     const std::tuple<vert_t, vert_t, weight_t>& edge) {
   return std::get<2>(edge);

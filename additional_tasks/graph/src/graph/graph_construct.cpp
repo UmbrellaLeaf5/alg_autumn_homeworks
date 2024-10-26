@@ -11,7 +11,7 @@ template class Graph<short, double>;
 template class Graph<int, double>;
 template class Graph<size_t, double>;
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphNonWeighted(
     const std::vector<std::pair<vert_t, vert_t>>& edges_pairs) {
   if (edges_pairs.empty()) return Graph();
@@ -26,7 +26,7 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphNonWeighted(
   return Graph(edges);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphWeighted(
     const std::vector<std::pair<vert_t, vert_t>>& edges_pairs,
     const std::vector<weight_t>& weights) {
@@ -48,7 +48,7 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphWeighted(
   return Graph(edges);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphWeighted(
     const std::vector<std::tuple<vert_t, vert_t, weight_t>>& edges_tuples) {
   if (edges_tuples.empty()) return Graph();
@@ -61,7 +61,7 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphWeighted(
   return Graph(edges);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromMap(
     const std::unordered_map<std::string, weight_t>& edges_dict) {
   if (edges_dict.empty()) return Graph();
@@ -78,7 +78,7 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromMap(
   return Graph(edges);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromStrs(
     const std::vector<std::string>& edges_strs) {
   if (edges_strs.empty()) return Graph();
@@ -95,7 +95,7 @@ Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromStrs(
   return Graph(edges);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphFromAdjList(
     const std::unordered_map<vert_t, std::vector<vert_t>>& adj_list_dict) {
   if (adj_list_dict.empty()) return Graph();

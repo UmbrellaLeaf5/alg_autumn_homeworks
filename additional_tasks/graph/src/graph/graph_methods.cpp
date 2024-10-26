@@ -11,7 +11,7 @@ template class Graph<short, double>;
 template class Graph<int, double>;
 template class Graph<size_t, double>;
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 bool Graph<vert_t, weight_t>::IsWeighted() const {
   if (edges_.empty()) return false;
 
@@ -20,7 +20,7 @@ bool Graph<vert_t, weight_t>::IsWeighted() const {
   return is_weighted;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<std::tuple<vert_t, vert_t, weight_t>>
 Graph<vert_t, weight_t>::Edges() const {
   if (edges_.empty()) return {};
@@ -34,19 +34,19 @@ Graph<vert_t, weight_t>::Edges() const {
   return edges_tuples;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::ostream& Graph<vert_t, weight_t>::PrintVerts(std::ostream& os) const {
   os << Verts();
   return os;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::ostream& Graph<vert_t, weight_t>::PrintEdges(std::ostream& os) const {
   os << edges_;
   return os;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::ostream& Graph<vert_t, weight_t>::PrintAdjList(std::ostream& os) const {
   for (const auto& vert : Verts()) {
     os << vert << ": ";
@@ -63,7 +63,7 @@ std::ostream& Graph<vert_t, weight_t>::PrintAdjList(std::ostream& os) const {
   return os;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::MakeUndirected(bool remove_duplicates) {
   std::unordered_set<size_t> seen_edges;
   std::vector<Edge> unique_edges;
@@ -88,7 +88,7 @@ void Graph<vert_t, weight_t>::MakeUndirected(bool remove_duplicates) {
   if (remove_duplicates) RemoveDuplicates();
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::RemoveDuplicates() {
   std::vector<Edge> unique_edges;
   unique_edges.reserve(EdgesAmount());
@@ -101,7 +101,7 @@ void Graph<vert_t, weight_t>::RemoveDuplicates() {
   if (!IsDirected()) MakeUndirected();
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::unordered_map<vert_t, std::vector<vert_t>>
 Graph<vert_t, weight_t>::GetAdjList() const {
   auto adj_list_dict = std::unordered_map<vert_t, std::vector<vert_t>>();
@@ -115,7 +115,7 @@ Graph<vert_t, weight_t>::GetAdjList() const {
   return adj_list_dict;
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 bool Graph<vert_t, weight_t>::ContainsEdge(
     const std::tuple<vert_t, vert_t, weight_t>& edge) const {
   if (!IsWeighted())
@@ -136,7 +136,7 @@ bool Graph<vert_t, weight_t>::ContainsEdge(
   return it != edges_.end();
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 bool Graph<vert_t, weight_t>::ContainsEdge(
     const std::pair<vert_t, vert_t>& edge) const {
   auto [start_vert, end_vert] = edge;
@@ -149,7 +149,7 @@ bool Graph<vert_t, weight_t>::ContainsEdge(
   return it != edges_.end();
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 weight_t Graph<vert_t, weight_t>::GetWeightOfEdge(
     const std::pair<vert_t, vert_t>& edge) const {
   if (!IsWeighted())
@@ -169,12 +169,12 @@ weight_t Graph<vert_t, weight_t>::GetWeightOfEdge(
   return it->Weight();
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::AddVert(vert_t vert) {
   if (!Contains(verts_, vert)) verts_.push_back(vert);
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::AddEdge(vert_t start_vert, vert_t end_vert,
                                       weight_t weight) {
   AddVert(start_vert);
@@ -189,7 +189,7 @@ void Graph<vert_t, weight_t>::AddEdge(vert_t start_vert, vert_t end_vert,
   }
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::AddEdge(vert_t start_vert, vert_t end_vert) {
   if (IsWeighted())
     throw std::logic_error(
@@ -201,7 +201,7 @@ void Graph<vert_t, weight_t>::AddEdge(vert_t start_vert, vert_t end_vert) {
   edges_.emplace_back(Edge(start_vert, end_vert));
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::RemoveEdge(
     const std::pair<vert_t, vert_t>& edge_pair) {
   if (!ContainsEdge(edge_pair))
@@ -221,7 +221,7 @@ void Graph<vert_t, weight_t>::RemoveEdge(
       edges_.end());
 }
 
-template <typename vert_t, typename weight_t>
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::RemoveEdge(
     const std::tuple<vert_t, vert_t, weight_t>& edge_tuple) {
   if (!ContainsEdge(edge_tuple))
