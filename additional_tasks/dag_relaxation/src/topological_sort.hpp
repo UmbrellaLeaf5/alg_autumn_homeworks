@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "graph/graph.hpp"
 
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
