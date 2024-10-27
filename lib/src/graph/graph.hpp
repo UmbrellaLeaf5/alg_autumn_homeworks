@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../lib/utils.hpp"
+#include "lib/utils.hpp"
 
 template <typename T1>
 concept AllowedVertType =
