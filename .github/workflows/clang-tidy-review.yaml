@@ -14,6 +14,8 @@ jobs:
 
     - uses: ZedThree/clang-tidy-review@v0.19.0
       with:
+        apt_packages: libgtest-dev
+        clang_tidy_version: 18
         clang_tidy_checks: '-*,performance-*,bugprone-*,clang-analyzer-*,cppcoreguidelines-*,mpi-*,misc-*,-cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-avoid-magic-numbers,-clang-diagnostic-error,-misc-no-recursion,-cppcoreguidelines-owning-memory,-bugprone-narrowing-conversions,-bugprone-easily-swappable-parameters,-misc-non-private-member-variables-in-classes,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-special-member-functions,-cppcoreguidelines-init-variables,-misc-include-cleaner'
         split_workflow: true
 
