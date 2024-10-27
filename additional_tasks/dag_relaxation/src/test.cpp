@@ -4,9 +4,11 @@
 
 #define LONG_INF std::numeric_limits<long>::max()
 
+namespace {
+
 template <typename Key, typename Value>
-static inline bool operator==(const std::unordered_map<Key, Value>& lhs,
-                              const std::unordered_map<Key, Value>& rhs) {
+inline bool operator==(const std::unordered_map<Key, Value>& lhs,
+                       const std::unordered_map<Key, Value>& rhs) {
   if (lhs.size() != rhs.size()) return false;
 
   for (const auto& [key, value] : lhs)
@@ -17,10 +19,12 @@ static inline bool operator==(const std::unordered_map<Key, Value>& lhs,
 }
 
 template <typename Key, typename Value>
-static inline bool operator!=(const std::unordered_map<Key, Value>& lhs,
-                              const std::unordered_map<Key, Value>& rhs) {
+inline bool operator!=(const std::unordered_map<Key, Value>& lhs,
+                       const std::unordered_map<Key, Value>& rhs) {
   return !(lhs == rhs);
 }
+
+}  // namespace
 
 TEST(DAGRelaxationTest, SimpleDAG_A) {
   Graph<std::string, long> graph;

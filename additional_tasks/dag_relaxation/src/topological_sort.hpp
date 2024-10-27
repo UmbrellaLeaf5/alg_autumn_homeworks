@@ -2,11 +2,12 @@
 
 #include "graph/graph.hpp"
 
+namespace {
+
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
-static void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph,
-                                   vert_t u_vert,
-                                   std::unordered_map<vert_t, bool>& visited,
-                                   std::vector<vert_t>& ans) {
+void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph, vert_t u_vert,
+                            std::unordered_map<vert_t, bool>& visited,
+                            std::vector<vert_t>& ans) {
   visited[u_vert] = true;
 
   for (size_t i = 0; i < graph.GetAdjList()[u_vert].size(); i++) {
@@ -16,6 +17,8 @@ static void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph,
 
   ans.push_back(u_vert);
 }
+
+}  // namespace
 
 /**
  * @brief Производит топологическую сортировку вершин на основе обхода в глубину
