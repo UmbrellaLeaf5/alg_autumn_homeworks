@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB_RECURSE source_list "src/*.cpp" "src/*.hpp")
-file(GLOB_RECURSE lib_source_list "../../lib/src/*.cpp" "../../lib/src/*.hpp")
 file(GLOB_RECURSE main_source_list "src/main.cpp")
 file(GLOB_RECURSE test_source_list "src/*.cpp")
 file(GLOB_RECURSE test_list "src/*test.cpp")
@@ -18,7 +17,7 @@ list(REMOVE_ITEM source_list ${test_list})
 
 include_directories(${PROJECT_NAME} PUBLIC src)
 
-add_executable(${PROJECT_NAME} ${source_list} ${lib_source_list})
+add_executable(${PROJECT_NAME} ${source_list})
 
 # Locate GTest
 enable_testing()
