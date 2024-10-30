@@ -7,56 +7,55 @@
 #include "graph/graph.hpp"
 
 namespace {
-template <typename vert_t>
-void StronglyConnectedComponentsStep(
-    const vert_t& v, size_t& curr_index, std::stack<vert_t>& verts_stack,
+
+template <AllowedVertType vert_t>
+inline void StronglyConnectedComponentsStep(
+    const vert_t& vert, size_t& curr_index, std::stack<vert_t>& verts_stack,
     std::unordered_map<vert_t, size_t>& indexes,
     std::unordered_map<vert_t, size_t>& low_links,
     std::unordered_map<vert_t, bool>& is_on_stack,
     std::unordered_map<vert_t, std::vector<vert_t>>& adj_list,
     std::vector<std::vector<vert_t>>& strongly_connected_components) {
   // в curr_index храним количество ранее обработанных вершин,
-  // indexes[v] - это "время входа" в вершину v
-  indexes[v] = curr_index;
-  low_links[v] = curr_index;
-  curr_index++;
+  // indexes[vert] - это "время входа" в вершину vert
+  indexes[vert] = low_links[vert] = curr_index++;
 
-  verts_stack.push(v);
+  verts_stack.push(vert);
 
   // is_on_stack нужно, чтобы проверять принадлежность вершины стеку за O(1)
-  is_on_stack[v] = true;
+  is_on_stack[vert] = true;
 
-  // перебираем рёбра, исходящие из v
-  for (auto& w : adj_list[v]) {
-    if (indexes[w] == 0) {
-      // вершина w ранее не посещалась; запускаемся из неё рекурсивно
-      StronglyConnectedComponentsStep(w, curr_index, verts_stack, indexes,
+  // перебираем рёбра, исходящие из vert
+  for (auto& u_vert : adj_list[vert]) {
+    if (indexes[u_vert] == 0) {
+      // вершина u_vert ранее не посещалась; запускаемся из неё рекурсивно
+      StronglyConnectedComponentsStep(u_vert, curr_index, verts_stack, indexes,
                                       low_links, is_on_stack, adj_list,
                                       strongly_connected_components);
 
-      low_links[v] = std::min(low_links[v], low_links[w]);
-    } else if (is_on_stack[w])
-      // вершина w находится в стеке, значит, принадлежит той же компоненте
-      // сильной связности, что и v
+      low_links[vert] = std::min(low_links[vert], low_links[u_vert]);
+    } else if (is_on_stack[u_vert])
+      // вершина u_vert находится в стеке, значит, принадлежит той же компоненте
+      // сильной связности, что и vert
 
-      // если w не в стеке, значит, ребро (v, w) ведёт в ранее обработанную
-      // компоненту сильной связности и должна быть проигнорирована
-      low_links[v] = std::min(low_links[v], low_links[w]);
+      // если u_vert не в стеке, значит, ребро (vert, u_vert) ведёт в ранее
+      // обработанную компоненту сильной связности и должна быть проигнорирована
+      low_links[vert] = std::min(low_links[vert], low_links[u_vert]);
   }
 
-  // вершина v - корень текущей компоненты сильной связности,
-  // все вершины в стеке от v и выше образуют эту компоненту
-  if (low_links[v] == indexes[v]) {
-    vert_t u{};
-    std::vector<vert_t> strongly_connected_component{};
+  // вершина vert - корень текущей компоненты сильной связности,
+  // все вершины в стеке от vert и выше образуют эту компоненту
+  if (low_links[vert] == indexes[vert]) {
+    vert_t u_vert;
+    std::vector<vert_t> strongly_connected_component;
 
     do {
-      u = verts_stack.top();
+      u_vert = verts_stack.top();
       verts_stack.pop();
 
-      is_on_stack[u] = false;
-      strongly_connected_component.push_back(u);
-    } while (u != v);
+      is_on_stack[u_vert] = false;
+      strongly_connected_component.push_back(u_vert);
+    } while (u_vert != vert);
 
     strongly_connected_components.push_back(strongly_connected_component);
   }
@@ -76,12 +75,13 @@ void StronglyConnectedComponentsStep(
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<std::vector<vert_t>> StronglyConnectedComponents(
-    Graph<vert_t, weight_t> graph) {
+    const Graph<vert_t, weight_t>& graph) {
   if (!graph.IsDirected())
     throw std::invalid_argument(
         "StronglyConnectedComponents: graph is not directed.");
+  if (graph.Verts().empty()) return {};
 
-  std::vector<std::vector<vert_t>> strongly_connected_component{};
+  std::vector<std::vector<vert_t>> strongly_connected_component;
 
   std::stack<vert_t> verts_stack;
   size_t curr_index = 0;
@@ -97,9 +97,9 @@ std::vector<std::vector<vert_t>> StronglyConnectedComponents(
     is_on_stack[vert] = false;
   }
 
-  for (const auto& v : graph.Verts())
-    if (indexes[v] == 0)
-      StronglyConnectedComponentsStep(v, curr_index, verts_stack, indexes,
+  for (const auto& vert : graph.Verts())
+    if (indexes[vert] == 0)
+      StronglyConnectedComponentsStep(vert, curr_index, verts_stack, indexes,
                                       low_links, is_on_stack, adj_list,
                                       strongly_connected_component);
 
