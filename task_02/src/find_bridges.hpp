@@ -23,13 +23,13 @@ inline void FindBridgesStep(
   // перебираем рёбра, исходящие из vert
   for (const auto& u_vert : adj_list[vert]) {
     if (!visited[u_vert]) {
-      // вершина w ранее не посещалась; запускаемся из неё рекурсивно
+      // вершина u_vert ранее не посещалась; запускаемся из неё рекурсивно
       FindBridgesStep(u_vert, vert, curr_index, indexes, low_links, visited,
                       adj_list, bridges);
 
       low_links[vert] = std::min(low_links[vert], low_links[u_vert]);
 
-      // если время низкой связи vert больше, чем время входа в u_vert,
+      // если время входа в vert меньше, чем время низкой связи u_vert,
       // то ребро {u_vert->vert} - это мост
       if (low_links[u_vert] > indexes[vert]) bridges.push_back({vert, u_vert});
     } else if (u_vert !=
@@ -71,6 +71,8 @@ inline std::vector<std::pair<vert_t, vert_t>> FindBridges(
     if (!visited[vert])
       FindBridgesStep(vert, vert, curr_index, indexes, low_links, visited,
                       adj_list, bridges);
+
+  std::reverse(bridges.begin(), bridges.end());
 
   return bridges;
 }
