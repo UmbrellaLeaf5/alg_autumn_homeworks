@@ -6,8 +6,9 @@
 
 #include "graph/graph.hpp"
 
+namespace {
 template <typename vert_t>
-static void StronglyConnectedComponentsStep(
+void StronglyConnectedComponentsStep(
     const vert_t& v, size_t& curr_index, std::stack<vert_t>& verts_stack,
     std::unordered_map<vert_t, size_t>& indexes,
     std::unordered_map<vert_t, size_t>& low_links,
@@ -60,6 +61,8 @@ static void StronglyConnectedComponentsStep(
     strongly_connected_components.push_back(strongly_connected_component);
   }
 }
+
+}  // namespace
 
 /**
  * @brief Поиск компонент сильной связности в ориентированного графа по
