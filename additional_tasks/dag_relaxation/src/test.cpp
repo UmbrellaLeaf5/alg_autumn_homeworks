@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "dag_relaxation.hpp"
+#include "petya_and_vasya.hpp"
 
 #define LONG_INF std::numeric_limits<long>::max()
 
@@ -282,4 +283,170 @@ TEST(DAGRelaxationTest, StringVerticesAndLongWeights) {
       {"A", 0}, {"B", 10}, {"C", 5}};
 
   ASSERT_EQ(distances, expected_distances);
+}
+
+TEST(SolutionTest, PetyaWinsSimple) {
+  std::stringstream ss("P0#V");
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Petya! with 1\n");
+}
+
+TEST(SolutionTest, VasyaWinsSimple) {
+  std::stringstream ss("V0#P");
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Vasya! with 1\n");
+}
+
+TEST(SolutionTest, DrawSimple) {
+  std::stringstream ss("P0#V0");
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Draw! with 1\n");
+}
+
+TEST(SolutionTest, ValeryWinsSimple) {
+  std::stringstream ss("V#P\n");
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Deadlock! Valery!\n");
+}
+
+TEST(SolutionTest, PetyaWins) {
+  std::stringstream ss;
+  ss << "##V########\n"
+     << "#000000000#\n"
+     << "#0#####0#0#\n"
+     << "#0#00000#0#\n"
+     << "#####0###0#\n"
+     << "P0#000#000#\n"
+     << "#0###0#0#0#\n"
+     << "#0#000#0#0#\n"
+     << "#0#0###0#0#\n"
+     << "#000#000#0#\n"
+     << "#0###0#####\n\n";
+
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Petya! with 6\n");
+
+  std::stringstream ss_2;
+  ss_2 << "#########V##\n"
+       << "#000000#000#\n"
+       << "#0####0#0#0#\n"
+       << "#0#00#0#0#0#\n"
+       << "00#0##0#0#0#\n"
+       << "#0#0#00#0#0#\n"
+       << "#0#0#0##0#0#\n"
+       << "#0#00000000#\n"
+       << "#0##########\n"
+       << "#00000000000\n"
+       << "##P#########\n\n";
+
+  std::stringstream output_2;
+
+  Solution(ss_2, output_2);
+  EXPECT_EQ(output_2.str(), "Petya! with 8\n");
+}
+
+TEST(SolutionTest, VasyaWins) {
+  std::stringstream ss;
+  ss << "##V########\n"
+     << "#000000000#\n"
+     << "#0#####0#0#\n"
+     << "#0#00000#0#\n"
+     << "#####0###0#\n"
+     << "P0#000#000#\n"
+     << "#0###0#0#0#\n"
+     << "#0#000#0#0#\n"
+     << "#0#0###0#0#\n"
+     << "#000#000#0#\n"
+     << "#####0#####\n\n";
+
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Vasya! with 21\n");
+
+  std::stringstream ss_2;
+  ss_2 << "###V#########\n"
+       << "#00000000#00#\n"
+       << "#0####0####0#\n"
+       << "00#0#0000000#\n"
+       << "#0#0#######0#\n"
+       << "#0#0#0000000#\n"
+       << "#0#0#0###0###\n"
+       << "#0#00000#000#\n"
+       << "#0#########0#\n"
+       << "#0000#000000#\n"
+       << "####0##P#####\n\n";
+
+  std::stringstream output_2;
+
+  Solution(ss_2, output_2);
+  EXPECT_EQ(output_2.str(), "Vasya! with 6\n");
+}
+
+TEST(SolutionTest, PetyaWinsHard) {
+  std::stringstream ss;
+  ss << "###V###\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "#000000\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "####P##\n\n";
+
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Petya! with 6\n");
+}
+
+TEST(SolutionTest, Draw) {
+  std::stringstream ss;
+  ss << "##V########\n"
+     << "#000000000#\n"
+     << "#0#####0#0#\n"
+     << "#0#00000#0#\n"
+     << "#####0###0#\n"
+     << "P0#000#000#\n"
+     << "#0###0#0#0#\n"
+     << "#0#000#0#0#\n"
+     << "#0#0###0#0#\n"
+     << "#000#000#0#\n"
+     << "###########\n\n";
+
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Draw! with 25\n");
+}
+
+TEST(SolutionTest, ValeryWins) {
+  std::stringstream ss;
+  ss << "##V########\n"
+     << "#000000000#\n"
+     << "#0#######0#\n"
+     << "#0#00000#0#\n"
+     << "#####0###0#\n"
+     << "P0#000#000#\n"
+     << "#0###0#0#0#\n"
+     << "#0#000#0#0#\n"
+     << "#0#0###0#0#\n"
+     << "#000#000#0#\n"
+     << "###########\n\n";
+
+  std::stringstream output;
+
+  Solution(ss, output);
+  EXPECT_EQ(output.str(), "Deadlock! Valery!\n");
 }
