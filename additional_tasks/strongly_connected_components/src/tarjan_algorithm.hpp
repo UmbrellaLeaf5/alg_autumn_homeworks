@@ -79,6 +79,7 @@ std::vector<std::vector<vert_t>> StronglyConnectedComponents(
   if (!graph.IsDirected())
     throw std::invalid_argument(
         "StronglyConnectedComponents: graph is not directed.");
+
   if (graph.Verts().empty()) return {};
 
   std::vector<std::vector<vert_t>> strongly_connected_component;
