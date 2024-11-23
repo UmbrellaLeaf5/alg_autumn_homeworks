@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "dag_relaxation.hpp"
-#include "petya_and_vasya.hpp"
+#include "petya_and_vasya_labyrinth.hpp"
 
 #define LONG_INF std::numeric_limits<long>::max()
 
