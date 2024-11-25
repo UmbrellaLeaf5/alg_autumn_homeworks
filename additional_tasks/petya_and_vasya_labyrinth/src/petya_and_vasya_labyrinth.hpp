@@ -218,10 +218,9 @@ void GoodSolution(std::istream& is = std::cin, std::ostream& os = std::cout) {
         return std::make_pair(i, j);
       };
 
-      return abs(static_cast<long long>(extract_coords(vert_1).first) -
-                 static_cast<long long>(extract_coords(vert_2).first)) +
-             abs(static_cast<long long>(extract_coords(vert_1).second) -
-                 static_cast<long long>(extract_coords(vert_2).second));
+      // в матрице (лабиринте) координаты положительные, модули не нужны
+      return extract_coords(vert_1).first - extract_coords(vert_2).first +
+             extract_coords(vert_1).second - extract_coords(vert_2).second;
     };
 
     // (размеры будут одинаковые)
