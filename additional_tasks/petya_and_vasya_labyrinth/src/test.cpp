@@ -331,10 +331,19 @@ TEST(ComplicatedBadSolutionTest, PetyaWins) {
      << "#000#000#0#\n"
      << "#0###0#####\n\n";
 
+  auto maze = ss.str();
+
   std::stringstream output;
 
   ComplicatedBadSolution(ss, output);
   EXPECT_EQ(output.str(), "Petya! with 6\n");
+
+  ss << maze;
+
+  std::stringstream output_12;
+
+  GoodSolution(ss, output_12);
+  EXPECT_EQ(output_12.str(), "Petya! with 6\n");
 
   std::stringstream ss_2;
   ss_2 << "#########V##\n"
@@ -349,10 +358,19 @@ TEST(ComplicatedBadSolutionTest, PetyaWins) {
        << "#00000000000\n"
        << "##P#########\n\n";
 
+  maze = ss_2.str();
+
   std::stringstream output_2;
 
   ComplicatedBadSolution(ss_2, output_2);
   EXPECT_EQ(output_2.str(), "Petya! with 8\n");
+
+  ss_2 << maze;
+
+  std::stringstream output_22;
+
+  GoodSolution(ss_2, output_22);
+  EXPECT_EQ(output_22.str(), "Petya! with 8\n");
 }
 
 TEST(ComplicatedBadSolutionTest, VasyaWins) {
@@ -369,10 +387,19 @@ TEST(ComplicatedBadSolutionTest, VasyaWins) {
      << "#000#000#0#\n"
      << "#####0#####\n\n";
 
+  auto maze = ss.str();
+
   std::stringstream output;
 
   ComplicatedBadSolution(ss, output);
   EXPECT_EQ(output.str(), "Vasya! with 21\n");
+
+  ss << maze;
+
+  std::stringstream output_12;
+
+  GoodSolution(ss, output_12);
+  EXPECT_EQ(output_12.str(), "Vasya! with 21\n");
 
   std::stringstream ss_2;
   ss_2 << "###V#########\n"
@@ -387,13 +414,22 @@ TEST(ComplicatedBadSolutionTest, VasyaWins) {
        << "#0000#000000#\n"
        << "####0##P#####\n\n";
 
+  maze = ss_2.str();
+
   std::stringstream output_2;
 
   ComplicatedBadSolution(ss_2, output_2);
   EXPECT_EQ(output_2.str(), "Vasya! with 6\n");
+
+  ss_2 << maze;
+
+  std::stringstream output_22;
+
+  GoodSolution(ss_2, output_22);
+  EXPECT_EQ(output_22.str(), "Vasya! with 6\n");
 }
 
-TEST(ComplicatedBadSolutionTest, PetyaWinsHard) {
+TEST(ComplicatedBadSolutionTest, PetyaWinsHardDAGRelaxation) {
   std::stringstream ss;
   ss << "###V###\n"
      << "#00000#\n"
@@ -411,6 +447,24 @@ TEST(ComplicatedBadSolutionTest, PetyaWinsHard) {
   EXPECT_EQ(output.str(), "Petya! with 6\n");
 }
 
+TEST(ComplicatedBadSolutionTest, PetyaWinsHardAStar) {
+  std::stringstream ss;
+  ss << "###V###\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "#000000\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "#00000#\n"
+     << "####P##\n\n";
+
+  std::stringstream output;
+
+  GoodSolution(ss, output);
+  EXPECT_EQ(output.str(), "Petya! with 6\n");
+}
+
 TEST(ComplicatedBadSolutionTest, Draw) {
   std::stringstream ss;
   ss << "##V########\n"
@@ -425,10 +479,19 @@ TEST(ComplicatedBadSolutionTest, Draw) {
      << "#000#000#0#\n"
      << "###########\n\n";
 
+  auto maze = ss.str();
+
   std::stringstream output;
 
   ComplicatedBadSolution(ss, output);
   EXPECT_EQ(output.str(), "Draw! with 25\n");
+
+  ss << maze;
+
+  std::stringstream output_12;
+
+  GoodSolution(ss, output_12);
+  EXPECT_EQ(output_12.str(), "Draw! with 25\n");
 }
 
 TEST(ComplicatedBadSolutionTest, ValeryWins) {
@@ -445,8 +508,17 @@ TEST(ComplicatedBadSolutionTest, ValeryWins) {
      << "#000#000#0#\n"
      << "###########\n\n";
 
+  auto maze = ss.str();
+
   std::stringstream output;
 
   ComplicatedBadSolution(ss, output);
   EXPECT_EQ(output.str(), "Deadlock! Valery!\n");
+
+  ss << maze;
+
+  std::stringstream output_12;
+
+  GoodSolution(ss, output_12);
+  EXPECT_EQ(output_12.str(), "Deadlock! Valery!\n");
 }
