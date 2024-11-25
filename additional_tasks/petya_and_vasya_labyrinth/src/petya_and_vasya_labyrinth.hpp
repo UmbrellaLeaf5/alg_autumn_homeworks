@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stack>
 
+#include "a_star.hpp"
 #include "dag_relaxation.hpp"
 
 namespace {
@@ -29,8 +30,34 @@ inline std::string FindCell(const std::vector<std::string>& strings, size_t i,
 }
 
 /**
+ * @brief Добавляет ребра в граф на основе смежности ячеек.
+ * @param graph: граф, в который нужно добавить ребра (НЕНАПРАВЛЕННЫЙ).
+ */
+inline void AddEdgesNonDirected(Graph<std::string, long>& graph) {
+  for (const auto& vert : graph.Verts()) {
+    size_t j = std::stoll(vert.substr(vert.rfind('_') + 1));
+    size_t i = std::stoll(vert.substr(
+        vert.rfind('_', vert.rfind('_') - 1) + 1,
+        vert.rfind('_') - vert.rfind('_', vert.rfind('_') - 1) - 1));
+
+    std::string up_vert = "", down_vert = "";
+    auto right_vert = FindCell(graph.Verts(), i + 1, j);
+    auto left_vert = FindCell(graph.Verts(), i, j + 1);
+
+    if (i != 0 && j != 0) {
+      up_vert = FindCell(graph.Verts(), i - 1, j);
+      down_vert = FindCell(graph.Verts(), i, j - 1);
+    }
+
+    for (const auto& another_vert : {up_vert, down_vert, right_vert, left_vert})
+      if (!another_vert.empty() && !graph.ContainsEdge({another_vert, vert}))
+        graph.AddEdge(vert, another_vert);
+  }
+}
+
+/**
  * @brief Итеративно добавляет ребра в граф на основе смежности ячеек.
- * @param graph: граф, в который нужно добавить ребра.
+ * @param graph: граф, в который нужно добавить ребра (НАПРАВЛЕННЫЙ).
  * @param vert: начальная вершина для обхода.
  */
 inline void AddEdgesIterative(Graph<std::string, long>& graph,
@@ -76,12 +103,16 @@ struct PetyaAndVasyaGraphs {
   } petya, vasya;
 };
 
+enum class SolutionType { ComplicatedBad, Good };
+
 /**
  * @brief Разбирает входные данные лабиринта из стандартного ввода и создает
  * направленный граф.
- * @return PetyaAndVasyaGraphs, содержащий графы для обоих игроков.
+ * @return `PetyaAndVasyaGraphs`, содержащий графы для обоих игроков.
  */
-inline PetyaAndVasyaGraphs ParseMaze(std::istream& is = std::cin) {
+inline PetyaAndVasyaGraphs ParseMaze(
+    std::istream& is = std::cin,
+    SolutionType sol_type = SolutionType::ComplicatedBad) {
   Graph<std::string, long> graph;
   std::vector<std::string> console_maze;
   std::string line;
@@ -141,22 +172,95 @@ inline PetyaAndVasyaGraphs ParseMaze(std::istream& is = std::cin) {
 
   // добавление ребер
   maze.petya.graph = graph;
-  AddEdgesIterative(maze.petya.graph,
-                    FindCell(graph.Verts(), petya_start_i, petya_start_j));
-  maze.petya.graph.MakeDirected();
-
   maze.vasya.graph = graph;
-  AddEdgesIterative(maze.vasya.graph,
-                    FindCell(graph.Verts(), vasya_start_i, vasya_start_j));
-  maze.vasya.graph.MakeDirected();
+
+  switch (sol_type) {
+    case SolutionType::ComplicatedBad: {
+      AddEdgesIterative(maze.petya.graph,
+                        FindCell(graph.Verts(), petya_start_i, petya_start_j));
+
+      AddEdgesIterative(maze.vasya.graph,
+                        FindCell(graph.Verts(), vasya_start_i, vasya_start_j));
+
+      maze.petya.graph.MakeDirected();
+      maze.vasya.graph.MakeDirected();
+      break;
+    }
+
+    case SolutionType::Good: {
+      AddEdgesNonDirected(maze.petya.graph);
+      maze.petya.graph.MakeUndirected();
+
+      maze.vasya.graph = maze.petya.graph;
+      break;
+    }
+  }
 
   return maze;
 }
 
-/// @brief Решает игру в лабиринте и определяет победителя.
-void Solution(std::istream& is = std::cin, std::ostream& os = std::cout) {
+/// @brief Хорошо решает задачу: "Петя и Вася в страшном лабиринте".
+void GoodSolution(std::istream& is = std::cin, std::ostream& os = std::cout) {
   try {
-    auto maze = ParseMaze(is);
+    auto maze = ParseMaze(is, SolutionType::Good);
+
+    long petya_min = std::numeric_limits<long>::max();
+    long vasya_min = std::numeric_limits<long>::max();
+
+    auto manhattan_heuristic = [](const std::string& vert_1,
+                                  const std::string& vert_2) {
+      auto extract_coords = [](const std::string& vert) {
+        size_t j = std::stoll(vert.substr(vert.rfind('_') + 1));
+        size_t i = std::stoll(vert.substr(
+            vert.rfind('_', vert.rfind('_') - 1) + 1,
+            vert.rfind('_') - vert.rfind('_', vert.rfind('_') - 1) - 1));
+
+        return std::make_pair(i, j);
+      };
+
+      return abs(static_cast<long long>(extract_coords(vert_1).first) -
+                 static_cast<long long>(extract_coords(vert_2).first)) +
+             abs(static_cast<long long>(extract_coords(vert_1).second) -
+                 static_cast<long long>(extract_coords(vert_2).second));
+    };
+
+    // (размеры будут одинаковые)
+    for (size_t i = 0; i < maze.petya.exits.size(); i++) {
+      petya_min = std::min(
+          petya_min,
+          AStar(maze.petya.vert, maze.petya.exits[i], maze.petya.graph,
+                std::function<long(const std::string&, const std::string&)>(
+                    manhattan_heuristic)));
+
+      vasya_min = std::min(
+          vasya_min,
+          AStar(maze.vasya.vert, maze.vasya.exits[i], maze.vasya.graph,
+                std::function<long(const std::string&, const std::string&)>(
+                    manhattan_heuristic)));
+    }
+
+    if (vasya_min < petya_min)
+      os << "Vasya! with " << vasya_min << std::endl;
+
+    else if (vasya_min == petya_min)
+      if (vasya_min != std::numeric_limits<long>::max())
+        os << "Draw! with " << vasya_min << std::endl;
+      else
+        os << "Deadlock! Valery!" << std::endl;
+
+    else
+      os << "Petya! with " << petya_min << std::endl;
+
+  } catch (...) {
+    throw std::invalid_argument("Invalid enter format!");
+  }
+}
+
+/// @brief Сложно и плохо решает задачу: "Петя и Вася в страшном лабиринте".
+void ComplicatedBadSolution(std::istream& is = std::cin,
+                            std::ostream& os = std::cout) {
+  try {
+    auto maze = ParseMaze(is, SolutionType::ComplicatedBad);
 
     auto petya_relax = DAGRelaxation(maze.petya.graph, maze.petya.vert);
     auto vasya_relax = DAGRelaxation(maze.vasya.graph, maze.vasya.vert);

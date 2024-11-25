@@ -1,5 +1,7 @@
 #include "tarjan_algorithm.hpp"
 
+/// @brief Решает задачу: "обратимые состояния в цепочке химических
+/// экспериментов"
 void Solution(std::istream& is = std::cin, std::ostream& os = std::cout) {
   size_t experiments_amount;
   is >> experiments_amount;

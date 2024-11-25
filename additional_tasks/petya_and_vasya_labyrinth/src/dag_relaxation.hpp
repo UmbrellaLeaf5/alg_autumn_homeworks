@@ -7,37 +7,36 @@
 /**
  * @brief Вычисляет кратчайшие пути от заданной начальной вершины до всех других
  * вершин в направленном ациклическом графе (DAG) с помощью релаксации.
- * @tparam vert_t: тип вершины в графе
- * @tparam weight_t: тип веса в графе
+ * @tparam vert_t: тип вершины в графе.
+ * @tparam weight_t: тип веса в графе.
  * @param graph: граф, для которого необходимо вычислить кратчайшие пути.
- * @param start_vert: начальная вершина, от которой вычисляются расстояния.
- * @throw std::invalid_argument("DAGRelaxation: there is no such start
- * vertice.")
- * @throw std::invalid_argument("DAGRelaxation: graph is not directed.");
- * @return std::unordered_map<vert_t, weight_t>: словарь, где ключ - вершина, а
- * значение - кратчайшее расстояние от start_vert до этой вершины
- * (если до вершины нет пути, то значение будет равно
- * std::numeric_limits<weight_t>::max())
+ * @param start: начальная вершина, от которой вычисляются расстояния.
+ * @throw `std::invalid_argument("DAGRelaxation: there is no such start
+ * vertice.")`.
+ * @throw `std::invalid_argument("DAGRelaxation: graph is not directed.")`.
+ * @return `std::unordered_map<vert_t, weight_t>`: словарь, где ключ - вершина,
+ * а значение - кратчайшее расстояние от start до этой вершины (если до вершины
+ * нет пути, то значение будет равно `std::numeric_limits<weight_t>::max()`).
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::unordered_map<vert_t, weight_t> DAGRelaxation(
-    const Graph<vert_t, weight_t>& graph, const vert_t& start_vert) {
-  if (!graph.ContainsVert(start_vert))
+    const Graph<vert_t, weight_t>& graph, const vert_t& start) {
+  if (!graph.ContainsVert(start))
     throw std::invalid_argument(
         "DAGRelaxation: there is no such start vertice in graph.");
 
   if (!graph.IsDirected())
     throw std::invalid_argument("DAGRelaxation: graph is not directed.");
 
-  /// @brief хеш-таблица расстояний от start_vert до каждой вершины
+  /// @brief хеш-таблица расстояний от start до каждой вершины
   std::unordered_map<vert_t, weight_t> dists;
 
-  // инициализация расстояний от start_vert до каждой вершины бесконечностями
+  // инициализация расстояний от start до каждой вершины бесконечностями
   for (const auto& vert : graph.Verts())
     dists[vert] = std::numeric_limits<weight_t>::max();
 
   // расстояние от начальной вершины до самой себя равно 0
-  dists[start_vert] = 0;
+  dists[start] = 0;
 
   std::vector<vert_t> sorted_verts = TopologicalSort(graph);
 

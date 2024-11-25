@@ -32,18 +32,12 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyMatrix) {
   Graph<size_t, long> graph =
       Graph<size_t, long>::GraphFromAdjMatrix(adj_matrix);
 
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
-
   graph.MakeUndirected();
 
   ASSERT_EQ(graph.VertsAmount(), 3);
   ASSERT_EQ(graph.EdgesAmount(), 2);
 
   ASSERT_FALSE(graph.IsWeighted());
-
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, CreateGraphFromAdjacencyMatrix2) {
@@ -55,9 +49,6 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyMatrix2) {
   ASSERT_EQ(graph.EdgesAmount(), 4);
 
   ASSERT_FALSE(graph.IsWeighted());
-
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, CreateWeightedGraphFromAdjacencyMatrix) {
@@ -65,20 +56,12 @@ TEST(GraphTest_size_t, CreateWeightedGraphFromAdjacencyMatrix) {
   Graph<size_t, long> graph =
       Graph<size_t, long>::GraphFromAdjMatrix(adj_matrix, true);
 
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // graph.PrintAdjList();
-  // std::cout << graph << std::endl;
-
   graph.MakeUndirected();
 
   ASSERT_EQ(graph.VertsAmount(), 3);
   ASSERT_EQ(graph.EdgesAmount(), 2);
 
   ASSERT_TRUE(graph.IsWeighted());
-
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // graph.PrintAdjList();
-  // std::cout << graph << std::endl;
 }
 
 TEST(GraphTest_size_t, CreateWeightedGraphFromAdjacencyMatrix2) {
@@ -90,17 +73,11 @@ TEST(GraphTest_size_t, CreateWeightedGraphFromAdjacencyMatrix2) {
   ASSERT_EQ(graph.EdgesAmount(), 4);
 
   ASSERT_TRUE(graph.IsWeighted());
-
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, CreateGraphFromAdjacencyList) {
   std::vector<std::vector<size_t>> adj_list = {{1}, {0, 2}, {1}};
   Graph<size_t, long> graph = Graph<size_t, long>::GraphFromAdjList(adj_list);
-
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 
   graph.MakeUndirected();
 
@@ -111,9 +88,6 @@ TEST(GraphTest_size_t, CreateGraphFromAdjacencyList) {
 
   graph.MakeDirected();
   ASSERT_TRUE(graph.IsDirected());
-
-  // std::cout << graph.GetAdjMatrix() << std::endl;
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
 }
 
 TEST(GraphTest_size_t, MakeUndirected) {
@@ -192,9 +166,6 @@ TEST(GraphTest_size_t, GraphFromMapTest) {
       {"0->1", 5}, {"2->1", 1}, {"3->2", 2}, {"1->3", 3}};
   Graph<size_t, long> graph = Graph<size_t, long>::GraphFromMap(edges_dict);
 
-  // graph.PrintAdjList();
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
-
   ASSERT_EQ(graph.VertsAmount(), 4);
   ASSERT_EQ(graph.EdgesAmount(), 4);
 
@@ -220,10 +191,6 @@ TEST(GraphTest_size_t, GraphFromMapTest) {
   edges_dict = {{"0->14", 5}, {"25->1", 1}, {"3->2", 2}, {"1->3", 3}};
 
   graph = Graph<size_t, long>::GraphFromMap(edges_dict);
-
-  // graph.PrintAdjList();
-  // std::cout << graph.GetAdjListWithoutKeys() << std::endl;
-  // std::cout << graph << std::endl;
 
   ASSERT_EQ(graph.VertsAmount(), 26);
   ASSERT_EQ(graph.EdgesAmount(), 4);
@@ -442,8 +409,6 @@ TEST(GraphTest_size_t, AddEdgeWeighted) {
   EXPECT_TRUE(g.ContainsEdge({0, 1, 10}));
   EXPECT_EQ(g.GetWeightOfEdge({0, 1}), 10);
 
-  // std::cout << g << std::endl;
-
   g.AddEdge(0, 1, 15);
 
   // если пользователь решает добавить то же ребро,
@@ -484,13 +449,9 @@ TEST(GraphTest_size_t, RemoveEdgeByPair) {
   g.AddEdge(1, 2, 5);
   g.AddEdge(2, 3, 7);
 
-  // std::cout << g << std::endl;
-
   ASSERT_NO_THROW(g.RemoveEdge({1, 2}));
   EXPECT_FALSE(g.ContainsEdge({1, 2}));
   EXPECT_TRUE(g.ContainsEdge({2, 3}));
-
-  // std::cout << g << std::endl;
 
   ASSERT_THROW(g.RemoveEdge({1, 3}), std::invalid_argument);
 }

@@ -65,13 +65,13 @@ inline void StronglyConnectedComponentsStep(
 
 /**
  * @brief Поиск компонент сильной связности в ориентированного графа по
- * алгоритму Тарьяна
+ * алгоритму Тарьяна.
  * @tparam vert_t: тип вершин
  * @tparam weight_t: тип весов
  * @param graph: исходный граф
- * @throw std::invalid_argument("StronglyConnectedComponents: graph is not
- * directed.");
- * @return std::vector<std::vector<vert_t>>: компоненты сильной связности
+ * @throw `std::invalid_argument("StronglyConnectedComponents: graph is not
+ * directed.")`.
+ * @return `std::vector<std::vector<vert_t>>`: компоненты сильной связности
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<std::vector<vert_t>> StronglyConnectedComponents(

@@ -26,8 +26,8 @@ void TopologicalSortStep(
  * @tparam vert_t: тип вершины в графе
  * @tparam weight_t: тип веса в графе
  * @param graph: сортируемый граф
- * @throw std::invalid_argument("TopologicalSort: graph is not directed.");
- * @return std::vector<vert_t>: список отсортированных вершин
+ * @throw `std::invalid_argument("TopologicalSort: graph is not directed.")`.
+ * @return `std::vector<vert_t>`: список отсортированных вершин
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 std::vector<vert_t> TopologicalSort(const Graph<vert_t, weight_t>& graph) {
