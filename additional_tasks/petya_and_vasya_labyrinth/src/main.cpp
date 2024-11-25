@@ -2,5 +2,6 @@
 
 int main() {
   ComplicatedBadSolution();
+  GoodSolution();
   return 0;
 }
