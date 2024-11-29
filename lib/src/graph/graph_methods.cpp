@@ -83,7 +83,7 @@ void Graph<vert_t, weight_t>::MakeUndirected(bool remove_duplicates) {
   }
 
   edges_ = std::move(unique_edges);
-  is_direct = false;
+  is_direct_ = false;
 
   if (remove_duplicates) RemoveDuplicates();
 }
