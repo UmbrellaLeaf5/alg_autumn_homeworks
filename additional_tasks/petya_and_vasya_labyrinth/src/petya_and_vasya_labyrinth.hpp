@@ -250,7 +250,7 @@ void GoodSolution(std::istream& is = std::cin, std::ostream& os = std::cout) {
     else
       os << "Petya! with " << petya_min << std::endl;
 
-  } catch (...) {
+  } catch (const std::exception&) {
     throw std::invalid_argument("Invalid enter format!");
   }
 }
@@ -284,7 +284,7 @@ void ComplicatedBadSolution(std::istream& is = std::cin,
 
     else
       os << "Petya! with " << petya_min << std::endl;
-  } catch (...) {
+  } catch (const std::exception&) {
     throw std::invalid_argument("Invalid enter format!");
   }
 }

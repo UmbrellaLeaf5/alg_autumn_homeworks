@@ -51,7 +51,7 @@ std::pair<vert_t, vert_t> Graph<vert_t, weight_t>::ParseEdgeString(
     return {start_vert, end_vert};
   }
 
-  catch (...) {
+  catch (const std::exception&) {
     throw std::invalid_argument(
         "EdgeString: invalid edge string format "
         "(vertices should be numbers): " +
