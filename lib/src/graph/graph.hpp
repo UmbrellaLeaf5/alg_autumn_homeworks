@@ -2,24 +2,47 @@
 
 #include "../lib/utils.hpp"
 
-template <typename T1>
+template <typename vert_t>
 concept AllowedVertType =
-    std::is_same_v<T1, std::string> || std::is_same_v<T1, short> ||
-    std::is_same_v<T1, int> || std::is_same_v<T1, size_t>;
+    std::is_same_v<vert_t, std::string> || std::is_same_v<vert_t, char> ||
+    std::is_same_v<vert_t, short> || std::is_same_v<vert_t, int> ||
+    std::is_same_v<vert_t, long> || std::is_same_v<vert_t, size_t>;
 
-template <typename T2>
+template <typename weight_t>
 concept AllowedWeightType =
-    std::is_same_v<T2, long> || std::is_same_v<T2, double>;
+    std::is_same_v<weight_t, char> || std::is_same_v<weight_t, short> ||
+    std::is_same_v<weight_t, int> || std::is_same_v<weight_t, long> ||
+    std::is_same_v<weight_t, size_t> || std::is_same_v<weight_t, float> ||
+    std::is_same_v<weight_t, double> || std::is_same_v<weight_t, long double>;
+
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
+inline vert_t StartVertFromTuple(
+    const std::tuple<vert_t, vert_t, weight_t>& edge) {
+  return std::get<0>(edge);
+}
+
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
+inline vert_t EndVertFromTuple(
+    const std::tuple<vert_t, vert_t, weight_t>& edge) {
+  return std::get<1>(edge);
+}
+
+template <AllowedVertType vert_t, AllowedWeightType weight_t>
+inline weight_t WeightFromTuple(
+    const std::tuple<vert_t, vert_t, weight_t>& edge) {
+  return std::get<2>(edge);
+}
 
 /**
  * @brief Класс графа (может быть взвешенным и ориентированным)
  * @details Поддерживаемые типы:
- *                         вес: long, double
- *                         вершина: std::string, short, int. size_t
+ * вес: char, short, int, long, size_t, float, double, long double
+ * вершины: std::string, char, short, int, long, size_t
  * @tparam vert_t: тип вершин
  * @tparam weight_t: тип весов
  */
-template <AllowedVertType vert_t, AllowedWeightType weight_t>
+template <AllowedVertType vert_t = std::string,
+          AllowedWeightType weight_t = size_t>
 class Graph {
  public:
   /// @brief Инициализирует новый экземпляр Graph
@@ -282,20 +305,23 @@ class Graph {
     Edge(vert_t start_vert, vert_t end_vert)
         : start_vert_{start_vert}, end_vert_{end_vert} {}
 
-    /// @throw `std::invalid_argument("Edge: weight must be greater than
-    /// zero.")`
-    Edge(vert_t start_vert, vert_t end_vert, weight_t weight);
+    Edge(vert_t start_vert, vert_t end_vert, weight_t weight)
+        : start_vert_{start_vert}, end_vert_{end_vert}, weight_{weight} {}
 
-    Edge(std::pair<vert_t, vert_t> edge_pair);
-    Edge(std::tuple<vert_t, vert_t, weight_t> edge_tuple);
+    Edge(std::pair<vert_t, vert_t> edge_pair)
+        : start_vert_{edge_pair.first}, end_vert_{edge_pair.second} {}
+
+    Edge(std::tuple<vert_t, vert_t, weight_t> edge_tuple)
+        : start_vert_{StartVertFromTuple(edge_tuple)},
+          end_vert_{EndVertFromTuple(edge_tuple)},
+          weight_{WeightFromTuple(edge_tuple)} {}
 
     bool IsWeighted() const { return weight_ != 0; }
 
     vert_t StartVert() const { return start_vert_; }
     vert_t EndVert() const { return end_vert_; }
 
-    /// @throw `std::logic_error("Edge: " + Name() + " is not weighted.")`
-    weight_t Weight() const;
+    weight_t Weight() const { return weight_; }
 
     // friend Graph;
 
@@ -306,9 +332,7 @@ class Graph {
 
     bool operator!=(const Edge& rhs) const { return !(*this == rhs); }
 
-    /// @throw `std::invalid_argument("Edge: unweighted edges are not
-    /// comparable.")`
-    auto operator<=>(const Edge& rhs) const;
+    auto operator<=>(const Edge& rhs) const { return weight_ <=> rhs.Weight(); }
 
     const std::string& Name() const;
 
@@ -349,20 +373,57 @@ inline std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-template <AllowedVertType vert_t, AllowedWeightType weight_t>
-inline vert_t StartVertFromTuple(
-    const std::tuple<vert_t, vert_t, weight_t>& edge) {
-  return std::get<0>(edge);
-}
+#define GRAPH_TEMPLATE_CONSTRUCT_FOR_STRING  \
+  template class Graph<std::string, short>;  \
+  template class Graph<std::string, int>;    \
+  template class Graph<std::string, long>;   \
+  template class Graph<std::string, size_t>; \
+  template class Graph<std::string, float>;  \
+  template class Graph<std::string, double>; \
+  template class Graph<std::string, long double>
 
-template <AllowedVertType vert_t, AllowedWeightType weight_t>
-inline vert_t EndVertFromTuple(
-    const std::tuple<vert_t, vert_t, weight_t>& edge) {
-  return std::get<1>(edge);
-}
-
-template <AllowedVertType vert_t, AllowedWeightType weight_t>
-inline weight_t WeightFromTuple(
-    const std::tuple<vert_t, vert_t, weight_t>& edge) {
-  return std::get<2>(edge);
-}
+#define GRAPH_TEMPLATE_CONSTRUCT_FOR_INTEGRAL \
+  template class Graph<char, char>;           \
+  template class Graph<char, short>;          \
+  template class Graph<char, int>;            \
+  template class Graph<char, long>;           \
+  template class Graph<char, size_t>;         \
+  template class Graph<char, float>;          \
+  template class Graph<char, double>;         \
+  template class Graph<char, long double>;    \
+                                              \
+  template class Graph<short, char>;          \
+  template class Graph<short, short>;         \
+  template class Graph<short, int>;           \
+  template class Graph<short, long>;          \
+  template class Graph<short, size_t>;        \
+  template class Graph<short, float>;         \
+  template class Graph<short, double>;        \
+  template class Graph<short, long double>;   \
+                                              \
+  template class Graph<int, char>;            \
+  template class Graph<int, short>;           \
+  template class Graph<int, int>;             \
+  template class Graph<int, long>;            \
+  template class Graph<int, size_t>;          \
+  template class Graph<int, float>;           \
+  template class Graph<int, double>;          \
+  template class Graph<int, long double>;     \
+                                              \
+  template class Graph<long, char>;           \
+  template class Graph<long, short>;          \
+  template class Graph<long, int>;            \
+  template class Graph<long, long>;           \
+  template class Graph<long, size_t>;         \
+  template class Graph<long, float>;          \
+  template class Graph<long, double>;         \
+  template class Graph<long, long double>;    \
+                                              \
+  template class Graph<size_t, char>;         \
+  template class Graph<size_t, short>;        \
+  template class Graph<size_t, int>;          \
+  template class Graph<size_t, long>;         \
+  template class Graph<size_t, size_t>;       \
+  template class Graph<size_t, float>;        \
+  template class Graph<size_t, double>;       \
+  template class Graph<size_t, long double>

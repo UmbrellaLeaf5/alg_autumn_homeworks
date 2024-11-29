@@ -1,7 +1,6 @@
 #include "../graph.hpp"
 
-template class Graph<std::string, long>;
-template class Graph<std::string, double>;
+GRAPH_TEMPLATE_CONSTRUCT_FOR_STRING;
 
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 void Graph<vert_t, weight_t>::RemoveVert(vert_t vert) {

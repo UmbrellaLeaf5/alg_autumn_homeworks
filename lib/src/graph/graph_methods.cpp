@@ -1,15 +1,7 @@
 #include "graph.hpp"
 
-template class Graph<std::string, long>;
-template class Graph<std::string, double>;
-
-template class Graph<short, long>;
-template class Graph<int, long>;
-template class Graph<size_t, long>;
-
-template class Graph<short, double>;
-template class Graph<int, double>;
-template class Graph<size_t, double>;
+GRAPH_TEMPLATE_CONSTRUCT_FOR_STRING;
+GRAPH_TEMPLATE_CONSTRUCT_FOR_INTEGRAL;
 
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 bool Graph<vert_t, weight_t>::IsWeighted() const {
@@ -121,17 +113,16 @@ bool Graph<vert_t, weight_t>::ContainsEdge(
   if (!IsWeighted())
     throw std::logic_error("ContainsEdge: graph is not weighted.");
 
-  if (WeightFromTuple(edge) <= 0)
-    throw std::logic_error("ContainsEdge: weight must be greater than zero.");
-
   auto [start_vert, end_vert, weight] = edge;
 
-  auto it = std::find_if(edges_.begin(), edges_.end(),
-                         [start_vert, end_vert, weight](const auto& e) {
-                           return e.StartVert() == start_vert &&
-                                  e.EndVert() == end_vert &&
-                                  e.Weight() == weight;
-                         });
+  auto it =
+      std::find_if(edges_.begin(), edges_.end(),
+                   [start_vert, end_vert, weight, this](const auto& e) {
+                     return (e.StartVert() == start_vert &&
+                             e.EndVert() == end_vert && e.Weight() == weight) ||
+                            (!IsDirected() && e.StartVert() == end_vert &&
+                             e.EndVert() == start_vert && e.Weight() == weight);
+                   });
 
   return it != edges_.end();
 }
@@ -142,8 +133,11 @@ bool Graph<vert_t, weight_t>::ContainsEdge(
   auto [start_vert, end_vert] = edge;
 
   auto it = std::find_if(
-      edges_.begin(), edges_.end(), [start_vert, end_vert](const auto& e) {
-        return e.StartVert() == start_vert && e.EndVert() == end_vert;
+      edges_.begin(), edges_.end(),
+      [start_vert, end_vert, this](const auto& e) {
+        return (e.StartVert() == start_vert && e.EndVert() == end_vert) ||
+               (!IsDirected() && e.StartVert() == end_vert &&
+                e.EndVert() == start_vert);
       });
 
   return it != edges_.end();
@@ -155,16 +149,19 @@ weight_t Graph<vert_t, weight_t>::GetWeightOfEdge(
   if (!IsWeighted())
     throw std::logic_error("GetWeightOfEdge: graph is not weighted.");
 
-  if (!ContainsEdge(edge))
-    throw std::invalid_argument("GetWeightOfEdge: there is no such edge: " +
-                                Edge(edge).Name());
-
   auto [start_vert, end_vert] = edge;
 
   auto it = std::find_if(
-      edges_.begin(), edges_.end(), [start_vert, end_vert](const auto& e) {
-        return e.StartVert() == start_vert && e.EndVert() == end_vert;
+      edges_.begin(), edges_.end(),
+      [start_vert, end_vert, this](const auto& e) {
+        return (e.StartVert() == start_vert && e.EndVert() == end_vert) ||
+               (!IsDirected() && e.StartVert() == end_vert &&
+                e.EndVert() == start_vert);
       });
+
+  if (it == edges_.end())
+    throw std::invalid_argument("GetWeightOfEdge: there is no such edge: " +
+                                Edge(edge).Name());
 
   return it->Weight();
 }
@@ -208,17 +205,15 @@ void Graph<vert_t, weight_t>::RemoveEdge(
     throw std::invalid_argument("RemoveEdge: there is no such edge in graph: " +
                                 Edge(edge_pair).Name());
 
-  edges_.erase(
-      std::remove_if(
-          edges_.begin(), edges_.end(),
-          [&edge_pair, this](const Edge& e) {
-            if (IsDirected())
-              return Edge(e.StartVert(), e.EndVert()) == Edge(edge_pair);
-
-            return (Edge(e.StartVert(), e.EndVert()) == Edge(edge_pair)) ||
-                   (Edge(e.EndVert(), e.StartVert()) == Edge(edge_pair));
-          }),
-      edges_.end());
+  edges_.erase(std::remove_if(edges_.begin(), edges_.end(),
+                              [&edge_pair, this](const Edge& e) {
+                                return (Edge(e.StartVert(), e.EndVert()) ==
+                                        Edge(edge_pair)) ||
+                                       (!IsDirected() &&
+                                        Edge(e.EndVert(), e.StartVert()) ==
+                                            Edge(edge_pair));
+                              }),
+               edges_.end());
 }
 
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
@@ -230,10 +225,9 @@ void Graph<vert_t, weight_t>::RemoveEdge(
 
   edges_.erase(std::remove_if(edges_.begin(), edges_.end(),
                               [&edge_tuple, this](const Edge& e) {
-                                if (IsDirected()) return e == Edge(edge_tuple);
-
                                 return (e == Edge(edge_tuple)) ||
-                                       (e == Edge(std::make_tuple(
+                                       (!IsDirected() &&
+                                        e == Edge(std::make_tuple(
                                                  EndVertFromTuple(edge_tuple),
                                                  StartVertFromTuple(edge_tuple),
                                                  WeightFromTuple(edge_tuple))));

@@ -1,15 +1,7 @@
 #include "graph.hpp"
 
-template class Graph<std::string, long>;
-template class Graph<std::string, double>;
-
-template class Graph<short, long>;
-template class Graph<int, long>;
-template class Graph<size_t, long>;
-
-template class Graph<short, double>;
-template class Graph<int, double>;
-template class Graph<size_t, double>;
+GRAPH_TEMPLATE_CONSTRUCT_FOR_STRING;
+GRAPH_TEMPLATE_CONSTRUCT_FOR_INTEGRAL;
 
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 Graph<vert_t, weight_t> Graph<vert_t, weight_t>::GraphNonWeighted(

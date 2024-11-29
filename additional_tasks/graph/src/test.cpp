@@ -135,25 +135,6 @@ TEST(GraphTest_size_t, CreateGraphWithDuplicateEdges) {
   ASSERT_FALSE(g.IsDirected());
 }
 
-TEST(GraphTest_size_t, CreateGraphWithInvalidWeights) {
-  std::vector<std::pair<size_t, size_t>> edges = {{0, 1}, {1, 2}, {2, 0}};
-  std::vector<long> weights = {1, 2, -1};
-
-  // IDK: non-working
-  // ASSERT_THROW((Graph<size_t, long>::GraphWeighted(edges, weights)),
-  //              std::invalid_argument());
-
-  try {
-    Graph<size_t, long>::GraphWeighted(edges, weights);
-    FAIL() << "Expected exception was not thrown.";
-
-  } catch (const std::invalid_argument& e) {
-    SUCCEED() << "CreateGraphWithInvalidWeights";
-  } catch (const std::exception& e) {
-    FAIL() << "Unexpected exception caught: " << e.what();
-  }
-}
-
 TEST(GraphTest_size_t, CreateGraphFromAdjMatrixWithInvalidSize) {
   std::vector<std::vector<long>> adj_matrix = {{0, 1}, {1, 0, 1}, {1, 0}};
 
@@ -338,12 +319,6 @@ TEST(GraphTest_size_t, ContainsEdgeThrowsOnNonWeightedGraph) {
   Graph<size_t, long> g =
       Graph<size_t, long>::GraphNonWeighted({{0, 1}, {1, 2}, {2, 0}});
   ASSERT_THROW(g.ContainsEdge({0, 1, 5}), std::logic_error);
-}
-
-TEST(GraphTest_size_t, ContainsEdgeThrowsOnNegativeWeight) {
-  Graph<size_t, long> g =
-      Graph<size_t, long>::GraphWeighted({{0, 1, 5}, {1, 2, 10}, {2, 0, 3}});
-  ASSERT_THROW(g.ContainsEdge({0, 1, -5}), std::logic_error);
 }
 
 TEST(GraphTest_size_t, GetWeightOfExistingEdge) {
