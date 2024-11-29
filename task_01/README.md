@@ -12,16 +12,16 @@
 
 ```C++
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
-static void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph,
-                                   vert_t u_vert,
-                                   std::unordered_map<vert_t, bool>& visited,
-                                   std::vector<vert_t>& ans);
+void TopologicalSortStep(const vert_t& u_vert,
+                         std::unordered_map<vert_t, bool>& visited,
+                         Graph<vert_t, weight_t>& graph,
+                         std::vector<vert_t>& topological_order);
 ``` 
 Эта рекурсивная функция реализует обход в глубину (DFS) для одной вершины графа.
 
 Функция помечает текущую вершину как посещенную (```visited[u_vert] = true;```) и рекурсивно вызывает себя для всех смежных вершин.
 
-После того, как все смежные вершины были обработаны, текущая вершина добавляется в конец вектора ans.
+После того, как все смежные вершины были обработаны, текущая вершина добавляется в конец вектора `ans` и удаляется из графа во избежание циклов.
 
 ```C++
 /**
@@ -31,10 +31,11 @@ static void TopologicalSortStepDFS(const Graph<vert_t, weight_t>& graph,
  * @tparam weight_t: тип веса в графе
  * @param graph: сортируемый граф
  * @throw std::invalid_argument("TopologicalSort: graph is not directed.");
+ * @throw std::invalid_argument("TopologicalSort: graph contains cycle.");
  * @return std::vector<vert_t>: список отсортированных вершин
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
-std::vector<vert_t> TopologicalSort(const Graph<vert_t, weight_t>& graph);
+std::vector<vert_t> TopologicalSort(Graph<vert_t, weight_t> graph);
 ```
 
 Основная функция, выполняющая топологическую сортировку.
@@ -44,4 +45,4 @@ std::vector<vert_t> TopologicalSort(const Graph<vert_t, weight_t>& graph);
 Инициализируется вектор `ans`, в который будут записываться отсортированные вершины.
 Функция проходит по всем вершинам графа и, если вершина не была посещена, запускает DFS (`TopologicalSortStepDFS`) для этой вершины.
 
-В конце, вектор ans инвертируется (так как вершины добавлялись в обратном порядке) и возвращается как результат.
+В конце, вектор `ans` инвертируется (так как вершины добавлялись в обратном порядке) и возвращается как результат.

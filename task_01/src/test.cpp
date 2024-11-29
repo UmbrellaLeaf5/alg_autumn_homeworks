@@ -173,3 +173,75 @@ TEST(TSTest, TopologicalSort_Main) {
 
   EXPECT_THROW(TopologicalSort(graph), std::invalid_argument);
 }
+
+TEST(TSTest, TopologicalSort_Cyclic) {
+  {
+    Graph<int, long> graph;
+
+    graph.AddVert(1);
+    graph.AddVert(2);
+    graph.AddVert(3);
+
+    graph.AddEdge(1, 2);
+    graph.AddEdge(2, 3);
+    graph.AddEdge(3, 1);
+
+    ASSERT_THROW(TopologicalSort(graph), std::invalid_argument);
+  }
+
+  {
+    Graph<std::string, long> graph;
+
+    graph.AddVert("G");
+    graph.AddVert("D");
+    graph.AddVert("B");
+    graph.AddVert("C");
+    graph.AddVert("F");
+    graph.AddVert("E");
+    graph.AddVert("H");
+    graph.AddVert("A");
+
+    graph.AddEdge("E", "B");
+    graph.AddEdge("A", "G");
+    graph.AddEdge("G", "F");
+    graph.AddEdge("D", "H");
+    graph.AddEdge("H", "G");
+    graph.AddEdge("B", "F");
+    graph.AddEdge("G", "E");
+    graph.AddEdge("F", "D");
+
+    ASSERT_THROW(TopologicalSort(graph), std::invalid_argument);
+  }
+
+  {
+    Graph<size_t, long> graph;
+
+    graph.AddVert(1);
+    graph.AddVert(2);
+    graph.AddVert(3);
+    graph.AddVert(4);
+    graph.AddVert(5);
+    graph.AddVert(6);
+    graph.AddVert(7);
+    graph.AddVert(8);
+    graph.AddVert(9);
+    graph.AddVert(10);
+    graph.AddVert(11);
+
+    graph.AddEdge(1, 10);
+    graph.AddEdge(10, 11);
+    graph.AddEdge(5, 1);
+    graph.AddEdge(5, 6);
+    graph.AddEdge(4, 8);
+    graph.AddEdge(2, 3);
+    graph.AddEdge(10, 9);
+    graph.AddEdge(4, 5);
+    graph.AddEdge(5, 7);
+    graph.AddEdge(4, 7);
+    graph.AddEdge(1, 2);
+    graph.AddEdge(3, 4);
+    graph.AddEdge(1, 6);
+
+    ASSERT_THROW(TopologicalSort(graph), std::invalid_argument);
+  }
+}
