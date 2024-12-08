@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "graph/graph.hpp"
+#include "graph.hpp"
 
 template <typename V, typename W>
 void PrintGraph(const Graph<V, W>& graph) {

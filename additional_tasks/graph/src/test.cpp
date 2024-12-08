@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "graph/graph.hpp"
+#include "graph.hpp"
 
 TEST(GraphTest_size_t, CreateNonWeightedGraph) {
   std::vector<std::pair<size_t, size_t>> edges_pairs = {{0, 1}, {1, 2}, {2, 0}};
@@ -325,24 +325,24 @@ TEST(GraphTest_size_t, GetWeightOfExistingEdge) {
   Graph<size_t, long> graph = Graph<size_t, long>::GraphWeighted(
       {{0, 1, 250L}, {1, 2, 370L}, {2, 0, 120L}});
 
-  ASSERT_EQ(graph.GetWeightOfEdge({0, 1}), 250L);
-  ASSERT_EQ(graph.GetWeightOfEdge({1, 2}), 370L);
-  ASSERT_EQ(graph.GetWeightOfEdge({2, 0}), 120L);
+  ASSERT_EQ(graph.GetEdgeWeight({0, 1}), 250L);
+  ASSERT_EQ(graph.GetEdgeWeight({1, 2}), 370L);
+  ASSERT_EQ(graph.GetEdgeWeight({2, 0}), 120L);
 }
 
 TEST(GraphTest_size_t, GetWeightOfNonExistingEdge) {
   Graph<size_t, long> graph = Graph<size_t, long>::GraphWeighted(
       {{0, 1, 250L}, {1, 2, 370L}, {2, 0, 120L}});
 
-  ASSERT_THROW(graph.GetWeightOfEdge({0, 2}), std::invalid_argument);
-  ASSERT_THROW(graph.GetWeightOfEdge({1, 0}), std::invalid_argument);
+  ASSERT_THROW(graph.GetEdgeWeight({0, 2}), std::invalid_argument);
+  ASSERT_THROW(graph.GetEdgeWeight({1, 0}), std::invalid_argument);
 }
 
 TEST(GraphTest_size_t, GetWeightOfEdgeInNonWeightedGraph) {
   Graph<size_t, long> non_weighted_graph =
       Graph<size_t, long>::GraphNonWeighted({{0, 1}, {1, 2}, {2, 0}});
 
-  ASSERT_THROW(non_weighted_graph.GetWeightOfEdge({0, 1}), std::logic_error);
+  ASSERT_THROW(non_weighted_graph.GetEdgeWeight({0, 1}), std::logic_error);
 }
 
 TEST(GraphTest_size_t, AddVert) {
@@ -382,7 +382,7 @@ TEST(GraphTest_size_t, AddEdgeWeighted) {
   g.AddEdge(0, 1, 10);
   EXPECT_EQ(g.EdgesAmount(), 1);
   EXPECT_TRUE(g.ContainsEdge({0, 1, 10}));
-  EXPECT_EQ(g.GetWeightOfEdge({0, 1}), 10);
+  EXPECT_EQ(g.GetEdgeWeight({0, 1}), 10);
 
   g.AddEdge(0, 1, 15);
 
@@ -395,7 +395,7 @@ TEST(GraphTest_size_t, AddEdgeWeighted) {
 
   EXPECT_EQ(g.EdgesAmount(), 2);
   EXPECT_TRUE(g.ContainsEdge({0, 1, 10}));
-  EXPECT_EQ(g.GetWeightOfEdge({0, 1}), 10);
+  EXPECT_EQ(g.GetEdgeWeight({0, 1}), 10);
 
   EXPECT_THROW(g.AddEdge(2, 3), std::logic_error);
 }

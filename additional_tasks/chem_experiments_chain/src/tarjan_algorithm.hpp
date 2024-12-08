@@ -4,7 +4,7 @@
 #include <stack>
 #include <stdexcept>
 
-#include "graph/graph.hpp"
+#include "graph.hpp"
 
 namespace {
 

@@ -49,7 +49,7 @@ std::unordered_map<vert_t, weight_t> DAGRelaxation(
 
       // если граф не взвешен, то задаем расстояние единицей
       weight_t u_v_dist = 1;
-      if (graph.IsWeighted()) u_v_dist = graph.GetWeightOfEdge({u_vert, vert});
+      if (graph.IsWeighted()) u_v_dist = graph.GetEdgeWeight({u_vert, vert});
 
       // релаксируем ребро, если текущее расстояние до vert больше, чем
       // расстояние до u_vert + расстояние между вершинами (вес их ребра)
