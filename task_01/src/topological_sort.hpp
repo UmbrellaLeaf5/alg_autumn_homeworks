@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graph/graph.hpp"
+#include "graph.hpp"
 
 namespace {
 

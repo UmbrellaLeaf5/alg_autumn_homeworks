@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graph/graph.hpp"
+#include "graph.hpp"
 
 /**
  * @brief Вычисляет кратчайшие пути от заданной начальной вершины до всех других
@@ -56,7 +56,7 @@ std::unordered_map<vert_t, weight_t> Dijkstra(
     const auto neighbors = graph.GetAdjList()[min_vert];
     for (const auto& neighbor : neighbors) {
       weight_t weight =
-          graph.IsWeighted() ? graph.GetWeightOfEdge({min_vert, neighbor}) : 1;
+          graph.IsWeighted() ? graph.GetEdgeWeight({min_vert, neighbor}) : 1;
 
       if (weight < 0)
         throw std::logic_error(
