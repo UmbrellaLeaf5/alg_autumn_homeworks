@@ -49,8 +49,8 @@ TEST(SCCSTA_Test, SimpleCycle) {
   Graph<int, long> graph;
   graph.AddVert(1);
   graph.AddVert(2);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(2, 1);
+  graph.AddEdge({1, 2});
+  graph.AddEdge({2, 1});
   auto components = StronglyConnectedComponents(graph);
   ASSERT_EQ(components.size(), 1);
   ASSERT_EQ(components[0], std::vector<int>({1, 2}));
@@ -62,10 +62,10 @@ TEST(SCCSTA_Test, MultipleCycles) {
   graph.AddVert(2);
   graph.AddVert(3);
   graph.AddVert(4);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(2, 1);
-  graph.AddEdge(3, 4);
-  graph.AddEdge(4, 3);
+  graph.AddEdge({1, 2});
+  graph.AddEdge({2, 1});
+  graph.AddEdge({3, 4});
+  graph.AddEdge({4, 3});
 
   auto components = StronglyConnectedComponents(graph);
 
@@ -86,13 +86,13 @@ TEST(SCCSTA_Test, ComplexGraph) {
   graph.AddVert(4);
   graph.AddVert(5);
   graph.AddVert(6);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(2, 3);
-  graph.AddEdge(3, 1);
-  graph.AddEdge(4, 5);
-  graph.AddEdge(5, 6);
-  graph.AddEdge(6, 4);
-  graph.AddEdge(2, 4);
+  graph.AddEdge({1, 2});
+  graph.AddEdge({2, 3});
+  graph.AddEdge({3, 1});
+  graph.AddEdge({4, 5});
+  graph.AddEdge({5, 6});
+  graph.AddEdge({6, 4});
+  graph.AddEdge({2, 4});
 
   auto components = StronglyConnectedComponents(graph);
 
@@ -111,7 +111,7 @@ TEST(SCCSTA_Test, UndirectedGraph) {
   Graph<int, long> graph;
   graph.AddVert(1);
   graph.AddVert(2);
-  graph.AddEdge(1, 2);
+  graph.AddEdge({1, 2});
 
   graph.MakeUndirected();
 
@@ -121,7 +121,7 @@ TEST(SCCSTA_Test, UndirectedGraph) {
 TEST(SCCSTA_Test, SelfLoop) {
   Graph<int, long> graph;
   graph.AddVert(1);
-  graph.AddEdge(1, 1);
+  graph.AddEdge({1, 1});
 
   auto components = StronglyConnectedComponents(graph);
 
@@ -135,8 +135,8 @@ TEST(SCCSTA_Test, MultipleSelfLoops) {
   Graph<int, long> graph;
   graph.AddVert(1);
   graph.AddVert(2);
-  graph.AddEdge(1, 1);
-  graph.AddEdge(2, 2);
+  graph.AddEdge({1, 1});
+  graph.AddEdge({2, 2});
 
   auto components = StronglyConnectedComponents(graph);
 
@@ -152,11 +152,11 @@ TEST(SCCSTA_Test, ConnectedComponents) {
   graph.AddVert(2);
   graph.AddVert(3);
   graph.AddVert(4);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(2, 1);
-  graph.AddEdge(3, 4);
-  graph.AddEdge(4, 3);
-  graph.AddEdge(1, 3);
+  graph.AddEdge({1, 2});
+  graph.AddEdge({2, 1});
+  graph.AddEdge({3, 4});
+  graph.AddEdge({4, 3});
+  graph.AddEdge({1, 3});
 
   auto components = StronglyConnectedComponents(graph);
 

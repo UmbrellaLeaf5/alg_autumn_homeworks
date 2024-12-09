@@ -174,7 +174,6 @@ inline std::istream& operator>>(std::istream& is, std::vector<Type>& vec) {
  * @return false: элемент не найден
  */
 template <typename T>
-bool Contains(const std::vector<T>& vec, const T& value) {
-  auto it = std::find(vec.begin(), vec.end(), value);
-  return it != vec.end();
+inline bool Contains(const std::vector<T>& vec, const T& value) {
+  return std::find(vec.begin(), vec.end(), value) != vec.end();
 }

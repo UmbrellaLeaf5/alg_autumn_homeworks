@@ -116,13 +116,6 @@ TEST(GraphTest_size_t, CreateGraphWithDuplicateEdges) {
   Graph<size_t, long> g = Graph<size_t, long>::GraphNonWeighted(edges);
 
   ASSERT_EQ(g.VertsAmount(), 3);
-  ASSERT_EQ(g.EdgesAmount(), 5);
-  ASSERT_FALSE(g.IsWeighted());
-  ASSERT_TRUE(g.IsDirected());
-
-  g.RemoveDuplicates();
-
-  ASSERT_EQ(g.VertsAmount(), 3);
   ASSERT_EQ(g.EdgesAmount(), 3);
   ASSERT_FALSE(g.IsWeighted());
   ASSERT_TRUE(g.IsDirected());
@@ -362,15 +355,15 @@ TEST(GraphTest_size_t, AddVert) {
 TEST(GraphTest_size_t, AddEdgeUnweighted) {
   Graph<size_t, long> g;
 
-  g.AddEdge(0, 1);
+  g.AddEdge({0, 1});
   EXPECT_EQ(g.EdgesAmount(), 1);
   EXPECT_TRUE(g.ContainsEdge({0, 1}));
 
-  g.AddEdge(0, 1);
-  EXPECT_EQ(g.EdgesAmount(), 2);
+  g.AddEdge({0, 1});
+  EXPECT_EQ(g.EdgesAmount(), 1);  // теперь в графе только уникальные ребра
   EXPECT_TRUE(g.ContainsEdge({0, 1}));
 
-  g.AddEdge(2, 3);
+  g.AddEdge({2, 3});
   EXPECT_EQ(g.VertsAmount(), 4);
   EXPECT_TRUE(Contains(g.Verts(), size_t(2)));
   EXPECT_TRUE(Contains(g.Verts(), size_t(3)));
@@ -379,25 +372,19 @@ TEST(GraphTest_size_t, AddEdgeUnweighted) {
 TEST(GraphTest_size_t, AddEdgeWeighted) {
   Graph<size_t, long> g;
 
-  g.AddEdge(0, 1, 10);
+  g.AddEdge({0, 1, 10});
   EXPECT_EQ(g.EdgesAmount(), 1);
   EXPECT_TRUE(g.ContainsEdge({0, 1, 10}));
   EXPECT_EQ(g.GetEdgeWeight({0, 1}), 10);
 
-  g.AddEdge(0, 1, 15);
-
-  // если пользователь решает добавить то же ребро,
-  // но с другим весом - он сам дурак
-
-  // (иначе добавление ребра будет работать за O(E))
-
-  g.RemoveDuplicates();
+  g.AddEdge({0, 1, 15});
 
   EXPECT_EQ(g.EdgesAmount(), 2);
   EXPECT_TRUE(g.ContainsEdge({0, 1, 10}));
   EXPECT_EQ(g.GetEdgeWeight({0, 1}), 10);
 
-  EXPECT_THROW(g.AddEdge(2, 3), std::logic_error);
+  // Warning
+  EXPECT_NO_THROW(g.AddEdge({2, 3}));
 }
 
 TEST(GraphTest_size_t, RemoveVert) {
@@ -405,8 +392,8 @@ TEST(GraphTest_size_t, RemoveVert) {
   g.AddVert(1);
   g.AddVert(2);
   g.AddVert(3);
-  g.AddEdge(1, 2, 5);
-  g.AddEdge(2, 3, 7);
+  g.AddEdge({1, 2, 5});
+  g.AddEdge({2, 3, 7});
 
   ASSERT_NO_THROW(g.RemoveVert(2));
   EXPECT_FALSE(Contains(g.Verts(), size_t(2)));
@@ -421,8 +408,8 @@ TEST(GraphTest_size_t, RemoveEdgeByPair) {
   g.AddVert(1);
   g.AddVert(2);
   g.AddVert(3);
-  g.AddEdge(1, 2, 5);
-  g.AddEdge(2, 3, 7);
+  g.AddEdge({1, 2, 5});
+  g.AddEdge({2, 3, 7});
 
   ASSERT_NO_THROW(g.RemoveEdge({1, 2}));
   EXPECT_FALSE(g.ContainsEdge({1, 2}));
@@ -436,8 +423,8 @@ TEST(GraphTest_size_t, RemoveEdgeByTuple) {
   g.AddVert(1);
   g.AddVert(2);
   g.AddVert(3);
-  g.AddEdge(1, 2, 5);
-  g.AddEdge(2, 3, 7);
+  g.AddEdge({1, 2, 5});
+  g.AddEdge({2, 3, 7});
 
   ASSERT_NO_THROW(g.RemoveEdge({2, 3, 7}));
   EXPECT_FALSE(g.ContainsEdge({2, 3, 7}));
@@ -471,8 +458,8 @@ TEST(GraphTest_size_t, AddAndRemoveEdges) {
   g.AddVert(2);
   g.AddVert(3);
 
-  g.AddEdge(1, 2, 5);
-  g.AddEdge(2, 3, 7);
+  g.AddEdge({1, 2, 5});
+  g.AddEdge({2, 3, 7});
   EXPECT_EQ(g.EdgesAmount(), 2);
   EXPECT_TRUE(g.ContainsEdge({1, 2, 5}));
   EXPECT_TRUE(g.ContainsEdge({2, 3, 7}));
@@ -506,8 +493,8 @@ TEST(GraphTest_size_t, RemoveEdgeFromDirectedGraph) {
   graph_directed.AddVert(0);
   graph_directed.AddVert(1);
   graph_directed.AddVert(2);
-  graph_directed.AddEdge(0, 1, 1);
-  graph_directed.AddEdge(1, 2, 2);
+  graph_directed.AddEdge({0, 1, 1});
+  graph_directed.AddEdge({1, 2, 2});
 
   ASSERT_NO_THROW(graph_directed.RemoveEdge({0, 1}));
   ASSERT_FALSE(graph_directed.ContainsEdge({0, 1}));
@@ -519,8 +506,8 @@ TEST(GraphTest_size_t, RemoveEdgeFromUndirectedGraph) {
   graph_undirected.AddVert(0);
   graph_undirected.AddVert(1);
   graph_undirected.AddVert(2);
-  graph_undirected.AddEdge(0, 1, 1);
-  graph_undirected.AddEdge(1, 2, 2);
+  graph_undirected.AddEdge({0, 1, 1});
+  graph_undirected.AddEdge({1, 2, 2});
 
   graph_undirected.MakeUndirected();
 
@@ -535,8 +522,8 @@ TEST(GraphTest_size_t, RemoveNonExistentEdgeThrowsException) {
   graph_directed.AddVert(0);
   graph_directed.AddVert(1);
   graph_directed.AddVert(2);
-  graph_directed.AddEdge(0, 1, 1);
-  graph_directed.AddEdge(1, 2, 2);
+  graph_directed.AddEdge({0, 1, 1});
+  graph_directed.AddEdge({1, 2, 2});
 
   ASSERT_THROW(graph_directed.RemoveEdge({0, 2}), std::invalid_argument);
 
@@ -544,8 +531,8 @@ TEST(GraphTest_size_t, RemoveNonExistentEdgeThrowsException) {
   graph_undirected.AddVert(0);
   graph_undirected.AddVert(1);
   graph_undirected.AddVert(2);
-  graph_undirected.AddEdge(0, 1, 1);
-  graph_undirected.AddEdge(1, 2, 2);
+  graph_undirected.AddEdge({0, 1, 1});
+  graph_undirected.AddEdge({1, 2, 2});
 
   graph_undirected.MakeUndirected();
 
