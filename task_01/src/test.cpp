@@ -12,12 +12,12 @@ TEST(TSTest, TopologicalSort) {
   graph.AddVert("E");
   graph.AddVert("F");
 
-  graph.AddEdge("A", "B", 1);
-  graph.AddEdge("A", "C", 2);
-  graph.AddEdge("B", "D", 3);
-  graph.AddEdge("C", "E", 4);
-  graph.AddEdge("D", "F", 5);
-  graph.AddEdge("E", "F", 6);
+  graph.AddEdge({"A", "B", 1});
+  graph.AddEdge({"A", "C", 2});
+  graph.AddEdge({"B", "D", 3});
+  graph.AddEdge({"C", "E", 4});
+  graph.AddEdge({"D", "F", 5});
+  graph.AddEdge({"E", "F", 6});
 
   std::vector<std::string> expected_order = {"A", "C", "E", "B", "D", "F"};
 
@@ -55,10 +55,10 @@ TEST(TSTest, TopologicalSort_MultipleSources) {
   graph.AddVert("D");
   graph.AddVert("E");
 
-  graph.AddEdge("A", "C", 1);
-  graph.AddEdge("B", "C", 2);
-  graph.AddEdge("C", "D", 3);
-  graph.AddEdge("C", "E", 4);
+  graph.AddEdge({"A", "C", 1});
+  graph.AddEdge({"B", "C", 2});
+  graph.AddEdge({"C", "D", 3});
+  graph.AddEdge({"C", "E", 4});
 
   std::vector<std::string> expected_order = {"B", "A", "C", "E", "D"};
 
@@ -75,8 +75,8 @@ TEST(TSTest, TopologicalSort_Disconnected) {
   graph.AddVert("D");
   graph.AddVert("E");
 
-  graph.AddEdge("A", "B", 1);
-  graph.AddEdge("C", "D", 2);
+  graph.AddEdge({"A", "B", 1});
+  graph.AddEdge({"C", "D", 2});
 
   std::vector<std::string> expected_order = {"E", "C", "D", "A", "B"};
 
@@ -93,10 +93,10 @@ TEST(TSTest, TopologicalSort_LinearChain) {
   graph.AddVert("D");
   graph.AddVert("E");
 
-  graph.AddEdge("A", "B", 1);
-  graph.AddEdge("B", "C", 2);
-  graph.AddEdge("C", "D", 3);
-  graph.AddEdge("D", "E", 4);
+  graph.AddEdge({"A", "B", 1});
+  graph.AddEdge({"B", "C", 2});
+  graph.AddEdge({"C", "D", 3});
+  graph.AddEdge({"D", "E", 4});
 
   std::vector<std::string> expected_order = {"A", "B", "C", "D", "E"};
 
@@ -115,12 +115,12 @@ TEST(TSTest, TopologicalSort_Tree) {
   graph.AddVert("F");
   graph.AddVert("G");
 
-  graph.AddEdge("A", "B", 1);
-  graph.AddEdge("A", "C", 2);
-  graph.AddEdge("B", "D", 3);
-  graph.AddEdge("B", "E", 4);
-  graph.AddEdge("C", "F", 5);
-  graph.AddEdge("C", "G", 6);
+  graph.AddEdge({"A", "B", 1});
+  graph.AddEdge({"A", "C", 2});
+  graph.AddEdge({"B", "D", 3});
+  graph.AddEdge({"B", "E", 4});
+  graph.AddEdge({"C", "F", 5});
+  graph.AddEdge({"C", "G", 6});
 
   std::vector<std::string> expected_order = {"A", "C", "G", "F", "B", "E", "D"};
 
@@ -139,13 +139,13 @@ TEST(TSTest, TopologicalSort_Branching) {
   graph.AddVert("F");
   graph.AddVert("G");
 
-  graph.AddEdge("A", "B", 1);
-  graph.AddEdge("A", "C", 2);
-  graph.AddEdge("B", "D", 3);
-  graph.AddEdge("B", "E", 4);
-  graph.AddEdge("C", "F", 5);
-  graph.AddEdge("C", "G", 6);
-  graph.AddEdge("D", "F", 7);  //  Добавляем "ветку"
+  graph.AddEdge({"A", "B", 1});
+  graph.AddEdge({"A", "C", 2});
+  graph.AddEdge({"B", "D", 3});
+  graph.AddEdge({"B", "E", 4});
+  graph.AddEdge({"C", "F", 5});
+  graph.AddEdge({"C", "G", 6});
+  graph.AddEdge({"D", "F", 7});  //  Добавляем "ветку"
 
   std::vector<std::string> expected_order = {"A", "C", "G", "B", "E", "D", "F"};
 
@@ -182,9 +182,9 @@ TEST(TSTest, TopologicalSort_Cyclic) {
     graph.AddVert(2);
     graph.AddVert(3);
 
-    graph.AddEdge(1, 2);
-    graph.AddEdge(2, 3);
-    graph.AddEdge(3, 1);
+    graph.AddEdge({1, 2});
+    graph.AddEdge({2, 3});
+    graph.AddEdge({3, 1});
 
     ASSERT_THROW(TopologicalSort(graph), std::invalid_argument);
   }
@@ -201,14 +201,14 @@ TEST(TSTest, TopologicalSort_Cyclic) {
     graph.AddVert("H");
     graph.AddVert("A");
 
-    graph.AddEdge("E", "B");
-    graph.AddEdge("A", "G");
-    graph.AddEdge("G", "F");
-    graph.AddEdge("D", "H");
-    graph.AddEdge("H", "G");
-    graph.AddEdge("B", "F");
-    graph.AddEdge("G", "E");
-    graph.AddEdge("F", "D");
+    graph.AddEdge({"E", "B"});
+    graph.AddEdge({"A", "G"});
+    graph.AddEdge({"G", "F"});
+    graph.AddEdge({"D", "H"});
+    graph.AddEdge({"H", "G"});
+    graph.AddEdge({"B", "F"});
+    graph.AddEdge({"G", "E"});
+    graph.AddEdge({"F", "D"});
 
     ASSERT_THROW(TopologicalSort(graph), std::invalid_argument);
   }
@@ -228,19 +228,19 @@ TEST(TSTest, TopologicalSort_Cyclic) {
     graph.AddVert(10);
     graph.AddVert(11);
 
-    graph.AddEdge(1, 10);
-    graph.AddEdge(10, 11);
-    graph.AddEdge(5, 1);
-    graph.AddEdge(5, 6);
-    graph.AddEdge(4, 8);
-    graph.AddEdge(2, 3);
-    graph.AddEdge(10, 9);
-    graph.AddEdge(4, 5);
-    graph.AddEdge(5, 7);
-    graph.AddEdge(4, 7);
-    graph.AddEdge(1, 2);
-    graph.AddEdge(3, 4);
-    graph.AddEdge(1, 6);
+    graph.AddEdge({1, 10});
+    graph.AddEdge({10, 11});
+    graph.AddEdge({5, 1});
+    graph.AddEdge({5, 6});
+    graph.AddEdge({4, 8});
+    graph.AddEdge({2, 3});
+    graph.AddEdge({10, 9});
+    graph.AddEdge({4, 5});
+    graph.AddEdge({5, 7});
+    graph.AddEdge({4, 7});
+    graph.AddEdge({1, 2});
+    graph.AddEdge({3, 4});
+    graph.AddEdge({1, 6});
 
     ASSERT_THROW(TopologicalSort(graph), std::invalid_argument);
   }

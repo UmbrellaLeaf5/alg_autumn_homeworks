@@ -100,8 +100,7 @@ class Graph {
     std::vector<Edge> edges{};
     edges.reserve(edges_pairs.size());
 
-    for (const auto& edge : edges_pairs)
-      edges.push_back(Edge(edge.first, edge.second));
+    for (const auto& edge : edges_pairs) edges.push_back(edge);
 
     return Graph(edges);
   }
@@ -294,13 +293,7 @@ class Graph {
   }
 
   /// @brief Проверяет, взвешен ли граф
-  bool IsWeighted() const {
-    if (edges_.empty()) return false;
-
-    bool is_weighted = true;
-    for (const auto& edge : edges_) is_weighted &= edge.IsWeighted();
-    return is_weighted;
-  }
+  bool IsWeighted() const { return is_weighted_; }
 
   /// @return `size_t`: кол-во вершин
   size_t VertsAmount() const { return verts_.size(); }
@@ -367,11 +360,8 @@ class Graph {
     return os;
   }
 
-  /**
-   * @brief Делает граф ненаправленным (удаляет лишние ребра)
-   * @param remove_duplicates: удалять ли дубликаты
-   */
-  void MakeUndirected(bool remove_duplicates = false) {
+  /// @brief Делает граф ненаправленным (удаляет лишние ребра)
+  void MakeUndirected() {
     std::unordered_set<size_t> seen_edges;
     std::vector<Edge> unique_edges;
     unique_edges.reserve(EdgesAmount());
@@ -391,8 +381,6 @@ class Graph {
 
     edges_ = std::move(unique_edges);
     is_direct_ = false;
-
-    if (remove_duplicates) RemoveDuplicates();
   }
 
   /// @brief Делает граф направленным (ничего)
@@ -400,19 +388,6 @@ class Graph {
 
   /// @brief Проверяет, направлен ли граф
   bool IsDirected() const { return is_direct_; }
-
-  /// @brief Удаляет из графа ребрами с одинаковым вершинами
-  void RemoveDuplicates() {
-    std::vector<Edge> unique_edges;
-    unique_edges.reserve(EdgesAmount());
-
-    for (const auto& edge : edges_)
-      if (!Contains(unique_edges, edge)) unique_edges.push_back(edge);
-
-    edges_ = std::move(unique_edges);
-
-    if (!IsDirected()) MakeUndirected();
-  }
 
   /**
    * @return `std::vector<std::vector<vert_t>>`: список смежности
@@ -495,8 +470,6 @@ class Graph {
    * @return `true`: содержится
    * @return `false`: не содержится
    * @throw `std::logic_error("ContainsEdge: graph is not weighted.")`
-   * @throw `std::logic_error("ContainsEdge: weight must be greater than
-   * zero.")`
    */
   bool ContainsEdge(const std::tuple<vert_t, vert_t, weight_t>& edge) const {
     if (!IsWeighted())
@@ -560,33 +533,22 @@ class Graph {
     if (!Contains(verts_, vert)) verts_.push_back(vert);
   }
 
-  /// @throw `std::invalid_argument(std::string("AddEdge: ") + ex.what())`
-  void AddEdge(vert_t start_vert, vert_t end_vert, weight_t weight) {
-    AddVert(start_vert);
-    AddVert(end_vert);
-
-    try {
-      edges_.emplace_back(Edge(start_vert, end_vert, weight));
-    }
-
-    catch (const std::exception& ex) {
-      throw std::invalid_argument(std::string("AddEdge: ") + ex.what());
-    }
+  /// @warning `"AddEdge: weighted graph must consist of weighted edges.`
+  void AddEdge(const std::tuple<vert_t, vert_t, weight_t>& edge_tuple) {
+    if (WeightFromTuple(edge_tuple) == 0)
+      AddEdge({StartVertFromTuple(edge_tuple), EndVertFromTuple(edge_tuple)});
+    else
+      AddEdge_(edge_tuple);
   }
 
-  /**
-   * @throw `std::logic_error("AddEdge: weighted graph must consist of
-   * weighted edges.")`
-   */
-  void AddEdge(vert_t start_vert, vert_t end_vert) {
+  /// @warning `"AddEdge: weighted graph must consist of weighted edges.`
+  void AddEdge(const std::pair<vert_t, vert_t>& edge_pair) {
     if (IsWeighted())
-      throw std::logic_error(
-          "AddEdge: weighted graph must consist of weighted edges.");
+      std::cerr << "Warning! AddEdge: weighted graph should consist of "
+                   "weighted edges."
+                << std::endl;
 
-    AddVert(start_vert);
-    AddVert(end_vert);
-
-    edges_.emplace_back(Edge(start_vert, end_vert));
+    AddEdge_(Edge(edge_pair.first, edge_pair.second, static_cast<weight_t>(0)));
   }
 
   /// @throw `std::invalid_argument("RemoveVert: there is no such vert:")`
@@ -622,8 +584,7 @@ class Graph {
 
     edges_.erase(std::remove_if(edges_.begin(), edges_.end(),
                                 [&edge_pair, this](const Edge& e) {
-                                  return (Edge(e.StartVert(), e.EndVert()) ==
-                                          Edge(edge_pair)) ||
+                                  return (e == Edge(edge_pair)) ||
                                          (!IsDirected() &&
                                           Edge(e.EndVert(), e.StartVert()) ==
                                               Edge(edge_pair));
@@ -656,16 +617,21 @@ class Graph {
    public:
     Edge() = delete;
 
-    Edge(vert_t start_vert, vert_t end_vert)
+    Edge(const vert_t start_vert, const vert_t& end_vert)
         : start_vert_{start_vert}, end_vert_{end_vert} {}
 
-    Edge(vert_t start_vert, vert_t end_vert, weight_t weight)
+    Edge(const vert_t& start_vert, vert_t end_vert, weight_t weight)
         : start_vert_{start_vert}, end_vert_{end_vert}, weight_{weight} {}
 
-    Edge(std::pair<vert_t, vert_t> edge_pair)
+    Edge(const std::pair<vert_t, vert_t>& edge_pair)
         : start_vert_{edge_pair.first}, end_vert_{edge_pair.second} {}
 
-    Edge(std::tuple<vert_t, vert_t, weight_t> edge_tuple)
+    Edge(const std::pair<vert_t, vert_t>& edge_pair, weight_t weight)
+        : start_vert_{edge_pair.first},
+          end_vert_{edge_pair.second},
+          weight_{weight} {}
+
+    Edge(const std::tuple<vert_t, vert_t, weight_t>& edge_tuple)
         : start_vert_{StartVertFromTuple(edge_tuple)},
           end_vert_{EndVertFromTuple(edge_tuple)},
           weight_{WeightFromTuple(edge_tuple)} {}
@@ -679,11 +645,13 @@ class Graph {
 
     void SetWeight(weight_t new_weight) { weight_ = new_weight; }
 
-    // friend Graph;
-
     bool operator==(const Edge& rhs) const {
-      return start_vert_ == rhs.start_vert_ && end_vert_ == rhs.end_vert_ &&
-             weight_ == rhs.weight_;
+      if (StartVert() != rhs.StartVert() || EndVert() != rhs.EndVert())
+        return false;
+
+      if (IsWeighted() && rhs.IsWeighted()) return Weight() == rhs.Weight();
+
+      return true;
     }
 
     bool operator!=(const Edge& rhs) const { return !(*this == rhs); }
@@ -727,6 +695,7 @@ class Graph {
   std::vector<vert_t> verts_;
 
   bool is_direct_ = true;
+  bool is_weighted_ = false;
 
  public:
   friend std::ostream& operator<<(std::ostream& os,
@@ -736,8 +705,13 @@ class Graph {
   }
 
  private:
-  Graph(const std::vector<Edge>& edges) : edges_{edges}, verts_() {
+  Graph(const std::vector<Edge>& edges) {
     if (edges.empty()) return;
+
+    for (const auto& edge : edges) {
+      if (edge.IsWeighted()) is_weighted_ = true;
+      AddEdge_(edge);
+    }
 
     if constexpr (std::is_integral_v<vert_t>) {
       // кол-во вершин = максимальная вершина среди ребер, т.е. в этом случае
@@ -752,7 +726,7 @@ class Graph {
       verts_.resize(max_vert + 1);
       std::iota(verts_.begin(), verts_.end(), 0);
 
-    } else if constexpr (std::is_same_v<vert_t, std::string>) {
+    } else if constexpr (std::is_same_v<vert_t, std::string>)
       for (const auto& edge : edges_) {
         if (!Contains(Verts(), edge.StartVert()))
           verts_.push_back(edge.StartVert());
@@ -760,9 +734,15 @@ class Graph {
         if (!Contains(Verts(), edge.EndVert()))
           verts_.push_back(edge.EndVert());
       }
-    }
+  }
 
-    if (!IsDirected()) MakeUndirected();
+  void AddEdge_(const Edge& edge) {
+    AddVert(edge.StartVert());
+    AddVert(edge.EndVert());
+
+    if (!Contains(edges_, edge)) edges_.emplace_back(edge);
+
+    if (edge.Weight() != 0) is_weighted_ = true;
   }
 
   static std::pair<vert_t, vert_t> ParseEdgeString_(
