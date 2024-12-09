@@ -51,7 +51,7 @@ inline void AddEdgesNonDirected(Graph<std::string, long>& graph) {
 
     for (const auto& another_vert : {up_vert, down_vert, right_vert, left_vert})
       if (!another_vert.empty() && !graph.ContainsEdge({another_vert, vert}))
-        graph.AddEdge(vert, another_vert);
+        graph.AddEdge({vert, another_vert});
   }
 }
 
@@ -87,7 +87,7 @@ inline void AddEdgesIterative(Graph<std::string, long>& graph,
     for (const auto& another_vert : {up_vert, down_vert, right_vert, left_vert})
       if (!another_vert.empty() &&
           !graph.ContainsEdge({another_vert, current_vert})) {
-        graph.AddEdge(current_vert, another_vert);
+        graph.AddEdge({current_vert, another_vert});
         if (another_vert[0] != 'E') s.push(another_vert);
       }
   }

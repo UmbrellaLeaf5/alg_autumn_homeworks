@@ -29,13 +29,13 @@ inline bool operator!=(const std::unordered_map<Key, Value>& lhs,
 
 TEST(DAGRelaxationTest, SimpleDAG_A) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = DAGRelaxation(graph, std::string("A"));
 
@@ -47,13 +47,13 @@ TEST(DAGRelaxationTest, SimpleDAG_A) {
 
 TEST(DAGRelaxationTest, SimpleDAG_B) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = DAGRelaxation(graph, std::string("B"));
 
@@ -66,13 +66,13 @@ TEST(DAGRelaxationTest, SimpleDAG_B) {
 
 TEST(DAGRelaxationTest, SimpleDAG_C) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = DAGRelaxation(graph, std::string("C"));
 
@@ -84,13 +84,13 @@ TEST(DAGRelaxationTest, SimpleDAG_C) {
 
 TEST(DAGRelaxationTest, SimpleDAG_D) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = DAGRelaxation(graph, std::string("D"));
 
@@ -103,13 +103,13 @@ TEST(DAGRelaxationTest, SimpleDAG_D) {
 
 TEST(DAGRelaxationTest, SimpleDAG_E) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = DAGRelaxation(graph, std::string("E"));
 
@@ -122,13 +122,13 @@ TEST(DAGRelaxationTest, SimpleDAG_E) {
 
 TEST(DAGRelaxationTest, SimpleDAG_F) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = DAGRelaxation(graph, std::string("F"));
 
@@ -141,13 +141,13 @@ TEST(DAGRelaxationTest, SimpleDAG_F) {
 
 TEST(DAGRelaxationTest, UnweightedDAG) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B");
-  graph.AddEdge("A", "C");
-  graph.AddEdge("B", "D");
-  graph.AddEdge("C", "D");
-  graph.AddEdge("C", "E");
-  graph.AddEdge("D", "F");
-  graph.AddEdge("E", "F");
+  graph.AddEdge({"A", "B"});
+  graph.AddEdge({"A", "C"});
+  graph.AddEdge({"B", "D"});
+  graph.AddEdge({"C", "D"});
+  graph.AddEdge({"C", "E"});
+  graph.AddEdge({"D", "F"});
+  graph.AddEdge({"E", "F"});
 
   auto distances = DAGRelaxation(graph, std::string("A"));
 
@@ -159,10 +159,10 @@ TEST(DAGRelaxationTest, UnweightedDAG) {
 
 TEST(DAGRelaxationTest, NonDirectedGraph) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B");
-  graph.AddEdge("A", "C");
-  graph.AddEdge("B", "D");
-  graph.AddEdge("C", "D");
+  graph.AddEdge({"A", "B"});
+  graph.AddEdge({"A", "C"});
+  graph.AddEdge({"B", "D"});
+  graph.AddEdge({"C", "D"});
 
   graph.MakeUndirected();
 
@@ -171,10 +171,10 @@ TEST(DAGRelaxationTest, NonDirectedGraph) {
 
 TEST(DAGRelaxationTest, NonExistingStartVertex) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B");
-  graph.AddEdge("A", "C");
-  graph.AddEdge("B", "D");
-  graph.AddEdge("C", "D");
+  graph.AddEdge({"A", "B"});
+  graph.AddEdge({"A", "C"});
+  graph.AddEdge({"B", "D"});
+  graph.AddEdge({"C", "D"});
 
   graph.MakeUndirected();
 
@@ -183,15 +183,15 @@ TEST(DAGRelaxationTest, NonExistingStartVertex) {
 
 TEST(DAGRelaxationTest, DAGWithNoIncomingEdges) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
-  graph.AddEdge("G", "F", 3);
+  graph.AddEdge({"G", "F", 3});
 
   auto distances = DAGRelaxation(graph, std::string("A"));
 
@@ -215,7 +215,7 @@ TEST(DAGRelaxationTest, OneVertDAG) {
 
 TEST(DAGRelaxationTest, TwoVertsDAG) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
+  graph.AddEdge({"A", "B", 5});
 
   auto distances = DAGRelaxation(graph, std::string("A"));
 
@@ -228,10 +228,10 @@ TEST(DAGRelaxationTest, TwoVertsDAG) {
 TEST(DAGRelaxationTest, MultiplePathsToOneVertex) {
   Graph<std::string, long> graph;
 
-  graph.AddEdge("A", "B", 1);
-  graph.AddEdge("A", "C", 4);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 1);
+  graph.AddEdge({"A", "B", 1});
+  graph.AddEdge({"A", "C", 4});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 1});
 
   auto distances = DAGRelaxation(graph, std::string("A"));
   std::unordered_map<std::string, long> expected_distances = {
@@ -243,9 +243,9 @@ TEST(DAGRelaxationTest, MultiplePathsToOneVertex) {
 TEST(DAGRelaxationTest, IntVerticesAndWeights) {
   Graph<int, long> graph;
 
-  graph.AddEdge(1, 2, 5);
-  graph.AddEdge(1, 3, 2);
-  graph.AddEdge(2, 3, 1);
+  graph.AddEdge({1, 2, 5});
+  graph.AddEdge({1, 3, 2});
+  graph.AddEdge({2, 3, 1});
 
   auto distances = DAGRelaxation(graph, 1);
   std::unordered_map<int, long> expected_distances = {{1, 0}, {2, 5}, {3, 2}};
@@ -257,9 +257,9 @@ TEST(DAGRelaxationTest, IntVerticesAndWeights) {
 TEST(DAGRelaxationTest, CharVerticesAndDoubleWeights) {
   Graph<std::string, double> graph;
 
-  graph.AddEdge("A", "B", 3.5);
-  graph.AddEdge("A", "C", 1.5);
-  graph.AddEdge("B", "C", 2.5);
+  graph.AddEdge({"A", "B", 3.5});
+  graph.AddEdge({"A", "C", 1.5});
+  graph.AddEdge({"B", "C", 2.5});
 
   auto distances = DAGRelaxation(graph, std::string("A"));
 
@@ -273,9 +273,9 @@ TEST(DAGRelaxationTest, CharVerticesAndDoubleWeights) {
 TEST(DAGRelaxationTest, StringVerticesAndLongWeights) {
   Graph<std::string, long> graph;
 
-  graph.AddEdge("A", "B", 10);
-  graph.AddEdge("A", "C", 5);
-  graph.AddEdge("B", "C", 2);
+  graph.AddEdge({"A", "B", 10});
+  graph.AddEdge({"A", "C", 5});
+  graph.AddEdge({"B", "C", 2});
 
   auto distances = DAGRelaxation(graph, std::string("A"));
 
@@ -317,7 +317,7 @@ TEST(ComplicatedBadSolutionTest, ValeryWinsSimple) {
   EXPECT_EQ(output.str(), "Deadlock! Valery!\n");
 }
 
-TEST(ComplicatedBadSolutionTest, PetyaWins) {
+TEST(ComplicatedGoodBadSolutionTest, PetyaWins) {
   std::stringstream ss;
   ss << "##V########\n"
      << "#000000000#\n"
@@ -373,7 +373,7 @@ TEST(ComplicatedBadSolutionTest, PetyaWins) {
   EXPECT_EQ(output_22.str(), "Petya! with 8\n");
 }
 
-TEST(ComplicatedBadSolutionTest, VasyaWins) {
+TEST(ComplicatedGoodBadSolutionTest, VasyaWins) {
   std::stringstream ss;
   ss << "##V########\n"
      << "#000000000#\n"
@@ -431,41 +431,45 @@ TEST(ComplicatedBadSolutionTest, VasyaWins) {
 
 TEST(ComplicatedBadSolutionTest, PetyaWinsHardDAGRelaxation) {
   std::stringstream ss;
-  ss << "###V###\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "#000000\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "####P##\n\n";
+  ss << "###P####\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#0000000\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "####V###\n\n";
 
   std::stringstream output;
 
   ComplicatedBadSolution(ss, output);
-  EXPECT_EQ(output.str(), "Petya! with 6\n");
+  EXPECT_EQ(output.str(), "Petya! with 8\n");
 }
 
-TEST(ComplicatedBadSolutionTest, PetyaWinsHardAStar) {
+TEST(ComplicatedGoodSolutionTest, PetyaWinsHardAStar) {
   std::stringstream ss;
-  ss << "###V###\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "#000000\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "#00000#\n"
-     << "####P##\n\n";
+  ss << "###P####\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#0000000\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "#000000#\n"
+     << "####V###\n\n";
 
   std::stringstream output;
 
   GoodSolution(ss, output);
-  EXPECT_EQ(output.str(), "Petya! with 6\n");
+  EXPECT_EQ(output.str(), "Petya! with 8\n");
 }
 
-TEST(ComplicatedBadSolutionTest, Draw) {
+TEST(ComplicatedGoodBadSolutionTest, Draw) {
   std::stringstream ss;
   ss << "##V########\n"
      << "#000000000#\n"
@@ -494,7 +498,7 @@ TEST(ComplicatedBadSolutionTest, Draw) {
   EXPECT_EQ(output_12.str(), "Draw! with 25\n");
 }
 
-TEST(ComplicatedBadSolutionTest, ValeryWins) {
+TEST(ComplicatedGoodBadSolutionTest, ValeryWins) {
   std::stringstream ss;
   ss << "##V########\n"
      << "#000000000#\n"
