@@ -29,15 +29,15 @@ TEST(FindBridgesTest, EmptyGraph) {
 
 TEST(FindBridgesTest, SimpleGraphs) {
   Graph<size_t, long> graph;
-  graph.AddEdge(0, 1);
-  graph.AddEdge(1, 2);
+  graph.AddEdge({0, 1});
+  graph.AddEdge({1, 2});
 
   auto bridges = FindBridges(graph);
   std::vector<std::pair<size_t, size_t>> answer = {{0, 1}, {1, 2}};
 
   ASSERT_EQ(bridges, answer);
 
-  graph.AddEdge(2, 3);
+  graph.AddEdge({2, 3});
 
   bridges = FindBridges(graph);
   answer = {{0, 1}, {1, 2}, {2, 3}};
@@ -50,12 +50,12 @@ TEST(FindBridgesTest, SimpleGraphs) {
 
 TEST(FindBridgesTest, MultipleBridges) {
   Graph<size_t, long> graph;
-  graph.AddEdge(0, 1);
-  graph.AddEdge(0, 2);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(2, 3);
-  graph.AddEdge(3, 4);
-  graph.AddEdge(4, 5);
+  graph.AddEdge({0, 1});
+  graph.AddEdge({0, 2});
+  graph.AddEdge({1, 2});
+  graph.AddEdge({2, 3});
+  graph.AddEdge({3, 4});
+  graph.AddEdge({4, 5});
 
   auto bridges = FindBridges(graph);
   std::vector<std::pair<size_t, size_t>> answer = {
@@ -66,16 +66,16 @@ TEST(FindBridgesTest, MultipleBridges) {
 
 TEST(FindBridgesTest, ComplexGraph) {
   Graph<size_t, long> graph;
-  graph.AddEdge(0, 1);
-  graph.AddEdge(0, 2);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(1, 3);
-  graph.AddEdge(2, 3);
-  graph.AddEdge(3, 4);
-  graph.AddEdge(4, 5);
-  graph.AddEdge(4, 6);
-  graph.AddEdge(5, 6);
-  graph.AddEdge(6, 7);
+  graph.AddEdge({0, 1});
+  graph.AddEdge({0, 2});
+  graph.AddEdge({1, 2});
+  graph.AddEdge({1, 3});
+  graph.AddEdge({2, 3});
+  graph.AddEdge({3, 4});
+  graph.AddEdge({4, 5});
+  graph.AddEdge({4, 6});
+  graph.AddEdge({5, 6});
+  graph.AddEdge({6, 7});
   graph.MakeUndirected();
 
   auto bridges = FindBridges(graph);
@@ -106,15 +106,15 @@ TEST(FindCutVerticesTest, EmptyGraph) {
 
 TEST(FindCutVerticesTest, SimpleGraphs) {
   Graph<size_t, long> graph;
-  graph.AddEdge(0, 1);
-  graph.AddEdge(1, 2);
+  graph.AddEdge({0, 1});
+  graph.AddEdge({1, 2});
 
   auto cut_vertices = FindCutVertices(graph);
   std::vector<size_t> answer = {1};
 
   ASSERT_EQ(cut_vertices, answer);
 
-  graph.AddEdge(2, 3);
+  graph.AddEdge({2, 3});
 
   cut_vertices = FindCutVertices(graph);
   answer = {1, 2};
@@ -127,12 +127,12 @@ TEST(FindCutVerticesTest, SimpleGraphs) {
 
 TEST(FindCutVerticesTest, MultipleBridges) {
   Graph<size_t, long> graph;
-  graph.AddEdge(0, 1);
-  graph.AddEdge(0, 2);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(2, 3);
-  graph.AddEdge(3, 4);
-  graph.AddEdge(4, 5);
+  graph.AddEdge({0, 1});
+  graph.AddEdge({0, 2});
+  graph.AddEdge({1, 2});
+  graph.AddEdge({2, 3});
+  graph.AddEdge({3, 4});
+  graph.AddEdge({4, 5});
 
   graph.MakeUndirected();
 
@@ -144,16 +144,16 @@ TEST(FindCutVerticesTest, MultipleBridges) {
 
 TEST(FindCutVerticesTest, ComplexGraph) {
   Graph<size_t, long> graph;
-  graph.AddEdge(0, 1);
-  graph.AddEdge(0, 2);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(1, 3);
-  graph.AddEdge(2, 3);
-  graph.AddEdge(3, 4);
-  graph.AddEdge(4, 5);
-  graph.AddEdge(4, 6);
-  graph.AddEdge(5, 6);
-  graph.AddEdge(6, 7);
+  graph.AddEdge({0, 1});
+  graph.AddEdge({0, 2});
+  graph.AddEdge({1, 2});
+  graph.AddEdge({1, 3});
+  graph.AddEdge({2, 3});
+  graph.AddEdge({3, 4});
+  graph.AddEdge({4, 5});
+  graph.AddEdge({4, 6});
+  graph.AddEdge({5, 6});
+  graph.AddEdge({6, 7});
   graph.MakeUndirected();
 
   auto cut_vertices = FindCutVertices(graph);

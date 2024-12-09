@@ -28,13 +28,13 @@ inline bool operator!=(const std::unordered_map<Key, Value>& lhs,
 
 TEST(DijkstraTest, SimpleDAG_A) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = Dijkstra(graph, std::string("A"));
 
@@ -46,13 +46,13 @@ TEST(DijkstraTest, SimpleDAG_A) {
 
 TEST(DijkstraTest, SimpleDAG_B) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = Dijkstra(graph, std::string("B"));
 
@@ -65,13 +65,13 @@ TEST(DijkstraTest, SimpleDAG_B) {
 
 TEST(DijkstraTest, SimpleDAG_C) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = Dijkstra(graph, std::string("C"));
 
@@ -83,13 +83,13 @@ TEST(DijkstraTest, SimpleDAG_C) {
 
 TEST(DijkstraTest, SimpleDAG_D) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = Dijkstra(graph, std::string("D"));
 
@@ -102,13 +102,13 @@ TEST(DijkstraTest, SimpleDAG_D) {
 
 TEST(DijkstraTest, SimpleDAG_E) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = Dijkstra(graph, std::string("E"));
 
@@ -121,13 +121,13 @@ TEST(DijkstraTest, SimpleDAG_E) {
 
 TEST(DijkstraTest, SimpleDAG_F) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
   auto distances = Dijkstra(graph, std::string("F"));
 
@@ -140,13 +140,13 @@ TEST(DijkstraTest, SimpleDAG_F) {
 
 TEST(DijkstraTest, UnweightedDAG) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B");
-  graph.AddEdge("A", "C");
-  graph.AddEdge("B", "D");
-  graph.AddEdge("C", "D");
-  graph.AddEdge("C", "E");
-  graph.AddEdge("D", "F");
-  graph.AddEdge("E", "F");
+  graph.AddEdge({"A", "B"});
+  graph.AddEdge({"A", "C"});
+  graph.AddEdge({"B", "D"});
+  graph.AddEdge({"C", "D"});
+  graph.AddEdge({"C", "E"});
+  graph.AddEdge({"D", "F"});
+  graph.AddEdge({"E", "F"});
 
   auto distances = Dijkstra(graph, std::string("A"));
 
@@ -158,10 +158,10 @@ TEST(DijkstraTest, UnweightedDAG) {
 
 TEST(DijkstraTest, NonDirectedGraph) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B");
-  graph.AddEdge("A", "C");
-  graph.AddEdge("B", "D");
-  graph.AddEdge("C", "D");
+  graph.AddEdge({"A", "B"});
+  graph.AddEdge({"A", "C"});
+  graph.AddEdge({"B", "D"});
+  graph.AddEdge({"C", "D"});
 
   graph.MakeUndirected();
 
@@ -177,10 +177,10 @@ TEST(DijkstraTest, NonDirectedGraph) {
 
 TEST(DijkstraTest, NonExistingStartVertex) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B");
-  graph.AddEdge("A", "C");
-  graph.AddEdge("B", "D");
-  graph.AddEdge("C", "D");
+  graph.AddEdge({"A", "B"});
+  graph.AddEdge({"A", "C"});
+  graph.AddEdge({"B", "D"});
+  graph.AddEdge({"C", "D"});
 
   graph.MakeUndirected();
 
@@ -189,15 +189,15 @@ TEST(DijkstraTest, NonExistingStartVertex) {
 
 TEST(DijkstraTest, DAGWithNoIncomingEdges) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
-  graph.AddEdge("A", "C", 3);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 4);
-  graph.AddEdge("C", "E", 1);
-  graph.AddEdge("D", "F", 7);
-  graph.AddEdge("E", "F", 2);
+  graph.AddEdge({"A", "B", 5});
+  graph.AddEdge({"A", "C", 3});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 4});
+  graph.AddEdge({"C", "E", 1});
+  graph.AddEdge({"D", "F", 7});
+  graph.AddEdge({"E", "F", 2});
 
-  graph.AddEdge("G", "F", 3);
+  graph.AddEdge({"G", "F", 3});
 
   auto distances = Dijkstra(graph, std::string("A"));
 
@@ -221,7 +221,7 @@ TEST(DijkstraTest, OneVertDAG) {
 
 TEST(DijkstraTest, TwoVertsDAG) {
   Graph<std::string, long> graph;
-  graph.AddEdge("A", "B", 5);
+  graph.AddEdge({"A", "B", 5});
 
   auto distances = Dijkstra(graph, std::string("A"));
 
@@ -234,10 +234,10 @@ TEST(DijkstraTest, TwoVertsDAG) {
 TEST(DijkstraTest, MultiplePathsToOneVertex) {
   Graph<std::string, long> graph;
 
-  graph.AddEdge("A", "B", 1);
-  graph.AddEdge("A", "C", 4);
-  graph.AddEdge("B", "D", 2);
-  graph.AddEdge("C", "D", 1);
+  graph.AddEdge({"A", "B", 1});
+  graph.AddEdge({"A", "C", 4});
+  graph.AddEdge({"B", "D", 2});
+  graph.AddEdge({"C", "D", 1});
 
   auto distances = Dijkstra(graph, std::string("A"));
   std::unordered_map<std::string, long> expected_distances = {
@@ -249,9 +249,9 @@ TEST(DijkstraTest, MultiplePathsToOneVertex) {
 TEST(DijkstraTest, IntVerticesAndWeights) {
   Graph<int, long> graph;
 
-  graph.AddEdge(1, 2, 5);
-  graph.AddEdge(1, 3, 2);
-  graph.AddEdge(2, 3, 1);
+  graph.AddEdge({1, 2, 5});
+  graph.AddEdge({1, 3, 2});
+  graph.AddEdge({2, 3, 1});
 
   auto distances = Dijkstra(graph, 1);
   std::unordered_map<int, long> expected_distances = {{1, 0}, {2, 5}, {3, 2}};
@@ -262,9 +262,9 @@ TEST(DijkstraTest, IntVerticesAndWeights) {
 TEST(DijkstraTest, CharVerticesAndDoubleWeights) {
   Graph<std::string, double> graph;
 
-  graph.AddEdge("A", "B", 3.5);
-  graph.AddEdge("A", "C", 1.5);
-  graph.AddEdge("B", "C", 2.5);
+  graph.AddEdge({"A", "B", 3.5});
+  graph.AddEdge({"A", "C", 1.5});
+  graph.AddEdge({"B", "C", 2.5});
 
   auto distances = Dijkstra(graph, std::string("A"));
 
@@ -277,9 +277,9 @@ TEST(DijkstraTest, CharVerticesAndDoubleWeights) {
 TEST(DijkstraTest, StringVerticesAndLongWeights) {
   Graph<std::string, long> graph;
 
-  graph.AddEdge("A", "B", 10);
-  graph.AddEdge("A", "C", 5);
-  graph.AddEdge("B", "C", 2);
+  graph.AddEdge({"A", "B", 10});
+  graph.AddEdge({"A", "C", 5});
+  graph.AddEdge({"B", "C", 2});
 
   auto distances = Dijkstra(graph, std::string("A"));
 
@@ -307,8 +307,8 @@ TEST(DijkstraTest, SimpleUnweightedGraph) {
   graph.AddVert(1);
   graph.AddVert(2);
   graph.AddVert(3);
-  graph.AddEdge(1, 2);
-  graph.AddEdge(2, 3);
+  graph.AddEdge({1, 2});
+  graph.AddEdge({2, 3});
   auto distances = Dijkstra(graph, 1);
   EXPECT_EQ(distances.size(), 3);
   EXPECT_EQ(distances[1], 0);
@@ -321,8 +321,8 @@ TEST(DijkstraTest, SimpleWeightedGraph) {
   graph.AddVert(1);
   graph.AddVert(2);
   graph.AddVert(3);
-  graph.AddEdge(1, 2, 4);
-  graph.AddEdge(2, 3, 2);
+  graph.AddEdge({1, 2, 4});
+  graph.AddEdge({2, 3, 2});
   auto distances = Dijkstra(graph, 1);
   EXPECT_EQ(distances.size(), 3);
   EXPECT_EQ(distances[1], 0);
@@ -335,7 +335,7 @@ TEST(DijkstraTest, GraphWithDisconnectedVertices) {
   graph.AddVert(1);
   graph.AddVert(2);
   graph.AddVert(3);
-  graph.AddEdge(1, 2, 4);
+  graph.AddEdge({1, 2, 4});
 
   auto distances = Dijkstra(graph, 1);
   EXPECT_EQ(distances.size(), 3);
@@ -348,7 +348,7 @@ TEST(DijkstraTest, NegativeWeightException) {
   Graph<int, int> graph;
   graph.AddVert(1);
   graph.AddVert(2);
-  graph.AddEdge(1, 2, -1);
+  graph.AddEdge({1, 2, -1});
   EXPECT_THROW(Dijkstra(graph, 1), std::logic_error);
 }
 
@@ -365,11 +365,11 @@ TEST(DijkstraTest, MoreComplexGraph) {
   graph.AddVert(3);
   graph.AddVert(4);
   graph.AddVert(5);
-  graph.AddEdge(1, 2, 4);
-  graph.AddEdge(1, 3, 2);
-  graph.AddEdge(2, 3, 1);
-  graph.AddEdge(3, 4, 5);
-  graph.AddEdge(4, 5, 3);
+  graph.AddEdge({1, 2, 4});
+  graph.AddEdge({1, 3, 2});
+  graph.AddEdge({2, 3, 1});
+  graph.AddEdge({3, 4, 5});
+  graph.AddEdge({4, 5, 3});
 
   auto distances = Dijkstra(graph, 1);
   EXPECT_EQ(distances.size(), 5);
@@ -385,9 +385,9 @@ TEST(DijkstraTest, GraphWithCycle) {
   graph.AddVert(1);
   graph.AddVert(2);
   graph.AddVert(3);
-  graph.AddEdge(1, 2, 2);
-  graph.AddEdge(2, 3, 3);
-  graph.AddEdge(3, 1, 1);
+  graph.AddEdge({1, 2, 2});
+  graph.AddEdge({2, 3, 3});
+  graph.AddEdge({3, 1, 1});
   auto distances = Dijkstra(graph, 1);
   EXPECT_EQ(distances[1], 0);
   EXPECT_EQ(distances[2], 2);
@@ -399,8 +399,8 @@ TEST(DijkstraTest, MultipleShortestPaths) {
   graph.AddVert(1);
   graph.AddVert(2);
   graph.AddVert(3);
-  graph.AddEdge(1, 2, 4);
-  graph.AddEdge(1, 3, 4);
+  graph.AddEdge({1, 2, 4});
+  graph.AddEdge({1, 3, 4});
   auto distances = Dijkstra(graph, 1);
   EXPECT_EQ(distances[1], 0);
   EXPECT_EQ(distances[2], 4);
@@ -410,18 +410,18 @@ TEST(DijkstraTest, MultipleShortestPaths) {
 TEST(DijkstraTest, LargerGraph) {
   Graph<int, int> graph;
 
-  graph.AddEdge(1, 2, 2);
-  graph.AddEdge(1, 3, 5);
-  graph.AddEdge(2, 4, 4);
-  graph.AddEdge(2, 5, 1);
-  graph.AddEdge(3, 6, 3);
-  graph.AddEdge(3, 7, 2);
-  graph.AddEdge(4, 8, 6);
-  graph.AddEdge(5, 9, 3);
-  graph.AddEdge(7, 10, 4);
-  graph.AddEdge(10, 9, 1);
-  graph.AddEdge(8, 6, 2);
-  graph.AddEdge(9, 4, 9);
+  graph.AddEdge({1, 2, 2});
+  graph.AddEdge({1, 3, 5});
+  graph.AddEdge({2, 4, 4});
+  graph.AddEdge({2, 5, 1});
+  graph.AddEdge({3, 6, 3});
+  graph.AddEdge({3, 7, 2});
+  graph.AddEdge({4, 8, 6});
+  graph.AddEdge({5, 9, 3});
+  graph.AddEdge({7, 10, 4});
+  graph.AddEdge({10, 9, 1});
+  graph.AddEdge({8, 6, 2});
+  graph.AddEdge({9, 4, 9});
 
   graph.MakeUndirected();
 
@@ -436,7 +436,7 @@ TEST(DijkstraTest, FloatingPointWeights) {
   Graph<int, float> graph;
   graph.AddVert(1);
   graph.AddVert(2);
-  graph.AddEdge(1, 2, 2.5f);
+  graph.AddEdge({1, 2, 2.5f});
   auto distances = Dijkstra(graph, 1);
   EXPECT_FLOAT_EQ(distances[1], 0.0f);
   EXPECT_FLOAT_EQ(distances[2], 2.5f);

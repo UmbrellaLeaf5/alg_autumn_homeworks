@@ -5,10 +5,10 @@
 
 int main() {
   Graph<int, long> g;
-  g.AddEdge(0, 1);
-  g.AddEdge(0, 2);
-  g.AddEdge(1, 2);
-  g.AddEdge(3, 2);
+  g.AddEdge({0, 1});
+  g.AddEdge({0, 2});
+  g.AddEdge({1, 2});
+  g.AddEdge({3, 2});
 
   g.MakeUndirected();
 
