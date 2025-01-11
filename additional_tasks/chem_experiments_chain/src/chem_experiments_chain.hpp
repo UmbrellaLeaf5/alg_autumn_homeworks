@@ -13,7 +13,7 @@ void Solution(std::istream& is = std::cin, std::ostream& os = std::cout) {
     std::string u, v;
     is >> u >> v;
 
-    graph.AddEdge(u, v);
+    graph.AddEdge({u, v});
     graph.AddVert(u);
     graph.AddVert(v);
   }

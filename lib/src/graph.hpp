@@ -128,8 +128,7 @@ class Graph {
           "match.");
 
     for (size_t i = 0; i < weights.size(); i++)
-      edges.push_back(
-          Edge(edges_pairs[i].first, edges_pairs[i].second, weights[i]));
+      edges.push_back(Edge(edges_pairs[i], weights[i]));
 
     return Graph(edges);
   }
@@ -534,16 +533,19 @@ class Graph {
   }
 
   /// @warning `"AddEdge: weighted graph must consist of weighted edges.`
-  void AddEdge(const std::tuple<vert_t, vert_t, weight_t>& edge_tuple) {
+  void AddEdge(const std::tuple<vert_t, vert_t, weight_t>& edge_tuple,
+               bool ignore_warning = false) {
     if (WeightFromTuple(edge_tuple) == 0)
-      AddEdge({StartVertFromTuple(edge_tuple), EndVertFromTuple(edge_tuple)});
+      AddEdge({StartVertFromTuple(edge_tuple), EndVertFromTuple(edge_tuple)},
+              ignore_warning);
     else
       AddEdge_(edge_tuple);
   }
 
   /// @warning `"AddEdge: weighted graph must consist of weighted edges.`
-  void AddEdge(const std::pair<vert_t, vert_t>& edge_pair) {
-    if (IsWeighted())
+  void AddEdge(const std::pair<vert_t, vert_t>& edge_pair,
+               bool ignore_warning = false) {
+    if (IsWeighted() && !ignore_warning)
       std::cerr << "Warning! AddEdge: weighted graph should consist of "
                    "weighted edges."
                 << std::endl;
