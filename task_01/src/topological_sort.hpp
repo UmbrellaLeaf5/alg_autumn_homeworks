@@ -5,10 +5,10 @@
 namespace {
 
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
-void TopologicalSortStep(const vert_t& u_vert,
-                         std::unordered_map<vert_t, bool>& visited,
-                         Graph<vert_t, weight_t>& graph,
-                         std::vector<vert_t>& topological_order) {
+inline void TopologicalSortStep(const vert_t& u_vert,
+                                std::unordered_map<vert_t, bool>& visited,
+                                Graph<vert_t, weight_t>& graph,
+                                std::vector<vert_t>& topological_order) {
   if (visited[u_vert])
     throw std::invalid_argument("TopologicalSort: graph contains cycle.");
 
@@ -28,15 +28,15 @@ void TopologicalSortStep(const vert_t& u_vert,
 /**
  * @brief Производит топологическую сортировку вершин на основе обхода в глубину
  * (DFS)
- * @tparam vert_t: тип вершины в графе
- * @tparam weight_t: тип веса в графе
- * @param graph: сортируемый граф
- * @throw std::invalid_argument("TopologicalSort: graph is not directed.");
- * @throw std::invalid_argument("TopologicalSort: graph contains cycle.");
- * @return std::vector<vert_t>: список отсортированных вершин
+ * @tparam vert_t: тип вершины в графе.
+ * @tparam weight_t: тип веса в графе.
+ * @param graph: сортируемый граф.
+ * @throw std::invalid_argument("TopologicalSort: graph is not directed.").
+ * @throw std::invalid_argument("TopologicalSort: graph contains cycle.").
+ * @return std::vector<vert_t>: список отсортированных вершин.
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
-std::vector<vert_t> TopologicalSort(Graph<vert_t, weight_t> graph) {
+inline std::vector<vert_t> TopologicalSort(Graph<vert_t, weight_t> graph) {
   if (!graph.IsDirected())
     throw std::invalid_argument("TopologicalSort: graph is not directed.");
 

@@ -4,28 +4,6 @@
 
 #define LONG_INF std::numeric_limits<long>::max()
 
-namespace {
-
-template <typename Key, typename Value>
-inline bool operator==(const std::unordered_map<Key, Value>& lhs,
-                       const std::unordered_map<Key, Value>& rhs) {
-  if (lhs.size() != rhs.size()) return false;
-
-  for (const auto& [key, value] : lhs)
-    if (rhs.find(key) == rhs.end() || rhs[key] != value) return false;
-
-  // else
-  return true;
-}
-
-template <typename Key, typename Value>
-inline bool operator!=(const std::unordered_map<Key, Value>& lhs,
-                       const std::unordered_map<Key, Value>& rhs) {
-  return !(lhs == rhs);
-}
-
-}  // namespace
-
 TEST(DijkstraTest, SimpleDAG_A) {
   Graph<std::string, long> graph;
   graph.AddEdge({"A", "B", 5});

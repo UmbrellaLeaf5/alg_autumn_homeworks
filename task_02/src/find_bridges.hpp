@@ -40,11 +40,11 @@ inline void FindBridgesStep(
 }  // namespace
 
 /**
- * @brief Поиск мостов в графе (используя элементы алгоритма Тарьяна)
- * @tparam vert_t: тип вершин
- * @tparam weight_t: тип весов
- * @param graph: исходный граф
- * @return std::vector<std::pair<vert_t, vert_t>>: мосты в графе
+ * @brief Поиск мостов в графе (используя элементы алгоритма Тарьяна).
+ * @tparam vert_t: тип вершин.
+ * @tparam weight_t: тип весов.
+ * @param graph: исходный граф.
+ * @return std::vector<std::pair<vert_t, vert_t>>: мосты в графе.
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 inline std::vector<std::pair<vert_t, vert_t>> FindBridges(

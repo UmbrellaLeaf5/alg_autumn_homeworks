@@ -15,12 +15,12 @@
 using std::size_t;
 
 /**
- * @brief Выводит все элементы пары в поток
- * @tparam Type1: тип, возможный к выводу в консоль
- * @tparam Type2: тип, возможный к выводу в консоль
- * @param os: ссылка на поток, в который надо вывести (мод.)
- * @param pair: пара элементов произвольного типа
- * @return std::ostream&: ссылка на поток, в который вывели
+ * @brief Выводит все элементы пары в поток.
+ * @tparam Type1: тип, возможный к выводу в консоль.
+ * @tparam Type2: тип, возможный к выводу в консоль.
+ * @param os: ссылка на поток, в который надо вывести (мод.).
+ * @param pair: пара элементов произвольного типа.
+ * @return std::ostream&: ссылка на поток, в который вывели.
  */
 template <typename Type1, typename Type2>
 inline std::ostream& operator<<(std::ostream& os,
@@ -29,12 +29,12 @@ inline std::ostream& operator<<(std::ostream& os,
 }
 
 /**
- * @brief Выводит все элементы std::tuple в поток
- * @tparam I: текущий индекс, обрабатываемый в кортеже
- * @tparam Ts: типы элементов в кортеже
- * @param os: выходной поток, в который будут записаны элементы кортежа
- * @param t: кортеж, который нужно распечатать
- * @return std::ostream&: модифицированный выходной поток
+ * @brief Выводит все элементы std::tuple в поток.
+ * @tparam I: текущий индекс, обрабатываемый в кортеже.
+ * @tparam Ts: типы элементов в кортеже.
+ * @param os: выходной поток, в который будут записаны элементы кортежа.
+ * @param t: кортеж, который нужно распечатать.
+ * @return std::ostream&: модифицированный выходной поток.
  */
 template <std::size_t I = 0, typename... Ts>
 static std::ostream& PrintTuple(std::ostream& os, const std::tuple<Ts...>& t) {
@@ -48,7 +48,7 @@ static std::ostream& PrintTuple(std::ostream& os, const std::tuple<Ts...>& t) {
 }
 
 /**
- * @brief Выводит все элементы std::tuple в поток
+ * @brief Выводит все элементы std::tuple в поток.
  * @tparam Ts: типы элементов в кортеже.
  * @param os: выходной поток, в который будет записан кортеж.
  * @param t: кортеж, который нужно распечатать.
@@ -62,11 +62,11 @@ std::ostream& operator<<(std::ostream& os, const std::tuple<Ts...>& t) {
 }
 
 /**
- * @brief Выводит все элементы вектора в поток
- * @tparam Type: тип, возможный к выводу в консоль
- * @param os: ссылка на поток, в который надо вывести (мод.)
- * @param vec: вектор элементов произвольного типа
- * @return std::ostream&: ссылка на поток, в который вывели
+ * @brief Выводит все элементы вектора в поток.
+ * @tparam Type: тип, возможный к выводу в консоль.
+ * @param os: ссылка на поток, в который надо вывести (мод.).
+ * @param vec: вектор элементов произвольного типа.
+ * @return std::ostream&: ссылка на поток, в который вывели.
  */
 template <typename Type>
 inline std::ostream& operator<<(std::ostream& os,
@@ -82,12 +82,12 @@ inline std::ostream& operator<<(std::ostream& os,
 }
 
 /**
- * @brief Выводит все элементы std::unordered_map в выходной поток
- * @tparam K: тип ключей в неупорядоченной карте
- * @tparam V: тип значений в неупорядоченной карте
- * @param os: выходной поток, в который будет записан словарь
- * @param map: словарь, который нужно распечатать
- * @return std::ostream&: модифицированный выходной поток
+ * @brief Выводит все элементы std::unordered_map в выходной поток.
+ * @tparam K: тип ключей в неупорядоченной карте.
+ * @tparam V: тип значений в неупорядоченной карте.
+ * @param os: выходной поток, в который будет записан словарь.
+ * @param map: словарь, который нужно распечатать.
+ * @return std::ostream&: модифицированный выходной поток.
  */
 template <typename K, typename V>
 std::ostream& operator<<(std::ostream& os,
@@ -106,30 +106,30 @@ std::ostream& operator<<(std::ostream& os,
 }
 
 /**
- * @brief функция, которая обрезает незнач. нули float при преобр. в строку
- * @param number: число типа float
- * @return std::string: итоговое число, записанное в строку
+ * @brief функция, которая обрезает незнач. нули float при преобр. в строку.
+ * @param number: число типа float.
+ * @return std::string: итоговое число, записанное в строку.
  */
 inline std::string ErasedZerosStr(float number) {
-  std::string str = std::to_string(number);
+  std::string origin = std::to_string(number);
 
   // удаляем незначащие нули
-  str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+  origin.erase(origin.find_last_not_of('0') + 1, std::string::npos);
 
   // если последний символ - десятичная точка, удаляем
-  if (str.back() == '.') str.pop_back();
+  if (origin.back() == '.') origin.pop_back();
 
-  return str;
+  return origin;
 }
 
 /**
- * @brief перегрузка, которая вводит все элементы вектора из потока
+ * @brief перегрузка, которая вводит все элементы вектора из потока.
  * (работает исключительно с консолью, так как
  * (вывод о текущем состоянии происходит туда)
- * @tparam Type: тип, возможный к выводу в консоль
- * @param is: ссылка на поток, из которого надо ввести (мод.)
- * @param vec: вектор элементов типа Type (мод.)
- * @return std::istream&: ссылка на поток, из которого ввели
+ * @tparam Type: тип, возможный к выводу в консоль.
+ * @param is: ссылка на поток, из которого надо ввести (мод.).
+ * @param vec: вектор элементов типа Type (мод.).
+ * @return std::istream&: ссылка на поток, из которого ввели.
  */
 template <typename Type>
 inline std::istream& operator>>(std::istream& is, std::vector<Type>& vec) {
@@ -166,14 +166,27 @@ inline std::istream& operator>>(std::istream& is, std::vector<Type>& vec) {
 }
 
 /**
- * @brief Проверяет наличие элемента в векторе
- * @tparam T: тип элемента
- * @param vec: исходный вектор
- * @param value: искомое значение
- * @return true: элемент найден
- * @return false: элемент не найден
+ * @brief Проверяет наличие элемента в векторе.
+ * @tparam T: тип элемента.
+ * @param vec: исходный вектор.
+ * @param value: искомое значение.
+ * @return true: элемент найден.
+ * @return false: элемент не найден.
  */
 template <typename T>
 inline bool Contains(const std::vector<T>& vec, const T& value) {
   return std::find(vec.begin(), vec.end(), value) != vec.end();
+}
+
+/**
+ * @brief Удаляет подстроку из начала строки, если она там присутствует.
+ * @param origin: исходная строка, из которой нужно удалить подстроку.
+ * @param substring: подстрока, которую нужно удалить из начала строки.
+ * @return `std::string: строка, в которой подстрока (если она была) удалена из
+ * начала.`
+ */
+inline std::string ReplacedString(std::string origin,
+                                  const std::string& substring) {
+  return origin.rfind(substring, 0) == 0 ? origin.erase(0, substring.length())
+                                         : origin;
 }
