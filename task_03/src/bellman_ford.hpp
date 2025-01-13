@@ -35,7 +35,8 @@ inline std::unordered_map<vert_t, weight_t> BellmanFord(
   distances[start] = 0;
 
   // if d[v] > d[u] + ω(u,v)
-  auto Condition = [&distances](vert_t u, vert_t v, weight_t weight) {
+  auto Condition = [&distances](const vert_t& u, const vert_t& v,
+                                weight_t weight) {
     return distances[u] != std::numeric_limits<weight_t>::max() &&
            distances[u] + weight < distances[v];
   };

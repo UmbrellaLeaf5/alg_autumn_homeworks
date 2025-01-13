@@ -25,9 +25,12 @@ inline std::unordered_map<vert_t, std::unordered_map<vert_t, weight_t>> Johnson(
   // 1. Создание расширенного графа G'
   vert_t source_vert;
 
-  if constexpr (std::is_same_v<vert_t, std::string>)
-    source_vert = "___source_vert___";
-  else {
+  if constexpr (std::is_same_v<vert_t, std::string>) {
+    source_vert = "_____source_vert_____";
+    while (Contains(graph.Verts(), source_vert))
+      source_vert = "_" + source_vert + "_";
+
+  } else {
     source_vert = -1;
     for (const auto& vert : graph.Verts())
       if (vert <= source_vert) source_vert = vert - 1;

@@ -5,7 +5,7 @@
 namespace {
 
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
-inline void TopologicalSortStep(const vert_t& u_vert,
+inline void TopologicalSortStep(vert_t u_vert,
                                 std::unordered_map<vert_t, bool>& visited,
                                 Graph<vert_t, weight_t>& graph,
                                 std::vector<vert_t>& topological_order) {

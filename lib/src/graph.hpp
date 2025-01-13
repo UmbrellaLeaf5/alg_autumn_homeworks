@@ -6,11 +6,10 @@
 
 template <typename vert_t>
 concept AllowedVertType =
-    std::is_integral_v<vert_t> || std::is_same_v<vert_t, std::string>;
+    std::is_arithmetic_v<vert_t> || std::is_same_v<vert_t, std::string>;
 
 template <typename weight_t>
-concept AllowedWeightType =
-    std::is_integral_v<weight_t> || std::is_floating_point_v<weight_t>;
+concept AllowedWeightType = std::is_arithmetic_v<weight_t>;
 
 // MARK: VertFromTuple
 
@@ -36,9 +35,6 @@ inline weight_t WeightFromTuple(
 
 /**
  * @brief Класс графа (может быть взвешенным и ориентированным)
- * @details Поддерживаемые типы:
- * вес: char, short, int, long, size_t, float, double, long double
- * вершины: std::string, char, short, int, long, size_t
  * @tparam vert_t: тип вершин
  * @tparam weight_t: тип весов
  */
@@ -209,7 +205,7 @@ class Graph {
   static Graph GraphFromAdjMatrix(
       const std::vector<std::vector<weight_t>>& adj_matrix,
       bool is_weighted = false) {
-    if constexpr (std::is_integral_v<vert_t>) {
+    if constexpr (std::is_arithmetic_v<vert_t>) {
       if (adj_matrix.empty()) return Graph();
 
       std::vector<Edge> edges{};
@@ -253,7 +249,7 @@ class Graph {
    */
   static Graph GraphFromAdjList(
       const std::vector<std::vector<vert_t>>& adj_list) {
-    if constexpr (std::is_integral_v<vert_t>) {
+    if constexpr (std::is_arithmetic_v<vert_t>) {
       if (adj_list.empty()) return Graph();
 
       std::vector<Edge> edges{};
@@ -394,7 +390,7 @@ class Graph {
    * for std::string.")`
    */
   std::vector<std::vector<vert_t>> GetAdjListWithoutKeys() const {
-    if constexpr (std::is_integral_v<vert_t>) {
+    if constexpr (std::is_arithmetic_v<vert_t>) {
       std::vector<std::vector<vert_t>> adj_list(
           *std::max_element(Verts().begin(), Verts().end()) + 1);
 
@@ -431,7 +427,7 @@ class Graph {
    * std::string.")`
    */
   std::vector<std::vector<weight_t>> GetAdjMatrix() const {
-    if constexpr (std::is_integral_v<vert_t>) {
+    if constexpr (std::is_arithmetic_v<vert_t>) {
       std::vector<std::vector<weight_t>> adj_matrix(
           VertsAmount(), std::vector<weight_t>(VertsAmount(), 0));
 
@@ -528,7 +524,7 @@ class Graph {
     it->SetWeight(new_weight);
   }
 
-  void AddVert(vert_t vert) {
+  void AddVert(const vert_t& vert) {
     if (!Contains(verts_, vert)) verts_.push_back(vert);
   }
 
@@ -554,8 +550,8 @@ class Graph {
   }
 
   /// @throw `std::invalid_argument("RemoveVert: there is no such vert:")`
-  void RemoveVert(vert_t vert) {
-    if constexpr (std::is_integral_v<vert_t>) {
+  void RemoveVert(const vert_t& vert) {
+    if constexpr (std::is_arithmetic_v<vert_t>) {
       if (!Contains(Verts(), vert))
         throw std::invalid_argument(
             "RemoveVert: there is no such vert in graph: " +
@@ -663,7 +659,7 @@ class Graph {
     const std::string& Name() const {
       static std::string name;
 
-      if constexpr (std::is_integral_v<vert_t>) {
+      if constexpr (std::is_arithmetic_v<vert_t>) {
         if (IsWeighted())
           name = "[" + std::to_string(StartVert()) + "->" +
                  std::to_string(EndVert()) +
@@ -715,7 +711,7 @@ class Graph {
       AddEdge_(edge);
     }
 
-    if constexpr (std::is_integral_v<vert_t>) {
+    if constexpr (std::is_arithmetic_v<vert_t>) {
       // кол-во вершин = максимальная вершина среди ребер, т.е. в этом случае
       // происходит заполнение вершин до наибольшей из них в списке ребер
       vert_t max_vert = edges[0].StartVert();
@@ -757,7 +753,7 @@ class Graph {
       throw std::invalid_argument("EdgeString: invalid edge string format: " +
                                   edge_str);
 
-    if constexpr (std::is_integral_v<vert_t>) {
+    if constexpr (std::is_arithmetic_v<vert_t>) {
       try {
         start_vert = std::stoul(edge_str.substr(0, pos));
         end_vert = std::stoul(edge_str.substr(pos + 2));
