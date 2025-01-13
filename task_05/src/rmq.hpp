@@ -1,5 +1,6 @@
 #pragma once
 
+#include "implicit_treap.hpp"
 #include "lca.hpp"
 
 /**
