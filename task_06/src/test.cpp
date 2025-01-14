@@ -3,9 +3,9 @@
 #include "lca.hpp"
 
 TEST(LCATest, IntGraphDirected) {
-  Graph<int, int> graph =
-      Graph<int, int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
-  LCA<int, int> lca(graph, 0);
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(3, 4), 1);
   EXPECT_EQ(lca.Ancestor(3, 6), 0);
   EXPECT_EQ(lca.Ancestor(5, 6), 2);
@@ -15,10 +15,10 @@ TEST(LCATest, IntGraphDirected) {
 }
 
 TEST(LCATest, IntGraphUndirected) {
-  Graph<int, int> graph =
-      Graph<int, int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
   graph.MakeUndirected();
-  LCA<int, int> lca(graph, 0);
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(3, 4), 1);
   EXPECT_EQ(lca.Ancestor(3, 6), 0);
   EXPECT_EQ(lca.Ancestor(5, 6), 2);
@@ -28,13 +28,13 @@ TEST(LCATest, IntGraphUndirected) {
 }
 
 TEST(LCATest, IntGraphSingleNode) {
-  Graph<int, int> graph;
+  Graph<int> graph;
 
-  EXPECT_THROW((LCA<int, int>(graph, 0)), std::invalid_argument);
+  EXPECT_THROW((LCA<int>(graph, 0)), std::invalid_argument);
 
   graph.AddVert(0);
 
-  LCA<int, int> lca(graph, 0);
+  LCA<int> lca(graph, 0);
   // If there is only the root, LCA should still work, return the root itself
   EXPECT_EQ(lca.Ancestor(0, 0), 0);
   // test if we can actually call CalculateLCA function with an empty graph
@@ -43,9 +43,9 @@ TEST(LCATest, IntGraphSingleNode) {
 
 // Тесты для класса LCA и функции FindLCA с string вершинами
 TEST(LCATest, StringGraphDirected) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs(
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs(
       {"a->b", "a->c", "b->d", "b->e", "c->f", "c->g"});
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_EQ(lca.Ancestor("d", "e"), "b");
   EXPECT_EQ(lca.Ancestor("d", "f"), "a");
   EXPECT_EQ(lca.Ancestor("g", "e"), "a");
@@ -59,10 +59,10 @@ TEST(LCATest, StringGraphDirected) {
 }
 
 TEST(LCATest, StringGraphUndirected) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs(
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs(
       {"a->b", "a->c", "b->d", "b->e", "c->f", "c->g"});
   graph.MakeUndirected();
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_EQ(lca.Ancestor("d", "e"), "b");
   EXPECT_EQ(lca.Ancestor("d", "f"), "a");
   EXPECT_EQ(lca.Ancestor("g", "e"), "a");
@@ -76,13 +76,13 @@ TEST(LCATest, StringGraphUndirected) {
 }
 
 TEST(LCATest, StringGraphSingleNode) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs({});
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs({});
 
-  EXPECT_THROW((LCA<std::string, int>(graph, "a")), std::invalid_argument);
+  EXPECT_THROW((LCA<std::string>(graph, "a")), std::invalid_argument);
 
   graph.AddVert("a");
 
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_EQ(lca.Ancestor("a", "a"), "a");
   EXPECT_EQ(
       CalculateLCA(graph, std::string("a"), std::string("a"), std::string("a")),
@@ -91,34 +91,34 @@ TEST(LCATest, StringGraphSingleNode) {
 
 // Тесты для граничных случаев
 TEST(LCATest, SameNodeLCA) {
-  Graph<int, int> graph =
-      Graph<int, int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
-  LCA<int, int> lca(graph, 0);
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(3, 3), 3);
   EXPECT_EQ(CalculateLCA(graph, 0, 3, 3), 3);
 }
 
 TEST(LCATest, RootNodeLCA) {
-  Graph<int, int> graph =
-      Graph<int, int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
-  LCA<int, int> lca(graph, 0);
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(0, 3), 0);
   EXPECT_EQ(CalculateLCA(graph, 0, 0, 3), 0);
 }
 
 TEST(LCATest, IsolatedIntVertex) {
-  Graph<int, int> graph =
-      Graph<int, int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
-  LCA<int, int> lca(graph, 0);
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0, 5, 6}});
+  LCA<int> lca(graph, 0);
 
   EXPECT_THROW({ lca.Ancestor(3, 7); }, std::invalid_argument);
   EXPECT_THROW({ CalculateLCA(graph, 0, 3, 7); }, std::invalid_argument);
 }
 
 TEST(LCATest, IsolatedStringVertex) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs(
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs(
       {"a->b", "a->c", "b->d", "b->e", "c->f", "c->g"});
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_THROW({ lca.Ancestor("d", "h"); }, std::invalid_argument);
   EXPECT_THROW(
       {
@@ -129,22 +129,21 @@ TEST(LCATest, IsolatedStringVertex) {
 }
 
 TEST(LCATest, IsolatedIntRoot) {
-  Graph<int, int> graph;
-  EXPECT_THROW((LCA<int, int>(graph, 0)),
+  Graph<int> graph;
+  EXPECT_THROW((LCA<int>(graph, 0)),
                std::invalid_argument);  // проверяем исключение в конструкторе
 }
 
 TEST(LCATest, NotConnectedToInt) {
-  Graph<int, int> graph = Graph<int, int>::GraphFromAdjList(
-      std::vector<std::vector<int>>({{}, {}}));
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList(std::vector<std::vector<int>>({{}, {}}));
 
   EXPECT_THROW({ CalculateLCA(graph, 0, 0, 1); }, std::logic_error);
 }
 
 TEST(LCATest, NotConnectedToString) {
-  Graph<std::string, int> graph =
-      Graph<std::string, int>::GraphFromStrs({"a->b"});
-  LCA<std::string, int> lca(graph, "a");
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs({"a->b"});
+  LCA<std::string> lca(graph, "a");
   EXPECT_THROW({ lca.Ancestor("a", "c"); }, std::logic_error);
   EXPECT_THROW(
       {
@@ -155,9 +154,9 @@ TEST(LCATest, NotConnectedToString) {
 }
 
 TEST(LCATest, IntGraphDirected_Complex1) {
-  Graph<int, int> graph =
-      Graph<int, int>::GraphFromAdjList({{1, 2}, {3, 4}, {5}, {}, {}, {}});
-  LCA<int, int> lca(graph, 0);
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {3, 4}, {5}, {}, {}, {}});
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(3, 4), 1);
   EXPECT_EQ(lca.Ancestor(3, 5), 0);
   EXPECT_EQ(lca.Ancestor(4, 5), 0);
@@ -167,9 +166,9 @@ TEST(LCATest, IntGraphDirected_Complex1) {
 }
 
 TEST(LCATest, IntGraphDirected_Complex2) {
-  Graph<int, int> graph = Graph<int, int>::GraphFromAdjList(
-      {{1, 2}, {3, 4}, {5}, {6}, {}, {7}, {}});
-  LCA<int, int> lca(graph, 0);
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {3, 4}, {5}, {6}, {}, {7}, {}});
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(6, 7), 0);
   EXPECT_EQ(lca.Ancestor(3, 6), 3);
   EXPECT_EQ(lca.Ancestor(5, 7), 5);
@@ -180,10 +179,10 @@ TEST(LCATest, IntGraphDirected_Complex2) {
 }
 
 TEST(LCATest, IntGraphUndirected_Complex1) {
-  Graph<int, int> graph =
-      Graph<int, int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0}, {1}, {1}, {}});
+  Graph<int> graph =
+      Graph<int>::GraphFromAdjList({{1, 2}, {0, 3, 4}, {0}, {1}, {1}, {}});
   graph.MakeUndirected();
-  LCA<int, int> lca(graph, 0);
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(3, 4), 1);
   EXPECT_EQ(lca.Ancestor(2, 3), 0);
   EXPECT_EQ(lca.Ancestor(4, 2), 0);
@@ -193,10 +192,10 @@ TEST(LCATest, IntGraphUndirected_Complex1) {
 }
 
 TEST(LCATest, IntGraphUndirected_Complex2) {
-  Graph<int, int> graph = Graph<int, int>::GraphFromAdjList(
+  Graph<int> graph = Graph<int>::GraphFromAdjList(
       {{1}, {0, 2, 3}, {1}, {1, 4}, {3, 5, 6}, {4}, {4}});
   graph.MakeUndirected();
-  LCA<int, int> lca(graph, 0);
+  LCA<int> lca(graph, 0);
   EXPECT_EQ(lca.Ancestor(4, 5), 4);
   EXPECT_EQ(lca.Ancestor(2, 5), 1);
   EXPECT_EQ(lca.Ancestor(1, 6), 1);
@@ -206,9 +205,9 @@ TEST(LCATest, IntGraphUndirected_Complex2) {
 }
 
 TEST(LCATest, StringGraphDirected_Complex1) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs(
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs(
       {"a->b", "a->c", "b->d", "c->e", "c->f", "f->g"});
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_EQ(lca.Ancestor("d", "g"), "a");
   EXPECT_EQ(lca.Ancestor("g", "e"), "c");
   EXPECT_EQ(lca.Ancestor("b", "f"), "a");
@@ -221,9 +220,9 @@ TEST(LCATest, StringGraphDirected_Complex1) {
 }
 
 TEST(LCATest, StringGraphDirected_Complex2) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs(
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs(
       {"a->b", "a->c", "b->d", "b->e", "c->f", "f->g", "f->h", "g->i"});
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_EQ(lca.Ancestor("i", "h"), "f");
   EXPECT_EQ(lca.Ancestor("d", "i"), "a");
   EXPECT_EQ(lca.Ancestor("e", "d"), "b");
@@ -236,10 +235,10 @@ TEST(LCATest, StringGraphDirected_Complex2) {
 }
 
 TEST(LCATest, StringGraphUndirected_Complex1) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs(
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs(
       {"a->b", "a->c", "b->d", "c->e", "c->f", "f->g"});
   graph.MakeUndirected();
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_EQ(lca.Ancestor("e", "g"), "c");
   EXPECT_EQ(lca.Ancestor("b", "e"), "a");
   EXPECT_EQ(lca.Ancestor("b", "c"), "a");
@@ -252,10 +251,10 @@ TEST(LCATest, StringGraphUndirected_Complex1) {
 }
 
 TEST(LCATest, StringGraphUndirected_Complex2) {
-  Graph<std::string, int> graph = Graph<std::string, int>::GraphFromStrs(
+  Graph<std::string> graph = Graph<std::string>::GraphFromStrs(
       {"a->b", "b->c", "b->d", "c->e", "c->f", "d->g", "d->h", "e->i", "f->j"});
   graph.MakeUndirected();
-  LCA<std::string, int> lca(graph, "a");
+  LCA<std::string> lca(graph, "a");
   EXPECT_EQ(lca.Ancestor("i", "j"), "c");
   EXPECT_EQ(lca.Ancestor("c", "g"), "b");
   EXPECT_EQ(lca.Ancestor("a", "j"), "a");

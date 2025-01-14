@@ -25,32 +25,52 @@
 ```C++
 /**
  * @brief Класс для нахождения наименьшего общего предка (LCA) в дереве.
- * @details Реализует алгоритм Фараха-Колтона и Бендера для нахождения LCA за
- * O(1) на запрос после препроцессинга за O(N).
+ *
+ * @details Реализует алгоритм Фараха-Колтона и Бендера для нахождения LCA.
+ *          Этот алгоритм сводит задачу LCA к задаче RMQ (Range Minimum Query)
+ *          на специальном массиве, где разница между соседними элементами равна
+ *          +1 или -1. Он обеспечивает поиск LCA за O(1) после препроцессинга за
+ *          O(N), где N - количество вершин в дереве.
+ *
  * @tparam vert_t: тип вершин.
- * @tparam weight_t: тип весов.
  */
-template <AllowedVertType vert_t, AllowedWeightType weight_t>
+template <AllowedVertType vert_t>
 class LCA {
  public:
   /**
    * @brief Инициализирует новый экземпляр LCA.
+   *
    * @param graph: граф, для которого нужно найти LCA.
    * @param root: корень дерева.
    */
-  LCA(const Graph<vert_t, weight_t>& graph, vert_t root);
+  LCA(const Graph<vert_t, size_t>& graph, vert_t root);
 
   /**
    * @brief Находит наименьшего общего предка двух вершин.
+   *
    * @param left: первая вершина.
    * @param right: вторая вершина.
+   *
    * @return `vert_t`: наименьший общий предок вершин `left` и `right`.
    */
-  vert_t Ancestor(const vert_t& left, const vert_t& right);
+  vert_t Ancestor(const vert_t& left, const vert_t& right) const;
+
+  /**
+   * @brief Находит наименьшего общего предка пары вершин.
+   *
+   * @param pair: пара вершин.
+   * 
+   * @return `vert_t`: наименьший общий предок вершин `pair`.
+   */
+  vert_t Ancestor(const std::pair<vert_t, vert_t>& pair) const;
 
  private:
   /**
    * @brief Обход дерева в глубину (DFS) для построения обхода Эйлера.
+   *
+   * @details В процессе обхода заполняет `euler_tour_`, `vert_heights_` и
+   * `first_pos_in_euler_tour_`, необходимые для алгоритма.
+   *
    * @param curr_vert: текущая вершина.
    * @param curr_height: текущая высота вершины.
    */
@@ -58,34 +78,69 @@ class LCA {
 
   /**
    * @brief Вычисляет индекс элемента с наименьшей высотой.
+   *
    * @param i: индекс первого.
    * @param j: индекс второго.
+   *
    * @return `ssize_t`: индекс элемента с наименьшей высотой.
    */
-  ssize_t MinHeight_(ssize_t i, ssize_t j);
-
-  /// @brief Выполняет препроцессинг для нахождения LCA.
-  /// (строит соотв. структуры данных)
+  ssize_t MinHeight_(ssize_t i, ssize_t j) const;
+  /**
+   * @brief Выполняет препроцессинг для нахождения LCA.
+   *
+   * @details 1.  Выполняет обход DFS для создания `euler_tour_`,
+   * `vert_heights_` и `first_pos_in_euler_tour_`.
+   *          2.  Разбивает `euler_tour_` на блоки размером `0.5 * log2(N)`.
+   *          3.  Строит разреженную таблицу `block_sparse_table_` для RMQ на
+   * блоках.
+   *          4.  Вычисляет хеши блоков `block_hash_` на основе высот вершин в
+   * блоках.
+   *          5.  Предвычисляет `RMQ` внутри каждого уникального блока в
+   * `block_RMQ_`.
+   *          6.  Предвычисляет значения логарифмов в `log2_`.
+   */
   void BuildLCA_();
 
   /**
-   * @brief Находит минимум в отрезке блока.
+   * @brief Находит индекс элемента с наименьшей высотой в отрезке блока.
+   *
+   * @details Использует предвычисленные значения из `block_RMQ_`.
+   *
    * @param block_num: номер блока.
    * @param l: левая граница отрезка.
    * @param r: правая граница отрезка.
+   *
    * @return `ssize_t`: индекс минимума в отрезке.
    */
-  ssize_t LCAInBlock_(ssize_t block_num, ssize_t l, ssize_t r);
+  ssize_t LCAInBlock_(ssize_t block_num, ssize_t l, ssize_t r) const;
 
-  const Graph<vert_t, weight_t>& graph_;
+  const Graph<vert_t, size_t> graph_;
+
+  /// @brief Корень дерева
   const vert_t root_;
+
+  /// @brief Обход Эйлера (для вершин)
   std::vector<vert_t> euler_tour_;
+
+  /// @brief Высота каждой вершины от корня
   std::unordered_map<vert_t, ssize_t> vert_heights_;
+
+  /// @brief Первое вхождение вершины в обходе Эйлера
   std::unordered_map<vert_t, ssize_t> first_pos_in_euler_tour_;
+
+  /// @brief Размер блока для RMQ (приблизительно 0.5 * log2(N)).
   ssize_t block_;
+
+  /// @brief Разреженная таблица для поиска минимума на блоках.
   std::vector<std::vector<ssize_t>> block_sparse_table_;
+
+  /// @brief Хэш каждого блока на основе разницы высот внутри блока.
   std::vector<ssize_t> block_hash_;
+
+  /// @brief Предвычисленные значения для RMQ внутри каждого типа блока.
   std::vector<std::vector<std::vector<ssize_t>>> block_RMQ_;
+
+  /// @brief Предвычисленные логарифмы для разреженной таблицы.
   std::vector<ssize_t> log2_;
 };
 ```

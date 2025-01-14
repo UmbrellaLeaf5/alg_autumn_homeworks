@@ -27,13 +27,16 @@ inline void TopologicalSortStep(vert_t u_vert,
 
 /**
  * @brief Производит топологическую сортировку вершин на основе обхода в глубину
- * (DFS)
+ * (DFS).
+ *
  * @tparam vert_t: тип вершины в графе.
  * @tparam weight_t: тип веса в графе.
  * @param graph: сортируемый граф.
+ *
  * @throw std::invalid_argument("TopologicalSort: graph is not directed.").
  * @throw std::invalid_argument("TopologicalSort: graph contains cycle.").
- * @return std::vector<vert_t>: список отсортированных вершин.
+ *
+ * @return `std::vector<vert_t>`: список отсортированных вершин.
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 inline std::vector<vert_t> TopologicalSort(Graph<vert_t, weight_t> graph) {

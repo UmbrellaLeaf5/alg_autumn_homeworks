@@ -47,10 +47,12 @@ inline void FindCutVerticesStep(
 
 /**
  * @brief Поиск точек сочленения в графе (используя элементы алгоритма Тарьяна).
+ *
  * @tparam vert_t: тип вершин.
  * @tparam weight_t: тип весов.
  * @param graph: исходный граф.
- * @return std::vector<vert_t>: точки сочленения в графе.
+ *
+ * @return `std::vector<vert_t>`: точки сочленения в графе.
  */
 template <AllowedVertType vert_t, AllowedWeightType weight_t>
 inline std::vector<vert_t> FindCutVertices(

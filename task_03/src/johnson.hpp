@@ -6,10 +6,13 @@
 /**
  * @brief Вычисляет кратчайшие расстояния между всеми парами вершин в графе с
  * использованием алгоритма Джонсона.
+ *
  * @tparam vert_t: тип вершины в графе.
  * @tparam weight_t: тип веса в графе.
  * @param graph: граф, для которого необходимо вычислить кратчайшие пути.
+ *
  * @throw `throw std::runtime_error("Johnson: graph has negative cycle.")`.
+ *
  * @return `std::unordered_map<vert_t, std::unordered_map<vert_t, weight_t>>`:
  *  `std::unordered_map`, где:
  *      - внешний ключ - это начальная вершина.

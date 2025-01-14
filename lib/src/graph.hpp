@@ -34,33 +34,38 @@ inline weight_t WeightFromTuple(
 // MARK: Graph
 
 /**
- * @brief Класс графа (может быть взвешенным и ориентированным)
- * @tparam vert_t: тип вершин
- * @tparam weight_t: тип весов
+ * @brief Класс графа (может быть взвешенным и ориентированным).
+ *
+ * @tparam vert_t: тип вершин.
+ * @tparam weight_t: тип весов.
  */
 template <AllowedVertType vert_t = std::string,
           AllowedWeightType weight_t = size_t>
 class Graph {
  public:
-  /// @brief Инициализирует новый экземпляр Graph
+  /// @brief Инициализирует новый экземпляр Graph.
   Graph() : edges_(), verts_() {}
 
   /**
-   * @brief Копирующий конструктор
-   * @param other: граф, который нужно скопировать
+   * @brief Копирующий конструктор.
+   *
+   * @param other: граф, который нужно скопировать.
    */
   Graph(const Graph& other) = default;
 
   /**
-   * @brief Оператор копирующего присваивания
-   * @param other: граф, значения которого нужно присвоить
-   * @return `Graph&`: ссылка на текущий объект
+   * @brief Оператор копирующего присваивания.
+   *
+   * @param other: граф, значения которого нужно присвоить.
+   *
+   * @return `Graph&`: ссылка на текущий объект.
    */
   Graph& operator=(const Graph& other) = default;
 
   /**
-   * @brief Перемещающий конструктор. Перемещает ресурсы из другого графа
-   * @param other: граф, ресурсы которого нужно переместить
+   * @brief Перемещающий конструктор. Перемещает ресурсы из другого графа.
+   *
+   * @param other: граф, ресурсы которого нужно переместить.
    */
   Graph(Graph&& other) noexcept
       : edges_(std::move(other.edges_)),
@@ -68,10 +73,12 @@ class Graph {
         is_direct_{other.is_direct_} {}
 
   /**
-   * @brief Оператор перемещающего присваивания. Перемещает ресурсы из другого
+   * @brief Оператор перемещающего присваивания. Перемещает ресурсы из другого.
    * графа.
-   * @param other: граф, ресурсы которого нужно переместить
-   * @return `Graph&`: ссылка на текущий объект
+   *
+   * @param other: граф, ресурсы которого нужно переместить.
+   *
+   * @return `Graph&`: ссылка на текущий объект.
    */
   Graph& operator=(Graph&& other) noexcept {
     if (this != &other) {
@@ -85,9 +92,11 @@ class Graph {
 
   /**
    * @brief Создает новый экземпляр Graph по ребрам,
-   * представленными вектором std::pair (НЕВЗВЕШЕННЫЙ)
-   * @param edges_pairs: ребра графа
-   * @return `Graph`: новый экземпляр Graph
+   * представленными вектором std::pair (НЕВЗВЕШЕННЫЙ).
+   *
+   * @param edges_pairs: ребра графа.
+   *
+   * @return `Graph`: новый экземпляр Graph.
    */
   static Graph GraphNonWeighted(
       const std::vector<std::pair<vert_t, vert_t>>& edges_pairs) {
@@ -103,12 +112,15 @@ class Graph {
 
   /**
    * @brief Создает новый экземпляр Graph по ребрам,
-   * представленными вектором std::pair и weight_t (ВЗВЕШЕННЫЙ)
-   * @param edges_pairs: ребра графа
-   * @param weights: веса ребер
-   * @return `Graph`: новый экземпляр Graph
+   * представленными вектором std::pair и weight_t (ВЗВЕШЕННЫЙ).
+   *
+   * @param edges_pairs: ребра графа.
+   * @param weights: веса ребер.
+   *
+   * @return `Graph`: новый экземпляр Graph.
+   *
    * @throw `std::invalid_argument("GraphWeighted: the sizes of the edges and
-   * weights vectors do not match.")`
+   * weights vectors do not match.")`.
    */
   static Graph GraphWeighted(
       const std::vector<std::pair<vert_t, vert_t>>& edges_pairs,
@@ -130,10 +142,12 @@ class Graph {
   }
 
   /**
-   * @brief Создает новый экземпляр Graph по ребрам
-   * представленными вектором std::tuple (ВЗВЕШЕННЫЙ)
-   * @param edges_tuples: ребра графа
-   * @return `Graph`: новый экземпляр Graph
+   * @brief Создает новый экземпляр Graph по ребрам.
+   * представленными вектором std::tuple (ВЗВЕШЕННЫЙ).
+   *
+   * @param edges_tuples: ребра графа.
+   *
+   * @return `Graph`: новый экземпляр Graph.
    */
   static Graph GraphWeighted(
       const std::vector<std::tuple<vert_t, vert_t, weight_t>>& edges_tuples) {
@@ -148,10 +162,12 @@ class Graph {
   }
 
   /**
-   * @brief Создает новый экземпляр Graph по ребрам
-   * представленными вектором std::string (НЕВЗВЕШЕННЫЙ)
-   * @param edges_strs: ребра графа
-   * @return `Graph`: новый экземпляр Graph
+   * @brief Создает новый экземпляр Graph по ребрам.
+   * представленными вектором std::string (НЕВЗВЕШЕННЫЙ).
+   *
+   * @param edges_strs: ребра графа.
+   *
+   * @return `Graph`: новый экземпляр Graph.
    */
   static Graph GraphFromStrs(const std::vector<std::string>& edges_strs) {
     if (edges_strs.empty()) return Graph();
@@ -169,10 +185,12 @@ class Graph {
   }
 
   /**
-   * @brief Создает новый экземпляр Graph по ребрам
-   * представленными словарем из std::string и weight_t (ВЗВЕШЕННЫЙ)
-   * @param edges_dict: ребра графа
-   * @return `Graph`: новый экземпляр Graph
+   * @brief Создает новый экземпляр Graph по ребрам.
+   * представленными словарем из std::string и weight_t (ВЗВЕШЕННЫЙ).
+   *
+   * @param edges_dict: ребра графа.
+   *
+   * @return `Graph`: новый экземпляр Graph.
    */
   static Graph GraphFromMap(
       const std::unordered_map<std::string, weight_t>& edges_dict) {
@@ -191,16 +209,19 @@ class Graph {
   }
 
   /**
-   * @brief Создает новый экземпляр Graph по матрице смежности
-   * @param adj_matrix: матрица смежности
-   * @param is_weighted: взвешен ли граф
-   * @return `Graph`: новый экземпляр Graph
+   * @brief Создает новый экземпляр Graph по матрице смежности.
+   *
+   * @param adj_matrix: матрица смежности.
+   * @param is_weighted: взвешен ли граф.
+   *
+   * @return `Graph`: новый экземпляр Graph.
+   *
    * @throw `std::invalid_argument("GraphFromAdjMatrix: AdjacencyMatrix is not
-   * squared.")`
+   * squared.")`.
    * @throw `std::invalid_argument("GraphFromAdjMatrix: AdjacencyMatrix is not
-   * squared [row problem].")`
+   * squared [row problem].")`.
    * @throw `std::logic_error("GraphFromAdjMatrix: this method (constructor) is
-   * deleted for std::string.")`
+   * deleted for std::string.")`.
    */
   static Graph GraphFromAdjMatrix(
       const std::vector<std::vector<weight_t>>& adj_matrix,
@@ -240,12 +261,15 @@ class Graph {
   }
 
   /**
-   * @brief Создает новый экземпляр Graph
-   * по списку смежности (НЕВЗВЕШЕННЫЙ)
-   * @param adj_list: список смежности
-   * @return `Graph`: новый экземпляр Graph
+   * @brief Создает новый экземпляр Graph.
+   * по списку смежности (НЕВЗВЕШЕННЫЙ).
+   *
+   * @param adj_list: список смежности.
+   *
+   * @return `Graph`: новый экземпляр Graph.
+   *
    * @throw std::logic_error("GraphFromAdjList: this method (constructor) is
-   * deleted for std::string.");
+   * deleted for std::string.").
    */
   static Graph GraphFromAdjList(
       const std::vector<std::vector<vert_t>>& adj_list) {
@@ -267,10 +291,12 @@ class Graph {
   }
 
   /**
-   * @brief Создает новый экземпляр Graph
-   * по списку смежности с указанием вершины-ключа (НЕВЗВЕШЕННЫЙ)
-   * @param adj_list_dict: список смежности с указанием вершины-ключа
-   * @return `Graph`: новый экземпляр Graph
+   * @brief Создает новый экземпляр Graph.
+   * по списку смежности с указанием вершины-ключа (НЕВЗВЕШЕННЫЙ).
+   *
+   * @param adj_list_dict: список смежности с указанием вершины-ключа.
+   *
+   * @return `Graph`: новый экземпляр Graph.
    */
   static Graph GraphFromAdjList(
       const std::unordered_map<vert_t, std::vector<vert_t>>& adj_list_dict) {
@@ -287,19 +313,19 @@ class Graph {
     return Graph(edges);
   }
 
-  /// @brief Проверяет, взвешен ли граф
+  /// @brief Проверяет, взвешен ли граф.
   bool IsWeighted() const { return is_weighted_; }
 
-  /// @return `size_t`: кол-во вершин
+  /// @return `size_t`: кол-во вершин.
   size_t VertsAmount() const { return verts_.size(); }
 
-  /// @return `vert_t`: кол-во ребер
+  /// @return `vert_t`: кол-во ребер.
   size_t EdgesAmount() const { return edges_.size(); }
 
-  /// @return `const std::vector<vert_t>&`: вершины
+  /// @return `const std::vector<vert_t>&`: вершины.
   const std::vector<vert_t>& Verts() const { return verts_; }
 
-  /// @return `std::vector<std::tuple<vert_t, vert_t, weight_t>>`: ребра
+  /// @return `std::vector<std::tuple<vert_t, vert_t, weight_t>>`: ребра.
   std::vector<std::tuple<vert_t, vert_t, weight_t>> Edges() const {
     if (edges_.empty()) return {};
 
@@ -315,9 +341,11 @@ class Graph {
   }
 
   /**
-   * @brief Выводит в поток список вершин
-   * @param os: входной поток
-   * @return std::ostream&: выходной поток
+   * @brief Выводит в поток список вершин.
+   *
+   * @param os: входной поток.
+   *
+   * @return std::ostream&: выходной поток.
    */
   std::ostream& PrintVerts(std::ostream& os = std::cout) const {
     os << Verts();
@@ -325,9 +353,11 @@ class Graph {
   }
 
   /**
-   * @brief Выводит в поток список ребер
-   * @param os: входной поток
-   * @return `std::ostream&`: выходной поток
+   * @brief Выводит в поток список ребер.
+   *
+   * @param os: входной поток.
+   *
+   * @return `std::ostream&`: выходной поток.
    */
   std::ostream& PrintEdges(std::ostream& os = std::cout) const {
     os << edges_;
@@ -335,9 +365,11 @@ class Graph {
   }
 
   /**
-   * @brief Выводит в поток список смежности
-   * @param os: входной поток
-   * @return `std::ostream&`: выходной поток
+   * @brief Выводит в поток список смежности.
+   *
+   * @param os: входной поток.
+   *
+   * @return `std::ostream&`: выходной поток.
    */
   std::ostream& PrintAdjList(std::ostream& os = std::cout) const {
     for (const auto& vert : Verts()) {
@@ -355,7 +387,7 @@ class Graph {
     return os;
   }
 
-  /// @brief Делает граф ненаправленным (удаляет лишние ребра)
+  /// @brief Делает граф ненаправленным (удаляет лишние ребра).
   void MakeUndirected() {
     std::unordered_set<size_t> seen_edges;
     std::vector<Edge> unique_edges;
@@ -378,16 +410,16 @@ class Graph {
     is_direct_ = false;
   }
 
-  /// @brief Делает граф направленным (ничего)
+  /// @brief Делает граф направленным (ничего).
   void MakeDirected() { is_direct_ = true; }
 
-  /// @brief Проверяет, направлен ли граф
+  /// @brief Проверяет, направлен ли граф.
   bool IsDirected() const { return is_direct_; }
 
   /**
-   * @return `std::vector<std::vector<vert_t>>`: список смежности
+   * @return `std::vector<std::vector<vert_t>>`: список смежности.
    * @throw `std::logic_error("GetAdjListWithoutKeys: this method is deleted
-   * for std::string.")`
+   * for std::string.")`.
    */
   std::vector<std::vector<vert_t>> GetAdjListWithoutKeys() const {
     if constexpr (std::is_arithmetic_v<vert_t>) {
@@ -408,7 +440,7 @@ class Graph {
   }
 
   /// @return `std::unordered_map<vert_t, std::vector<vert_t>>`: список
-  /// смежности с указанием вершины-ключа
+  /// смежности с указанием вершины-ключа.
   std::unordered_map<vert_t, std::vector<vert_t>> GetAdjList() const {
     auto adj_list_dict = std::unordered_map<vert_t, std::vector<vert_t>>();
 
@@ -422,9 +454,9 @@ class Graph {
   }
 
   /**
-   * @return `std::vector<std::vector<vert_t>>`: матрица смежности
+   * @return `std::vector<std::vector<vert_t>>`: матрица смежности.
    * @throw `std::logic_error("GetAdjMatrix: this method is deleted for
-   * std::string.")`
+   * std::string.")`.
    */
   std::vector<std::vector<weight_t>> GetAdjMatrix() const {
     if constexpr (std::is_arithmetic_v<vert_t>) {
@@ -450,21 +482,26 @@ class Graph {
   }
 
   /**
-   * @brief Проверяет, содержится ли вершина в графе
-   * @param vert: вершина
-   * @return `true`: содержится
-   * @return `false`: не содержится
+   * @brief Проверяет, содержится ли вершина в графе.
+   *
+   * @param vert: вершина.
+   *
+   * @return `true`: содержится.
+   * @return `false`: не содержится.
    */
   bool ContainsVert(const vert_t& vert) const {
     return std::find(Verts().begin(), Verts().end(), vert) != Verts().end();
   }
 
   /**
-   * @brief Проверяет, содержится ли ребро в графе (ВЗВЕШЕННЫЙ)
-   * @param edge: ребро
-   * @return `true`: содержится
-   * @return `false`: не содержится
-   * @throw `std::logic_error("ContainsEdge: graph is not weighted.")`
+   * @brief Проверяет, содержится ли ребро в графе (ВЗВЕШЕННЫЙ).
+   *
+   * @param edge: ребро.
+   *
+   * @return `true`: содержится.
+   * @return `false`: не содержится.
+   *
+   * @throw `std::logic_error("ContainsEdge: graph is not weighted.")`.
    */
   bool ContainsEdge(const std::tuple<vert_t, vert_t, weight_t>& edge) const {
     if (!IsWeighted())
@@ -474,21 +511,26 @@ class Graph {
   }
 
   /**
-   * @brief Проверяет, содержится ли ребро в графе (НЕВЗВЕШЕННЫЙ)
-   * @param edge: ребро
-   * @return `true`: содержится
-   * @return `false`: не содержится
+   * @brief Проверяет, содержится ли ребро в графе (НЕВЗВЕШЕННЫЙ).
+   *
+   * @param edge: ребро.
+   *
+   * @return `true`: содержится.
+   * @return `false`: не содержится.
    */
   bool ContainsEdge(const std::pair<vert_t, vert_t>& edge) const {
     return GetEdgeIter_(edge) != edges_.end();
   }
 
   /**
-   * @brief Находит вес ребра в взвешенном графе
-   * @param edge: ребро
-   * @return `weight_t`: вес
-   * @throw `std::logic_error("GetEdgeWeight: graph is not weighted.")`
-   * @throw `std::invalid_argument("GetEdgeWeight: there is no such edge:")`
+   * @brief Находит вес ребра в взвешенном графе.
+   *
+   * @param edge: ребро.
+   *
+   * @return `weight_t`: вес.
+   *
+   * @throw `std::logic_error("GetEdgeWeight: graph is not weighted.")`.
+   * @throw `std::invalid_argument("GetEdgeWeight: there is no such edge:")`.
    */
   weight_t GetEdgeWeight(const std::pair<vert_t, vert_t>& edge) const {
     if (!IsWeighted())
@@ -504,11 +546,13 @@ class Graph {
   }
 
   /**
-   * @brief Меняет вес ребра в взвешенном графе
-   * @param edge: ребро
-   * @param new_weight: вес
-   * @throw `std::logic_error("SetEdgeWeight: graph is not weighted.")`
-   * @throw `std::invalid_argument("SetEdgeWeight: there is no such edge:")`
+   * @brief Меняет вес ребра в взвешенном графе.
+   *
+   * @param edge: ребро.
+   * @param new_weight: вес.
+   *
+   * @throw `std::logic_error("SetEdgeWeight: graph is not weighted.")`.
+   * @throw `std::invalid_argument("SetEdgeWeight: there is no such edge:")`.
    */
   void SetEdgeWeight(const std::pair<vert_t, vert_t>& edge,
                      weight_t new_weight) {
@@ -549,7 +593,7 @@ class Graph {
     AddEdge_(Edge(edge_pair.first, edge_pair.second, static_cast<weight_t>(0)));
   }
 
-  /// @throw `std::invalid_argument("RemoveVert: there is no such vert:")`
+  /// @throw `std::invalid_argument("RemoveVert: there is no such vert:")`.
   void RemoveVert(const vert_t& vert) {
     if constexpr (std::is_arithmetic_v<vert_t>) {
       if (!Contains(Verts(), vert))
@@ -573,7 +617,7 @@ class Graph {
                  edges_.end());
   }
 
-  /// @throw `std::invalid_argument("RemoveEdge: there is no such edge:")`
+  /// @throw `std::invalid_argument("RemoveEdge: there is no such edge:")`.
   void RemoveEdge(const std::pair<vert_t, vert_t>& edge_pair) {
     if (!ContainsEdge(edge_pair))
       throw std::invalid_argument(
@@ -590,7 +634,7 @@ class Graph {
                  edges_.end());
   }
 
-  /// @throw `std::invalid_argument("RemoveEdge: there is no such edge:")`
+  /// @throw `std::invalid_argument("RemoveEdge: there is no such edge:")`.
   void RemoveEdge(const std::tuple<vert_t, vert_t, weight_t>& edge_tuple) {
     if (!ContainsEdge(edge_tuple))
       throw std::invalid_argument(

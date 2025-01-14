@@ -6,34 +6,42 @@
 
 /**
  * @brief Класс для нахождения наименьшего общего предка (LCA) в дереве.
- * @details Реализует алгоритм Фараха-Колтона и Бендера для нахождения LCA за
- * O(1) на запрос после препроцессинга за O(N).
+ *
+ * @details Реализует алгоритм Фараха-Колтона и Бендера для нахождения LCA.
+ *          Этот алгоритм сводит задачу LCA к задаче RMQ (Range Minimum Query)
+ *          на специальном массиве, где разница между соседними элементами равна
+ *          +1 или -1. Он обеспечивает поиск LCA за O(1) после препроцессинга за
+ *          O(N), где N - количество вершин в дереве.
+ *
  * @tparam vert_t: тип вершин.
- * @tparam weight_t: тип весов.
  */
-template <AllowedVertType vert_t, AllowedWeightType weight_t>
+template <AllowedVertType vert_t>
 class LCA {
  public:
   /**
    * @brief Инициализирует новый экземпляр LCA.
+   *
    * @param graph: граф, для которого нужно найти LCA.
    * @param root: корень дерева.
+   *
    * @throw `std::invalid_argument("LCA: there is no such root vertice in
    * graph.")`.
    */
-  LCA(const Graph<vert_t, weight_t>& graph, vert_t root)
+  LCA(const Graph<vert_t, size_t>& graph, vert_t root)
       : graph_(graph), root_(root) {
     if (!graph.ContainsVert(root))
       throw std::invalid_argument(
           "LCA: there is no such root vertice in graph.");
 
-    if (graph.EdgesAmount()) BuildLCA_();
+    if (graph.EdgesAmount() && graph.VertsAmount() > 1) BuildLCA_();
   }
 
   /**
    * @brief Находит наименьшего общего предка двух вершин.
+   *
    * @param left: первая вершина.
    * @param right: вторая вершина.
+   *
    * @throw `std::invalid_argument("LCA: there is no such left vertice in
    * graph.")`.
    * @throw `std::invalid_argument("LCA: there is no such right vertice in
@@ -41,6 +49,7 @@ class LCA {
    * @throw `std::logic_error("LCA: graph has no edges.")`.
    * @throw `std::logic_error("LCA: left vertice is not connected to root.")`.
    * @throw `std::logic_error("LCA: right vertice is not connected to root.")`.
+   *
    * @return `vert_t`: наименьший общий предок вершин `left` и `right`.
    */
   vert_t Ancestor(const vert_t& left, const vert_t& right) const {
@@ -93,9 +102,32 @@ class LCA {
     return euler_tour_[ans];
   }
 
+  /**
+   * @brief Находит наименьшего общего предка пары вершин.
+   *
+   * @param pair: пара вершин.
+   *
+   * @throw `std::invalid_argument("LCA: there is no such left vertice in
+   * graph.")`.
+   * @throw `std::invalid_argument("LCA: there is no such right vertice in
+   * graph.")`.
+   * @throw `std::logic_error("LCA: graph has no edges.")`.
+   * @throw `std::logic_error("LCA: left vertice is not connected to root.")`.
+   * @throw `std::logic_error("LCA: right vertice is not connected to root.")`.
+   *
+   * @return `vert_t`: наименьший общий предок вершин `pair`.
+   */
+  vert_t Ancestor(const std::pair<vert_t, vert_t>& pair) const {
+    return Ancestor(pair.first, pair.second);
+  }
+
  private:
   /**
    * @brief Обход дерева в глубину (DFS) для построения обхода Эйлера.
+   *
+   * @details В процессе обхода заполняет `euler_tour_`, `vert_heights_` и
+   * `first_pos_in_euler_tour_`, необходимые для алгоритма.
+   *
    * @param curr_vert: текущая вершина.
    * @param curr_height: текущая высота вершины.
    */
@@ -119,8 +151,10 @@ class LCA {
 
   /**
    * @brief Вычисляет индекс элемента с наименьшей высотой.
+   *
    * @param i: индекс первого.
    * @param j: индекс второго.
+   *
    * @return `ssize_t`: индекс элемента с наименьшей высотой.
    */
   ssize_t MinHeight_(ssize_t i, ssize_t j) const {
@@ -129,8 +163,20 @@ class LCA {
                : j;
   }
 
-  /// @brief Выполняет препроцессинг для нахождения LCA.
-  /// (строит соотв. структуры данных)
+  /**
+   * @brief Выполняет препроцессинг для нахождения LCA.
+   *
+   * @details 1.  Выполняет обход DFS для создания `euler_tour_`,
+   * `vert_heights_` и `first_pos_in_euler_tour_`.
+   *          2.  Разбивает `euler_tour_` на блоки размером `0.5 * log2(N)`.
+   *          3.  Строит разреженную таблицу `block_sparse_table_` для RMQ на
+   * блоках.
+   *          4.  Вычисляет хеши блоков `block_hash_` на основе высот вершин в
+   * блоках.
+   *          5.  Предвычисляет `RMQ` внутри каждого уникального блока в
+   * `block_RMQ_`.
+   *          6.  Предвычисляет значения логарифмов в `log2_`.
+   */
   void BuildLCA_() {
     DFS_(root_, 0);
     // размер обхода Эйлера
@@ -214,61 +260,87 @@ class LCA {
   }
 
   /**
-   * @brief Находит минимум в отрезке блока.
+   * @brief Находит индекс элемента с наименьшей высотой в отрезке блока.
+   *
+   * @details Использует предвычисленные значения из `block_RMQ_`.
+   *
    * @param block_num: номер блока.
    * @param l: левая граница отрезка.
    * @param r: правая граница отрезка.
+   *
    * @return `ssize_t`: индекс минимума в отрезке.
    */
   ssize_t LCAInBlock_(ssize_t block_num, ssize_t l, ssize_t r) const {
     return block_RMQ_[block_hash_[block_num]][l][r] + block_num * block_;
   }
 
-  const Graph<vert_t, weight_t> graph_;
+  const Graph<vert_t, size_t> graph_;
 
-  // корень дерева
+  /// @brief Корень дерева
   const vert_t root_;
 
-  // обход Эйлера (для вершин)
+  /// @brief Обход Эйлера (для вершин)
   std::vector<vert_t> euler_tour_;
 
-  // высота каждой вершины от корня.
+  /// @brief Высота каждой вершины от корня
   std::unordered_map<vert_t, ssize_t> vert_heights_;
 
-  // первое вхождение вершины в обходе Эйлера
+  /// @brief Первое вхождение вершины в обходе Эйлера
   std::unordered_map<vert_t, ssize_t> first_pos_in_euler_tour_;
 
-  // размер блока для алгоритма RMQ
+  /// @brief Размер блока для RMQ (приблизительно 0.5 * log2(N)).
   ssize_t block_;
 
-  // разреженная таблица для блоков
+  /// @brief Разреженная таблица для поиска минимума на блоках.
   std::vector<std::vector<ssize_t>> block_sparse_table_;
 
-  // хеши блоков
+  /// @brief Хэш каждого блока на основе разницы высот внутри блока.
   std::vector<ssize_t> block_hash_;
 
-  // предвычисленные значения RMQ внутри блоков
+  /// @brief Предвычисленные значения для RMQ внутри каждого типа блока.
   std::vector<std::vector<std::vector<ssize_t>>> block_RMQ_;
 
-  // логарифмы для разряженной таблицы
+  /// @brief Предвычисленные логарифмы для разреженной таблицы.
   std::vector<ssize_t> log2_;
 };
 
 /**
  * @brief Находит наименьшего общего предка двух вершин.
+ *
  * @details Эта функция предназначена для однократного вычисления LCA. При
  * множественных запросах к одному и тому же графу рекомендуется использовать
  * класс `LCA`.
+ *
  * @tparam vert_t: тип вершин.
- * @tparam weight_t: тип весов.
  * @param graph: граф, для которого нужно найти LCA.
  * @param root: корень дерева.
  * @param left: первая вершина.
  * @param right: вторая вершина.
+ *
  * @return `vert_t`: наименьший общий предок вершин `left` и `right`.
  */
-template <AllowedVertType vert_t, AllowedWeightType weight_t>
-vert_t CalculateLCA(const Graph<vert_t, weight_t>& graph, vert_t root,
-                    vert_t left, vert_t right) {
-  return LCA<vert_t, weight_t>(graph, root).Ancestor(left, right);
+template <AllowedVertType vert_t>
+inline vert_t CalculateLCA(const Graph<vert_t, size_t>& graph, vert_t root,
+                           vert_t left, vert_t right) {
+  return LCA<vert_t>(graph, root).Ancestor(left, right);
+}
+
+/**
+ * @brief Находит наименьшего общего предка двух вершин.
+ *
+ * @details Эта функция предназначена для однократного вычисления LCA. При
+ * множественных запросах к одному и тому же графу рекомендуется использовать
+ * класс `LCA`.
+ *
+ * @tparam vert_t: тип вершин.
+ * @param graph: граф, для которого нужно найти LCA.
+ * @param root: корень дерева.
+ * @param pair: пара вершин.
+ *
+ * @return `vert_t`: наименьший общий предок вершин `pair`.
+ */
+template <AllowedVertType vert_t>
+inline vert_t CalculateLCA(const Graph<vert_t, size_t>& graph, vert_t root,
+                           const std::pair<vert_t, vert_t>& pair) {
+  return LCA<vert_t>(graph, root).Ancestor(pair);
 }

@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "dec_tree.hpp"
 #include "rmq.hpp"
 
 int main() {
@@ -22,8 +21,14 @@ int main() {
   std::cout << "RMQ(1, 4): " << rmq_double.Query(1, 4) << std::endl;
   std::cout << "RMQ(0, 2): " << rmq_double.Query(0, 2) << std::endl;
 
-  // std::vector<ssize_t> priorities = {17, 0, 36, 16, 23, 15, 42, 18, 20};
-  // std::cout << ImplicitTreap<ssize_t, ssize_t>(priorities) << std::endl;
+  std::cout << std::endl;
+
+  std::vector<size_t> priorities = {17, 0, 36, 16, 23, 15, 42, 18, 20};
+  std::cout << priorities << std::endl
+            << std::endl
+            << ImplicitIndexTreap<size_t>(priorities).GetGraph() << std::endl
+            << std::endl
+            << ImplicitIndexTreap<size_t>(priorities) << std::endl;
 
   return 0;
 }
