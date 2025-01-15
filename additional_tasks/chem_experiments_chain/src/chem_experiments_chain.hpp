@@ -6,7 +6,7 @@ void Solution(std::istream& is = std::cin, std::ostream& os = std::cout) {
   size_t experiments_amount;
   is >> experiments_amount;
 
-  Graph<std::string, long> graph;
+  Graph<std::string> graph;
   graph.MakeDirected();
 
   for (size_t i = 0; i < experiments_amount; i++) {
